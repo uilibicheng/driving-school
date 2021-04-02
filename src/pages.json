@@ -1,0 +1,61 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/mine/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/selectArea/index",
+			"style": {
+				"navigationBarTitleText": "选择城市/考场",
+				"h5": {
+					"titleNView": {
+						"searchInput": {
+							"placeholder": "城市/考场",
+							"borderRadius": "30px",
+							"backgroundColor": "#ECECEC"
+						}
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/videoDetail/index",
+			"style": {
+				"navigationBarTitleText": "视频详情"
+			}
+		}
+	],
+	"tabBar": {
+		"color": "#8a8a8a",
+		"selectedColor": "#AB956D",
+		"borderStyle": "black",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/home_unseleted.png",
+				"selectedIconPath": "static/home_seleted.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/mine/index",
+				"iconPath": "static/mine_unselected.png",
+				"selectedIconPath": "static/mine_selected.png",
+				"text": "个人中心"
+			}
+		]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "驾考",
+		"navigationBarBackgroundColor": "#FFF",
+		"backgroundColor": "#F8F8F8"
+	}
+}
