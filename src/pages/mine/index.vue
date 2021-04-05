@@ -12,25 +12,38 @@
     </view>
 
     <view class="content">
-      <view class="item">
+      <view class="item" @click="goToOrder">
         <view class="logo">
           <image src="../../static/order.png" />
-        </view>
-        我的订单
+        </view>我的订单
       </view>
     </view>
   </view>
 </template>
 
 <script>
-	export default {
-		data() {
-		},
-		onLoad() {
+export default {
+  data() {},
+  onLoad() {
+    this.getCurrentUser()
+  },
 
-		},
-		methods: {},
-	}
+  methods: {
+    getCurrentUser() {
+      this.$http.user.getCurrentUser({
+        success: res => {
+          console.log(111, res)
+        }
+      })
+    },
+
+    goToOrder() {
+      uni.navigateTo({
+        url: '/pages/mine/order'
+      })
+    }
+  },
+};
 </script>
 
 <style lang="scss" scoped>

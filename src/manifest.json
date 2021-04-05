@@ -78,7 +78,7 @@
 				"disableHostCheck": true,
 				"proxy": {
 					"/advertising": {
-						"target": "http://portal-dev-api-ad.1pluslive.com",
+						"target": "http://47.114.97.144:50/api",
 						"changeOrigin": true,
 						"secure": false
 					}

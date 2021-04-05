@@ -32,6 +32,20 @@
 			"style": {
 				"navigationBarTitleText": "视频详情"
 			}
+		},
+		{
+			"path": "pages/mine/order",
+			"style": {
+				"navigationBarTitleText": "订单",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance": 40
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
 		}
 	],
 	"tabBar": {
