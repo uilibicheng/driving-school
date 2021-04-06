@@ -26,7 +26,7 @@ class SuperClass {
       // if (token) {
       //   opts.header = {
       //     "Content-Type": "application/json;charset=utf-8",
-      //     Authorization: 'Bearer ' + _token,
+      //     "X-Access-Token": _token,
       //   }
       // }
 

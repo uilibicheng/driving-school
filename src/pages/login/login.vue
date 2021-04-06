@@ -13,6 +13,7 @@ export default {
     };
   },
   onLoad(option) {
+    console.log('login', option)
     if (options.url) {
       this.navigateUrl = JSON.parse(decodeURIComponent(options.url));
     }
@@ -31,6 +32,7 @@ export default {
       this.$http.user.login({
         data,
         success: (res) => {
+          console.log('res', res)
           localM.set(LOCAL_KEY.TOKEN, res);
           if (this.navigateUrl) {
             if (constants.SWITCH_TAB_URL.includes(this.navigateUrl)) {
