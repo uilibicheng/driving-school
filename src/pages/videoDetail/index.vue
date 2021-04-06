@@ -27,21 +27,26 @@
     <!-- <view class="line" v-if="false">
       <view class="line-item" v-for="item in 4">河源铺前2.3.5号线（自动挡）合集2021年新规</view>
     </view> -->
-		<view class="buy-btn" v-if="!(detailInfo.map && detailInfo.map.isBuyed)">点击购买课程</view>
+		<view class="buy-btn" v-if="!(detailInfo.map && detailInfo.map.isBuyed)" @click="buyVideo">点击购买课程</view>
   </view>
 </template>
 
 <script>
+import localM from '@/utils/common/local'
+import {LOCAL_KEY} from '@/config/constants'
+
 export default {
 	data() {
 		return {
-			detailInfo: {}
+			detailInfo: {},
+      id: '',
 		}
 	},
 
   onLoad(option) {
 		if (option.id) {
-			this.getVideoById(option.id)
+      this.id = option.id
+			this.getVideoById()
 		} else {
 			uni.switchTab({
 				url: '/pages/index/index'
@@ -50,9 +55,9 @@ export default {
 	},
 
   methods: {
-		getVideoById(id) {
+		getVideoById() {
 			let data = {
-				id,
+				id: this.id,
 			}
       this.$http.data.getVideoById({
 				data,
@@ -62,6 +67,55 @@ export default {
         },
       });
 		},
+
+    buyVideo() {
+      if (typeof WeixinJSBridge === 'undefined') {
+        uni.showToast({
+          title: "支付失败，请在微信浏览器中打开",
+          icon: 'none',
+          duration: 3000
+        })
+        return
+      }
+
+      let data = {
+        userId: localM.get(LOCAL_KEY.USER) ? localM.get(LOCAL_KEY.USER).id : '',
+        videoId: this.detailInfo.id
+      }
+      this.$http.data.buyVideo({
+        data,
+        success: result => {
+          this.$http.data.createOrder({
+            data: result,
+            success: res => {
+              WeixinJSBridge.invoke(
+                "getBrandWCPayRequest",
+                {
+                  appId: res.appId, //公众号名称，由商户传入
+                  timeStamp: res.timeStamp, //时间戳，自1970年以来的秒数
+                  nonceStr: res.nonceStr, //随机串
+                  package: res.packageValue,
+                  signType: res.signType, //微信签名方式：
+                  paySign: res.paySign //微信签名
+                },
+                function(res1) {
+                  if (res1.err_msg == "get_brand_wcpay_request:ok") {
+                    uni.showToast({
+                      title: "支付成功",
+                      duration: 3000
+                    });
+                    setTimeout(function() {
+                      this.getVideoById()
+                    }, 500);
+                  }
+                  // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                }
+              );
+            }
+          })
+        }
+      })
+    }
 	},
 };
 </script>

@@ -14,9 +14,9 @@ class SuperClass {
     const data = Object.assign(opts.data || {}),
     _token = localM.get(LOCAL_KEY.TOKEN) || ''
 
-    if (!_token) {
-      common.toManage("/pages/login/login")
-    }
+    // if (!_token) {
+    //   common.toManage("/pages/login/login")
+    // }
 
     if (!opts.hideLoading) {
       uni.showNavigationBarLoading()
@@ -30,10 +30,10 @@ class SuperClass {
       //   }
       // }
 
-      // opts.header = {
-      //   "Content-Type": "application/json;charset=utf-8",
-      //   "X-Access-Token": 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuSWQiOiJvSUVDUDVRQlU5MElVWnNmS2NnbDM4alBoc1B3IiwiZXhwIjoxNjE1OTk4NTQ5fQ.H-RSAO9HnaNPefqQeRj-kQuZR6J0mUY_q3EddaEbRp8',
-      // }
+      opts.header = {
+        "Content-Type": "application/json;charset=utf-8",
+        "X-Access-Token": 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuSWQiOiJvSUVDUDVZVnZpR3RCVjFzajZUOFJfYXJlaVRVIiwiZXhwIjoxNjE2MDUwNjkxfQ.CQoTOZz-86kwgmbxDrWTvQ7WUfkPcWzd-vac4bhfkSU',
+      }
 
       uni.request({
         url: baseUrl + opts.url,

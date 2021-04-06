@@ -4,6 +4,7 @@
 
 <script>
 import constants from "../../config/constants";
+import {LOCAL_KEY} from '@/config/constants'
 
 export default {
   data() {
@@ -16,8 +17,6 @@ export default {
       this.navigateUrl = JSON.parse(decodeURIComponent(options.url));
     }
     var code = option.code;
-    var url = this.url.getUserInfoByWxOAuthCode + "?code=" + code;
-    var that = this;
     if (code) {
       this.login(code)
     }
@@ -27,6 +26,7 @@ export default {
     login(code) {
       let data = {
         code,
+        appid: constants.APPID
       };
       this.$http.user.login({
         data,

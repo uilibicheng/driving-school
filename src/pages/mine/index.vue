@@ -22,17 +22,30 @@
 </template>
 
 <script>
+import localM from '@/utils/common/local'
+import {LOCAL_KEY} from '@/config/constants'
+
 export default {
-  data() {},
+  data() {
+    return {
+      user: {}
+    }
+  },
+
   onLoad() {
-    this.getCurrentUser()
+    if (localM.get(LOCAL_KEY.USER)) {
+      this.user = localM.get(LOCAL_KEY.USER)
+    } else {
+      this.getCurrentUser()
+    }
   },
 
   methods: {
     getCurrentUser() {
       this.$http.user.getCurrentUser({
         success: res => {
-          console.log(111, res)
+          this.user = res
+          localM.set(LOCAL_KEY.USER, res);
         }
       })
     },

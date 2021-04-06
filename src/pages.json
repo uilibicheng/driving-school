@@ -3,7 +3,9 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance": 60
 			}
 		},
 		{
@@ -38,7 +40,7 @@
 			"style": {
 				"navigationBarTitleText": "订单",
 				"enablePullDownRefresh": true,
-				"onReachBottomDistance": 40
+				"onReachBottomDistance": 60
 			}
 		},
 		{

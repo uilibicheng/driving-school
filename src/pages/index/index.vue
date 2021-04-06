@@ -9,7 +9,7 @@
       <view class="area-item" v-for="(place, placeIndex) in Object.keys(placeData)" :key="placeIndex">
         <view class="title">{{place}}</view>
         <view class="exam-item" v-for="(item, index) in placeData[place]" :key="index" @click="goToDetail(item.id)">
-          <image :src="item.thumbnailUrl" />
+          <image :src="item.thumbnailUrl" mode="aspectFit" />
           <view class="exam-item-right">
             <view class="exam-item-right-title">{{item.name}}</view>
             <view class="time">
@@ -40,7 +40,10 @@ export default {
   data() {
     return {
 			areaData: {},
-			placeData: [],
+			placeData: {},
+      pageNo: 1,
+      pageSize: 20,
+      totalPage: 0,
     };
 	},
 
@@ -63,20 +66,22 @@ export default {
     getCourseList() {
 			let data = {
 				cityName: this.areaData.name,
-				pageNo: 1,
-				pageSize: 200,
+				pageNo: this.pageNo,
+        pageSize: this.pageSize,
 			}
       this.$http.data.getCourseList({
 				data,
         success: (res) => {
-					this.placeData = res.records.reduce((result, item) => {
+          this.totalPage = res.pages;
+					let data = res.records.reduce((result, item) => {
 						if (result[item.place]) {
 							result[item.place].push(item)
 						} else {
 							result[item.place] = [item]
 						}
 						return result
-					}, [])
+					}, {})
+          this.placeData = Object.assign({}, this.placeData, data)
         },
       });
 		},
@@ -93,12 +98,24 @@ export default {
       })
     },
   },
+
+  onReachBottom(e) {
+    if (this.pageNo < this.totalPage) {
+      this.pageNo = this.pageNo + 1;
+      this.getCourseList();
+    }
+  },
+
+  onPullDownRefresh() {
+    this.pageNo = 1;
+    this.placeData = {};
+    this.getCourseList();
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .index {
-  height: 100vh;
 
   .header {
     display: flex;
@@ -138,6 +155,7 @@ export default {
         padding-left: 30rpx;
         height: 70rpx;
         line-height: 70rpx;
+        margin-bottom: 20rpx;
       }
 
       .exam-item {
@@ -145,8 +163,9 @@ export default {
         background: #fff;
         border-radius: 10rpx;
         display: flex;
-        padding: 10rpx;
-        margin-bottom: 20rpx;
+        padding: 20rpx;
+        margin-bottom: 25rpx;
+        box-sizing: border-box;
 
         image {
           width: 250rpx;
@@ -155,7 +174,7 @@ export default {
         }
 
         .exam-item-right {
-          width: 420rpx;
+          width: 390rpx;
           font-size: 16rpx;
           margin-left: 20rpx;
 
