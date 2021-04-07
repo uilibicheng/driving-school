@@ -33,7 +33,7 @@ export default {
         data,
         success: (res) => {
           console.log('res', res)
-          localM.set(LOCAL_KEY.TOKEN, res);
+          localM.set(LOCAL_KEY.TOKEN, res.token);
           if (this.navigateUrl) {
             if (constants.SWITCH_TAB_URL.includes(this.navigateUrl)) {
               uni.switchTab({

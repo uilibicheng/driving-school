@@ -78,7 +78,7 @@
 				"disableHostCheck": true,
 				"proxy": {
 					"/advertising": {
-						"target": "http://47.114.97.144:50/api",
+						"target": "http://47.114.97.144:50",
 						"changeOrigin": true,
 						"secure": false
 					}
