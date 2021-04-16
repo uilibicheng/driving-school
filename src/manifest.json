@@ -1,5 +1,5 @@
 {
-	"name": "",
+	"name": "驾考",
 	"appid": "",
 	"description": "",
 	"versionName": "1.0.0",
@@ -85,7 +85,7 @@
 				}
 			},
 			"router": {
-				"mode": "history"
+				"mode": "hash"
 			}
 		}
 }

@@ -23,6 +23,7 @@
 
 <script>
 import localM from '@/utils/common/local'
+import common from '@/utils/common'
 import {LOCAL_KEY} from '@/config/constants'
 
 export default {
@@ -33,6 +34,9 @@ export default {
   },
 
   onLoad() {
+    // if (!localM.get(LOCAL_KEY.TOKEN)) {
+    //   return common.toManage("/pages/login/login")
+    // }
     if (localM.get(LOCAL_KEY.USER)) {
       this.user = localM.get(LOCAL_KEY.USER)
     } else {

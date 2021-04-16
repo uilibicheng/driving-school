@@ -54,6 +54,9 @@ export default {
 	},
 
   onShow() {
+    if (!localM.get(LOCAL_KEY.TOKEN)) {
+      return common.toManage("/pages/login/login")
+    }
     if (localM.get(LOCAL_KEY.AREA)) {
 			this.areaData = localM.get(LOCAL_KEY.AREA);
 			this.getCourseList()

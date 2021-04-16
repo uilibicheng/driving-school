@@ -14,26 +14,22 @@ class SuperClass {
     const data = Object.assign(opts.data || {}),
     _token = localM.get(LOCAL_KEY.TOKEN) || ''
 
-    // if (!_token) {
-    //   common.toManage("/pages/login/login")
-    // }
-
     if (!opts.hideLoading) {
       uni.showNavigationBarLoading()
     }
 
     return new Promise(function(resolve, reject) {
-      // if (token) {
-      //   opts.header = {
-      //     "Content-Type": "application/json;charset=utf-8",
-      //     "X-Access-Token": _token,
-      //   }
-      // }
-
-      opts.header = {
-        "Content-Type": "application/json;charset=utf-8",
-        "X-Access-Token": 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuSWQiOiJvSUVDUDVZVnZpR3RCVjFzajZUOFJfYXJlaVRVIiwiZXhwIjoxNjE2MDUwNjkxfQ.CQoTOZz-86kwgmbxDrWTvQ7WUfkPcWzd-vac4bhfkSU',
+      if (token) {
+        opts.header = {
+          "Content-Type": "application/json;charset=utf-8",
+          "X-Access-Token": _token,
+        }
       }
+
+      // opts.header = {
+      //   "Content-Type": "application/json;charset=utf-8",
+      //   "X-Access-Token": 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuSWQiOiJvSUVDUDVZVnZpR3RCVjFzajZUOFJfYXJlaVRVIiwiZXhwIjoxNjE2MDUwNjkxfQ.CQoTOZz-86kwgmbxDrWTvQ7WUfkPcWzd-vac4bhfkSU',
+      // }
 
       uni.request({
         url: baseUrl + opts.url,
@@ -46,7 +42,7 @@ class SuperClass {
           const {data} = res
           if (data.code == 200) { // 成功
             resolve(data)
-          } else if (data.status === -2 || data.status === -3) { // -2 token 失效 -3 未登录
+          } else if (data.code === 401) { // token 失效或未登录
             // localM.remove(LOCAL_KEY.TOKEN)
             // localM.remove(LOCAL_KEY.USER)
             // 获取当前页面栈，登录后进行跳转

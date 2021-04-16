@@ -1,4 +1,4 @@
-const isDev = true // 判断环境 true 测试环境  false 正式环境
+const isDev = process.env.NODE_ENV === 'development' // 判断环境 true 测试环境  false 正式环境
 const DEV_APPID = 'wxd3741df9fe2e8a5e'
 const PRD_APPID = 'wxd3741df9fe2e8a5e'
 const DEV_BASE_URL = 'http://47.114.97.144:50'

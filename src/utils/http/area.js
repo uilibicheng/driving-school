@@ -1,5 +1,4 @@
 import $http from './request'
-import constants from '../../config/constants'
 
 export default {
   getAllArea(opts) {
