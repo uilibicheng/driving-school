@@ -14,12 +14,21 @@ export default {
   },
   onLoad(option) {
     console.log('login', option)
-    if (options.url) {
+    if (option.url) {
       this.navigateUrl = JSON.parse(decodeURIComponent(options.url));
     }
     var code = option.code;
+    console.log('code', code)
     if (code) {
       this.login(code)
+    } else {
+      let urlarr = window.location.href.split('#')
+      console.log('跳转', urlarr)
+      let url = urlarr[1] + '?' + urlarr[0].split('?')[1]
+      console.log('url', url)
+      uni.reLaunch({
+        url,
+      })
     }
   },
 
