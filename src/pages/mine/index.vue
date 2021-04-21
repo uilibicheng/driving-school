@@ -6,8 +6,8 @@
         <view class="avatar">
           <image src="" />
         </view>
-        <view class="nickname">bC</view>
-        <view class="user-num">NO.344534534</view>
+        <view class="nickname"></view>
+        <view class="user-num"></view>
       </view>
     </view>
 
@@ -34,14 +34,15 @@ export default {
   },
 
   onLoad() {
-    // if (!localM.get(LOCAL_KEY.TOKEN)) {
-    //   return common.toManage("/pages/login/login")
-    // }
-    if (localM.get(LOCAL_KEY.USER)) {
-      this.user = localM.get(LOCAL_KEY.USER)
-    } else {
-      this.getCurrentUser()
+    if (!localM.get(LOCAL_KEY.TOKEN)) {
+      return common.toManage("/pages/login/login")
     }
+    this.getCurrentUser()
+    // if (localM.get(LOCAL_KEY.USER)) {
+    //   this.user = localM.get(LOCAL_KEY.USER)
+    // } else {
+    //   this.getCurrentUser()
+    // }
   },
 
   methods: {
@@ -65,8 +66,6 @@ export default {
 
 <style lang="scss" scoped>
 .mine {
-  height: 100vh;
-
   .header {
     width: 100%;
     position: relative;

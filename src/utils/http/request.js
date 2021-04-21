@@ -19,11 +19,9 @@ class SuperClass {
     }
 
     return new Promise(function(resolve, reject) {
-      if (token) {
-        opts.header = {
-          "Content-Type": "application/json;charset=utf-8",
-          "X-Access-Token": _token,
-        }
+      opts.header = {
+        // "Content-Type": "application/json;charset=utf-8",
+        "X-Access-Token": _token,
       }
 
       // opts.header = {

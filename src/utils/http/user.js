@@ -8,7 +8,7 @@ export default {
   },
 
   login(opts) {
-    opts.url = `/api/user/login/${constants.APPID}`
+    opts.url = `/api/user/oauth/get_access_token/${constants.APPID}`
     $http.post(opts)
   },
 }

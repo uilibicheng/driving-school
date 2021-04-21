@@ -1,9 +1,10 @@
 <template>
-  <view>登录</view>
+  <view></view>
 </template>
 
 <script>
 import constants from "../../config/constants";
+import localM from "@/utils/common/local";
 import {LOCAL_KEY} from '@/config/constants'
 
 export default {
@@ -13,22 +14,16 @@ export default {
     };
   },
   onLoad(option) {
-    console.log('login', option)
     if (option.url) {
       this.navigateUrl = JSON.parse(decodeURIComponent(options.url));
     }
     var code = option.code;
-    console.log('code', code)
     if (code) {
       this.login(code)
     } else {
       let urlarr = window.location.href.split('#')
-      console.log('跳转', urlarr)
       let url = urlarr[1] + '?' + urlarr[0].split('?')[1]
-      console.log('url', url)
-      uni.reLaunch({
-        url,
-      })
+      location.replace(window.location.origin + '/#' + url)
     }
   },
 
@@ -41,8 +36,8 @@ export default {
       this.$http.user.login({
         data,
         success: (res) => {
-          console.log('res', res)
           localM.set(LOCAL_KEY.TOKEN, res.token);
+          localM.set(LOCAL_KEY.USER, res.userInfo);
           if (this.navigateUrl) {
             if (constants.SWITCH_TAB_URL.includes(this.navigateUrl)) {
               uni.switchTab({
