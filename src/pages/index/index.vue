@@ -1,11 +1,52 @@
 <template>
   <view class="index">
     <view class="header" @click="goToSelect">
-      <view class="btn-icon">{{areaData.name}}</view>
-      <uni-search-bar placeholder="城市/考场" radius="20" class="search-bar" cancelButton="none" />
+      <view class="search-wrap">
+        <!-- <view class="btn-icon">{{areaData.name}}</view> -->
+        <view class="btn-icon">深圳</view>
+        <view class="line"></view>
+        <image class="search-icon" src="@/static/home/icon-search.png">
+        <input class="search-bar" type="text" placeholder="城市/考场" />
+      </view>
+    </view>
+
+    <view class="nav-list">
+      <view class="nav-item" v-for="item in navItems" :key="item.id">
+        <image :src="item.icon" />
+        <view class="nav-item-right">
+          <view class="right-title">{{item.title}}</view>
+          <view class="right-sub">{{item.sub}}</view>
+        </view>
+      </view>
     </view>
 
     <view class="content">
+      <view class="area-item" v-for="(place, placeIndex) in 1" :key="placeIndex">
+        <view class="title">华南城考场</view>
+        <view class="exam-item" v-for="(item, index) in 9" :key="index" @click="goToDetail(item.id)">
+          <image :src="item.thumbnailUrl" mode="aspectFit" />
+          <view class="exam-item-right">
+            <view class="exam-item-right-title">xxx考场观路</view>
+            <view class="right-bottom-wrap">
+              <view>
+                <view class="price">
+                  <text class="symbol">￥</text>99.99
+                </view>
+                <view class="time">
+                  <image src="@/static/home/watch.png" />99人观看
+                </view>
+              </view>
+              <view class="right-btn">
+                发给学员
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <bottomBar activeType="home" />
+
+    <!-- <view class="content">
       <view class="area-item" v-for="(place, placeIndex) in Object.keys(placeData)" :key="placeIndex">
         <view class="title">{{place}}</view>
         <view class="exam-item" v-for="(item, index) in placeData[place]" :key="index" @click="goToDetail(item.id)">
@@ -22,12 +63,13 @@
           </view>
         </view>
       </view>
-    </view>
+    </view> -->
   </view>
 </template>
 
 <script>
 import uniSearchBar from "../../components/uni-search-bar/uni-search-bar";
+import bottomBar from '@/components/bottomBar'
 import localM from "@/utils/common/local";
 import common from '@/utils/common'
 import { LOCAL_KEY } from "@/config/constants";
@@ -35,6 +77,7 @@ import { LOCAL_KEY } from "@/config/constants";
 export default {
   components: {
     uniSearchBar,
+    bottomBar,
 	},
 
   data() {
@@ -44,6 +87,45 @@ export default {
       pageNo: 1,
       pageSize: 20,
       totalPage: 0,
+      activeColor: 'red',
+      navItems: [
+        {
+          id: 1,
+          icon: require("@/static/home/invite-coach.png"),
+          title: "邀请教练",
+          sub: 'Invitation',
+        },
+        {
+          id: 2,
+          icon: require("@/static/home/icon-watch.png"),
+          title: "学员观看",
+          sub: 'Watch',
+        },
+        {
+          id: 3,
+          icon: require("@/static/home/icon-tool.png"),
+          title: "教练工具",
+          sub: 'Instructor',
+        },
+        {
+          id: 4,
+          icon: require("@/static/home/icon-free.png"),
+          title: "申请免费",
+          sub: '观看',
+        },
+        {
+          id: 5,
+          icon: require("@/static/home/icon-route.png"),
+          title: "线路图",
+          sub: '下载',
+        },
+        {
+          id: 6,
+          icon: require("@/static/home/icon-photo.png"),
+          title: "回执拍照",
+          sub: 'Shot',
+        }
+      ]
     };
 	},
 
@@ -54,15 +136,15 @@ export default {
 	},
 
   onShow() {
-    if (!localM.get(LOCAL_KEY.TOKEN)) {
-      return common.toManage("/pages/login/login")
-    }
-    if (localM.get(LOCAL_KEY.AREA)) {
-			this.areaData = localM.get(LOCAL_KEY.AREA);
-			this.getCourseList()
-    } else {
-      this.goToSelect();
-    }
+    // if (!localM.get(LOCAL_KEY.TOKEN)) {
+    //   return common.toManage("/pages/login/login")
+    // }
+    // if (localM.get(LOCAL_KEY.AREA)) {
+		// 	this.areaData = localM.get(LOCAL_KEY.AREA);
+		// 	this.getCourseList()
+    // } else {
+    //   this.goToSelect();
+    // }
 	},
 
   methods: {
@@ -119,17 +201,33 @@ export default {
 
 <style lang="scss" scoped>
 .index {
-
+  width: 100%;
+  padding-bottom: 120rpx;
   .header {
     display: flex;
     align-items: center;
     background: #fff;
-    padding: 10rpx 10rpx;
+    padding: 20rpx 20rpx;
+    width: 100%;
+    box-sizing: border-box;
+
+    .search-wrap {
+      width: 100%;
+      height: 80rpx;
+      border: 1px solid #DFDFDF;
+      border-radius: 10rpx;
+      display: flex;
+      align-items: center;
+    }
 
     .btn-icon {
-      color: #000;
-      font-size: 32rpx;
-      font-weight: bold;
+      width: 150rpx;
+      padding-left: 10rpx;
+      text-align: center;
+      color: #666;
+      font-size: 28rpx;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       &::after {
         display: inline-block;
@@ -139,26 +237,121 @@ export default {
         transform: rotate(-90deg) scale(0.8);
       }
     }
+    .line {
+      width: 1px;
+      height: 30rpx;
+      background: rgba(155, 155, 155, .4);
+    }
+    .search-icon {
+      margin-left: 30rpx;
+      width: 30rpx;
+      height: 30rpx;
+    }
 
     .search-bar {
-      width: 500rpx;
+      margin-left: 20rpx;
+      flex: 1 0 auto;
+      padding: 0;
       text-align: left;
+      color: #999;
+      font-size: 24rpx;
+    }
+  }
+
+  .nav-list {
+    margin-top: 30rpx;
+    padding: 0 20rpx;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    .nav-item {
+      width: 220rpx;
+      height: 110rpx;
+      background: #fff;
+      border-radius: 10rpx;
+      display: flex;
+      align-items: center;
+      margin-bottom: 24rpx;
+      padding-left: 20rpx;
+      box-sizing: border-box;
+      font-size: 24rpx;
+      color: #fff;
+      image {
+        width: 50rpx;
+        height: 70rpx;
+      }
+      &:nth-child(1) {
+        background: linear-gradient(-40deg, #4A77FD, #255BFF);
+      }
+      &:nth-child(2) {
+        background: linear-gradient(128deg, #FFBD23, #FFBA00);
+      }
+      &:nth-child(3) {
+        background: linear-gradient(128deg, #01D3B1, #03CDB4);
+        image {
+          width: 60rpx;
+          height: 60rpx;
+        }
+      }
+      &:nth-child(4) {
+        background: linear-gradient(128deg, #FC763D, #FE6E48);
+        image {
+          width: 60rpx;
+          height: 50rpx;
+        }
+      }
+      &:nth-child(5) {
+        background: linear-gradient(128deg, #9F70FD, #B96FFE);
+        image {
+          width: 66rpx;
+          height: 54rpx;
+        }
+      }
+      &:nth-child(6) {
+        background: linear-gradient(128deg, #F775FF, #FD4ECA);
+        image {
+          width: 60rpx;
+          height: 50rpx;
+        }
+      }
+      .nav-item-right {
+        margin-left: 20rpx;
+        .right-sub {
+          margin-top: 5rpx;
+          font-size: 16rpx;
+          opacity: .5;
+        }
+      }
     }
   }
 
   .content {
-    padding: 20rpx 30rpx;
+    padding: 20rpx 20rpx;
 
     .area-item {
       margin-bottom: 20rpx;
 
       .title {
-        font-size: 36rpx;
-        border-left: 4rpx solid #22c359;
-        padding-left: 30rpx;
+        font-size: 32rpx;
+        color: #333;
+        padding-left: 15rpx;
+        margin-bottom: 20rpx;
+        position: relative;
         height: 70rpx;
         line-height: 70rpx;
-        margin-bottom: 20rpx;
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 20rpx;
+          left: 0;
+          width: 4rpx;
+          height: 30rpx;
+          background: #4A7FF6;
+          border-radius: 4rpx 0px 4rpx 0px;
+        }
       }
 
       .exam-item {
@@ -166,20 +359,28 @@ export default {
         background: #fff;
         border-radius: 10rpx;
         display: flex;
-        padding: 20rpx;
-        margin-bottom: 25rpx;
+        margin-top: 40rpx;
+        padding-bottom: 40rpx;
         box-sizing: border-box;
+        border-bottom: 1px solid rgba(153, 153, 153, .4);
+        &:last-child {
+          border-bottom: 0;
+        }
 
         image {
-          width: 250rpx;
-          height: 150rpx;
+          width: 300rpx;
+          height: 180rpx;
           background: #000;
+          border-radius: 10rpx;
         }
 
         .exam-item-right {
-          width: 390rpx;
+          flex: 1 0 auto;
           font-size: 16rpx;
           margin-left: 20rpx;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
 
           .exam-item-right-title {
             font-size: 32rpx;
@@ -189,21 +390,44 @@ export default {
             color: #000;
           }
 
-          .time {
-            margin-top: 10rpx;
-            font-size: 26rpx;
-            color: #9f9f9f;
-          }
+          .right-bottom-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 15rpx;
+            .time {
+              margin-top: 10rpx;
+              font-size: 26rpx;
+              color: #9f9f9f;
+              display: flex;
+              align-items: center;
+              image {
+                width: 20rpx;
+                height: 15rpx;
+                background: #fff;
+                margin-right: 10rpx;
+              }
+            }
 
-          .price {
-            margin-top: 10rpx;
-            font-size: 36rpx;
-            color: #fd8e57;
-            font-weight: bold;
+            .price {
+              margin-top: 20rpx;
+              margin-bottom: 20rpx;
+              font-size: 36rpx;
+              color: #FF3B0D;
 
-            .symbol {
-              font-size: 24rpx;
-              font-weight: normal;
+              .symbol {
+                font-size: 24rpx;
+              }
+            }
+            .right-btn {
+              width: 160rpx;
+              height: 85rpx;
+              line-height: 85rpx;
+              text-align: center;
+              font-size: 26rpx;
+              color: #fff;
+              background: #426ADC;
+              border-radius: 10rpx;
             }
           }
         }

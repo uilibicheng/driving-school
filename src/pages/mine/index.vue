@@ -34,9 +34,9 @@ export default {
   },
 
   onLoad() {
-    if (!localM.get(LOCAL_KEY.TOKEN)) {
-      return common.toManage("/pages/login/login")
-    }
+    // if (!localM.get(LOCAL_KEY.TOKEN)) {
+    //   return common.toManage("/pages/login/login")
+    // }
     this.getCurrentUser()
     // if (localM.get(LOCAL_KEY.USER)) {
     //   this.user = localM.get(LOCAL_KEY.USER)

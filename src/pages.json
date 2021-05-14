@@ -4,6 +4,7 @@
 			"path": "pages/index/index",
 			"style": {
 				"navigationStyle": "custom",
+				"navigationBarTitleText": "首页",
 				"enablePullDownRefresh": true,
 				"onReachBottomDistance": 60
 			}
@@ -48,26 +49,52 @@
 			"style": {
 				"navigationBarTitleText": "登录"
 			}
+		},
+		{
+			"path": "pages/driverTool/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "学车工具"
+			}
+		},
+		{
+			"path": "pages/pertolStation/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "加油站"
+			}
 		}
 	],
-	"tabBar": {
-		"color": "#8a8a8a",
-		"selectedColor": "#AB956D",
-		"borderStyle": "black",
-		"list": [{
-				"pagePath": "pages/index/index",
-				"iconPath": "static/home_unseleted.png",
-				"selectedIconPath": "static/home_seleted.png",
-				"text": "首页"
-			},
-			{
-				"pagePath": "pages/mine/index",
-				"iconPath": "static/mine_unselected.png",
-				"selectedIconPath": "static/mine_selected.png",
-				"text": "个人中心"
-			}
-		]
-	},
+	// "tabBar": {
+	// 	"color": "#8a8a8a",
+	// 	"selectedColor": "#AB956D",
+	// 	"borderStyle": "black",
+	// 	"list": [{
+	// 			"pagePath": "pages/index/index",
+	// 			"iconPath": "static/home_unseleted.png",
+	// 			"selectedIconPath": "static/home_seleted.png",
+	// 			"text": "首页"
+	// 		},
+	// 		{
+	// 			"pagePath": "pages/driverTool/index",
+	// 			"iconPath": "static/tool_unselected.png",
+	// 			"selectedIconPath": "static/tool_selected.png",
+	// 			"text": "学车工具"
+	// 		},
+	// 		{
+	// 			"pagePath": "pages/pertolStation/index",
+	// 			"iconPath": "static/pertol_unselected.png",
+	// 			"selectedIconPath": "static/pertol_selected.png",
+	// 			"text": "加油站"
+	// 		},
+	// 		{
+	// 			"pagePath": "pages/mine/index",
+	// 			"iconPath": "static/mine_unselected.png",
+	// 			"selectedIconPath": "static/mine_selected.png",
+	// 			"text": "个人中心"
+	// 		}
+	// 	]
+	// },
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "驾考",
