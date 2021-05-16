@@ -16,7 +16,6 @@
 	/*每个页面公共css */
 	body {
 		width: 100%;
-		background: #F9F9F9;
 	}
 	body uni-page-body {
 		height: 100%;

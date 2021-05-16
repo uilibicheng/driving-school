@@ -24,7 +24,14 @@
       <view class="area-item" v-for="(place, placeIndex) in 1" :key="placeIndex">
         <view class="title">华南城考场</view>
         <view class="exam-item" v-for="(item, index) in 9" :key="index" @click="goToDetail(item.id)">
-          <image :src="item.thumbnailUrl" mode="aspectFit" />
+          <view class="image-wrap">
+            <view class="image-info">
+              <view class="image-info-title">华观路考场撒打发斯蒂芬是说的发送到飞</view>
+              <view>手动挡（VIP版）</view>
+              <view class="image-info-line"></view>
+            </view>
+            <image :src="item.thumbnailUrl" mode="aspectFit" />
+          </view>
           <view class="exam-item-right">
             <view class="exam-item-right-title">xxx考场观路</view>
             <view class="right-bottom-wrap">
@@ -43,33 +50,16 @@
           </view>
         </view>
       </view>
+      <view class="footer-tip">已经到底喽～</view>
     </view>
-    <bottomBar activeType="home" />
 
-    <!-- <view class="content">
-      <view class="area-item" v-for="(place, placeIndex) in Object.keys(placeData)" :key="placeIndex">
-        <view class="title">{{place}}</view>
-        <view class="exam-item" v-for="(item, index) in placeData[place]" :key="index" @click="goToDetail(item.id)">
-          <image :src="item.thumbnailUrl" mode="aspectFit" />
-          <view class="exam-item-right">
-            <view class="exam-item-right-title">{{item.name}}</view>
-            <view class="time">
-              <text>{{item.playNumber}}次播放</text>
-              <text style="margin-left: 40rpx">{{item.updateTime | filterTime}}更新</text>
-            </view>
-            <view class="price">
-              <text class="symbol">￥</text>{{item.price}}
-            </view>
-          </view>
-        </view>
-      </view>
-    </view> -->
+    <bottomBar activeType="home" />
   </view>
 </template>
 
 <script>
 import uniSearchBar from "../../components/uni-search-bar/uni-search-bar";
-import bottomBar from '@/components/bottomBar'
+import bottomBar from '@/components/common/bottomBar'
 import localM from "@/utils/common/local";
 import common from '@/utils/common'
 import { LOCAL_KEY } from "@/config/constants";
@@ -357,22 +347,54 @@ export default {
       .exam-item {
         width: 100%;
         background: #fff;
-        border-radius: 10rpx;
         display: flex;
         margin-top: 40rpx;
         padding-bottom: 40rpx;
         box-sizing: border-box;
         border-bottom: 1px solid rgba(153, 153, 153, .4);
-        &:last-child {
-          border-bottom: 0;
-        }
 
-        image {
+        .image-wrap {
           width: 300rpx;
           height: 180rpx;
-          background: #000;
-          border-radius: 10rpx;
+          position: relative;
+
+          .image-info {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #69658A;
+            font-size: 24rpx;
+            z-index: 500;
+            padding: 0 15rpx;
+            box-sizing: border-box;
+            .image-info-title {
+              font-size: 32rpx;
+              margin-bottom: 15rpx;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+            .image-info-line {
+              margin-top: 20rpx;
+              width: 40rpx;
+              height: 1px;
+              background: #69658A;
+            }
+          }
+
+          image {
+            width: 300rpx;
+            height: 180rpx;
+            background: #000;
+            border-radius: 10rpx;
+          }
         }
+
 
         .exam-item-right {
           flex: 1 0 auto;
@@ -432,6 +454,13 @@ export default {
           }
         }
       }
+    }
+
+    .footer-tip {
+      font-size: 24rpx;
+      color: #999;
+      text-align: center;
+      margin-top: 30rpx;
     }
   }
 }

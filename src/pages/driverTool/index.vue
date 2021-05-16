@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import bottomBar from '@/components/bottomBar'
+import bottomBar from '@/components/common/bottomBar'
 
 export default {
   components: {

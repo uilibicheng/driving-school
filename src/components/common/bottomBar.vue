@@ -31,27 +31,27 @@ export default {
     click(type) {
       switch (type) {
         case 'home':
-          uni.redirectTo({
+          uni.navigateTo({
             url: '/',
           })
           break
         case 'tool':
-          uni.redirectTo({
+          uni.navigateTo({
             url: '/pages/driverTool/index',
           })
           break
         case 'pertol':
-          uni.redirectTo({
+          uni.navigateTo({
             url: '/pages/pertolStation/index',
           })
           break
         case 'user':
-          uni.redirectTo({
+          uni.navigateTo({
             url: '/pages/mine/index',
           })
           break
         default:
-          uni.redirectTo({
+          uni.navigateTo({
             url: '/',
           })
       }
@@ -63,6 +63,8 @@ export default {
 <style scoped lang="scss">
 .bottom-bar {
   .bottom-bar-wrap {
+    z-index: 9999;
+    overflow: hidden;
     position: fixed;
 		bottom: 0;
 		left: 0;
@@ -83,27 +85,27 @@ export default {
 			height: 40rpx;
       background-size: 100% 100%;
       &.bar-icon-home {
-        background-image: url("../static/home_unseleted.png");
+        background-image: url("../../static/home_unseleted.png");
 				&.active {
-          background-image: url("../static/home_seleted.png");
+          background-image: url("../../static/home_seleted.png");
         }
       }
       &.bar-icon-tool {
-        background-image: url("../static/tool_unselected.png");
+        background-image: url("../../static/tool_unselected.png");
 				&.active {
-          background-image: url("../static/tool_selected.png");
+          background-image: url("../../static/tool_selected.png");
         }
       }
       &.bar-icon-pertol {
-        background-image: url("../static/pertol_unselected.png");
+        background-image: url("../../static/pertol_unselected.png");
 				&.active {
-          background-image: url("../static/pertol_selected.png");
+          background-image: url("../../static/pertol_selected.png");
         }
       }
 			&.bar-icon-user {
-        background-image: url("../static/mine_unselected.png");
+        background-image: url("../../static/mine_unselected.png");
 				&.active {
-          background-image: url("../static/mine_selected.png");
+          background-image: url("../../static/mine_selected.png");
         }
       }
     }
