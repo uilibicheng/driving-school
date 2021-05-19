@@ -59,7 +59,7 @@
       </view>
     </view>
 
-    <bottomBar activeType="tool" />
+    <bottomBar activeType="pertol" />
   </view>
 </template>
 
