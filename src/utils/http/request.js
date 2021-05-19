@@ -24,10 +24,12 @@ class SuperClass {
         "X-Access-Token": _token,
       }
 
-      // opts.header = {
-      //   "Content-Type": "application/json;charset=utf-8",
-      //   "X-Access-Token": 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuSWQiOiJvSUVDUDVZVnZpR3RCVjFzajZUOFJfYXJlaVRVIiwiZXhwIjoxNjE2MDUwNjkxfQ.CQoTOZz-86kwgmbxDrWTvQ7WUfkPcWzd-vac4bhfkSU',
-      // }
+      opts.header = {
+        "Content-Type": "application/json;charset=utf-8",
+        "X-Access-Token": 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuSWQiOiJvSUVDUDVZVnZpR3RCVjFzajZUOFJfYXJlaVRVIiwiZXhwIjoxNjE2MDUwNjkxfQ.CQoTOZz-86kwgmbxDrWTvQ7WUfkPcWzd-vac4bhfkSU',
+      }
+
+      console.log(111, opts)
 
       uni.request({
         url: baseUrl + opts.url,
@@ -95,7 +97,7 @@ const decorator = Sup => class extends Sup { // 超类，实现多继承
   async _h(opts, token) {
     const sendFun = opts => {
       return super._rq(opts, token).catch(res => { //转化http请求 catch捕获promise的reject
-        toast(res.message || errorMessage) //统一提示，若有其他提示，会执行覆盖
+        toast((res && res.message) || errorMessage) //统一提示，若有其他提示，会执行覆盖
         opts.fail && opts.fail(res)
       })
     }

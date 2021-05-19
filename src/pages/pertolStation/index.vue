@@ -36,6 +36,29 @@
       </view>
     </view>
 
+    <view class="income-wrap">
+      <view class="income-item">
+        <view>直接推广订单</view>
+        <view class="item-num">121241</view>
+      </view>
+      <view class="income-item">
+        <view>下级推广订单</view>
+        <view class="item-num">121241</view>
+      </view>
+      <view class="income-item">
+        <view>下级代理</view>
+        <view><text class="item-num">1000</text>人</view>
+      </view>
+    </view>
+
+    <view class="content">
+      <view class="list"></view>
+      <view class="empty">
+        <image src="@/static/pertol/empty-text.png" />
+        暂无其他内容
+      </view>
+    </view>
+
     <bottomBar activeType="tool" />
   </view>
 </template>
@@ -148,5 +171,59 @@ export default {
     }
   }
 
+  .income-wrap {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 80rpx;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20rpx;
+    .income-item {
+      width: 32%;
+      height: 120rpx;
+      border-radius: 10rpx;
+      color: #fff;
+      font-size: 30rpx;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .item-num {
+        font-size: 42rpx;
+      }
+
+      &:nth-child(1) {
+        background: linear-gradient(0deg, #02D08F, #3DF6D0);
+      }
+      &:nth-child(2) {
+        background: linear-gradient(0deg, #FF9B2F, #FFD65B);
+      }
+      &:nth-child(3) {
+        background: linear-gradient(0deg, #FF887C, #FC5346);
+      }
+    }
+  }
+
+  .content {
+    .list {
+
+    }
+
+    .empty {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-top: 150rpx;
+      color: #666;
+      font-size: 24rpx;
+      image {
+        width: 290rpx;
+        height: 223rpx;
+      }
+    }
+  }
 }
 </style>

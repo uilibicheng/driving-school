@@ -7,7 +7,7 @@
       </view>
       <view class="bottom-bar-item" @click="click('tool')">
         <view class="bottom-bar-icon bar-icon-tool" :class="{active: activeType === 'tool'}"></view>
-        <view class="bottom-bar-text" :class="{active: activeType === 'tool'}">学车工具</view>
+        <view class="bottom-bar-text" :class="{active: activeType === 'tool'}">教练工具</view>
       </view>
       <view class="bottom-bar-item" @click="click('pertol')">
         <view class="bottom-bar-icon bar-icon-pertol" :class="{active: activeType === 'pertol'}"></view>

@@ -77,8 +77,8 @@
 				"port": 8080,
 				"disableHostCheck": true,
 				"proxy": {
-					"/advertising": {
-						"target": "http://47.114.97.144:50",
+					"/video": {
+						"target": "http://47.119.138.44:8081",
 						"changeOrigin": true,
 						"secure": false
 					}

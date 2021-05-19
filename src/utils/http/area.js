@@ -2,7 +2,7 @@ import $http from './request'
 
 export default {
   getAllArea(opts) {
-    opts.url = '/api/video/place/allList'
+    opts.url = '/video/territoryinfo/list'
     $http.post(opts)
   }
 }
