@@ -29,8 +29,6 @@ class SuperClass {
         "X-Access-Token": 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuSWQiOiJvSUVDUDVZVnZpR3RCVjFzajZUOFJfYXJlaVRVIiwiZXhwIjoxNjE2MDUwNjkxfQ.CQoTOZz-86kwgmbxDrWTvQ7WUfkPcWzd-vac4bhfkSU',
       }
 
-      console.log(111, opts)
-
       uni.request({
         url: baseUrl + opts.url,
         data: data,
@@ -40,6 +38,7 @@ class SuperClass {
         responseType: 'text',
         success: res => {
           const {data} = res
+          console.log(23333, data)
           if (data.code == 200) { // 成功
             resolve(data)
           } else if (data.code === 401) { // token 失效或未登录

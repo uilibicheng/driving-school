@@ -2,11 +2,11 @@
   <view class="content">
     <view class="left">
       <view
-				:class="['left-item', {'left-active-item': selectIndex === index}]"
+				:class="['left-item', {'left-active-item': selectIndex === item.uuid}]"
 				v-for="(provice, index) in list"
 				:key="index"
-				@click="selectProvice(index)">
-				{{provice.name}}
+				@click="selectProvice(uuid)">
+				{{provice.territoryName}}
 			</view>
     </view>
     <view class="right">
@@ -43,6 +43,7 @@ export default {
 		getAllArea() {
 			this.$http.area.getAllArea({
 				success: res => {
+					console.log('res', res)
 					this.list = res
 				}
 			})
