@@ -16,7 +16,7 @@
 					class="right-item"
 					v-for="(item, index) in list[selectIndex].nextTerritory"
 					:key="index"
-					@click="selectArea(item)">
+					@click="selectArea(item, list[selectIndex].territoryName)">
 					{{item.territoryName}}
 				</view>
 			</view>
@@ -33,11 +33,14 @@ export default {
     return {
 			list: [],
 			selectIndex: 0,
-			scrollView: 'provice19'
+			scrollView: '',
+			type: '',
 		};
 	},
 
-  onLoad() {
+  onLoad(options) {
+		console.log('options', options)
+		this.type = options.type
 		this.getAllArea()
 	},
 
@@ -47,8 +50,9 @@ export default {
 				success: res => {
 					console.log('res', res)
 					this.list = res
-					this.selectIndex = 19
-					this.scrollView = 'provice19'
+					this.$nextTick(() => {
+						this.selectProvice(19)
+					})
 				}
 			})
 		},
@@ -58,11 +62,17 @@ export default {
 			this.scrollView = 'provice' + index
 		},
 
-		selectArea(data) {
-			localM.set(LOCAL_KEY.AREA, data)
-			uni.switchTab({
-				url: '/pages/index/index'
-			})
+		selectArea(data, provice) {
+			if (this.type) {
+				uni.navigateTo({
+					url: `/pages/addCourse/index?city=${data.territoryName}&province=${provice}`
+				})
+			} else {
+				localM.set(LOCAL_KEY.AREA, data)
+				uni.redirectTo({
+					url: '/pages/index/index'
+				})
+			}
 		}
 	},
 
@@ -81,7 +91,7 @@ export default {
     width: 260rpx;
     background: #ececec;
     padding-top: 5rpx;
-    height: 100%;
+    height: calc(100vh - 50px);
     overflow: auto;
 
     .left-item {

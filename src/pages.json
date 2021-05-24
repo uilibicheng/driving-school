@@ -31,6 +31,12 @@
 			}
 		},
 		{
+			"path": "pages/addCourse/index",
+			"style": {
+				"navigationBarTitleText": "添加课程"
+			}
+		},
+		{
 			"path": "pages/videoDetail/index",
 			"style": {
 				"navigationBarTitleText": "视频详情"

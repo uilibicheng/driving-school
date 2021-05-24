@@ -1,14 +1,6 @@
 <template>
   <view class="index">
-    <view class="header" @click="goToSelect">
-      <view class="search-wrap">
-        <!-- <view class="btn-icon">{{areaData.name}}</view> -->
-        <view class="btn-icon">深圳</view>
-        <view class="line"></view>
-        <image class="search-icon" src="@/static/home/icon-search.png">
-        <input class="search-bar" type="text" placeholder="城市/考场" />
-      </view>
-    </view>
+    <HeaderSearch :areaData="areaData" />
 
     <view class="nav-list">
       <view class="nav-item" v-for="item in navItems" :key="item.id">
@@ -21,29 +13,29 @@
     </view>
 
     <view class="content">
-      <view class="area-item" v-for="(place, placeIndex) in 1" :key="placeIndex">
-        <view class="title">华南城考场</view>
-        <view class="exam-item" v-for="(item, index) in 9" :key="index" @click="goToDetail(item.id)">
-          <view class="image-wrap">
+      <view class="area-item" v-for="(place, placeIndex) in Object.keys(placeData)" :key="placeIndex">
+        <view class="title">{{place}}</view>
+        <view class="exam-item" v-for="(item, index) in placeData[place]" :key="index">
+          <view class="image-wrap" @click="goToDetail(item.id)">
             <view class="image-info">
-              <view class="image-info-title">华观路考场撒打发斯蒂芬是说的发送到飞</view>
-              <view>手动挡（VIP版）</view>
+              <view class="image-info-title">{{item.courseName}}</view>
+              <view>{{item.courseIntro}}</view>
               <view class="image-info-line"></view>
             </view>
-            <image :src="item.thumbnailUrl" mode="aspectFit" />
+            <image :src="item.courseThumbUrl" mode="aspectFit" />
           </view>
           <view class="exam-item-right">
-            <view class="exam-item-right-title">xxx考场观路</view>
+            <view class="exam-item-right-title" @click="goToDetail(item.id)">xxx考场观路</view>
             <view class="right-bottom-wrap">
-              <view>
+              <view @click="goToDetail(item.id)">
                 <view class="price">
-                  <text class="symbol">￥</text>99.99
+                  <text class="symbol">￥</text>{{item.coursePrice}}
                 </view>
                 <view class="time">
                   <image src="@/static/home/watch.png" />99人观看
                 </view>
               </view>
-              <view class="right-btn">
+              <view class="right-btn" @click="sendToStudent(item)">
                 发给学员
               </view>
             </view>
@@ -53,13 +45,14 @@
       <view class="footer-tip">已经到底喽～</view>
     </view>
 
-    <bottomBar activeType="home" />
+    <BottomBar activeType="home" />
   </view>
 </template>
 
 <script>
 import uniSearchBar from "../../components/uni-search-bar/uni-search-bar";
-import bottomBar from '@/components/common/bottomBar'
+import HeaderSearch from '@/components/common/headerSearch'
+import BottomBar from '@/components/common/bottomBar'
 import localM from "@/utils/common/local";
 import common from '@/utils/common'
 import { LOCAL_KEY } from "@/config/constants";
@@ -67,15 +60,16 @@ import { LOCAL_KEY } from "@/config/constants";
 export default {
   components: {
     uniSearchBar,
-    bottomBar,
+    BottomBar,
+    HeaderSearch
 	},
 
   data() {
     return {
 			areaData: {},
 			placeData: {},
-      pageNo: 1,
-      pageSize: 20,
+      page: 1,
+      limit: 20,
       totalPage: 0,
       activeColor: 'red',
       navItems: [
@@ -129,37 +123,94 @@ export default {
     // if (!localM.get(LOCAL_KEY.TOKEN)) {
     //   return common.toManage("/pages/login/login")
     // }
-    // if (localM.get(LOCAL_KEY.AREA)) {
-		// 	this.areaData = localM.get(LOCAL_KEY.AREA);
-		// 	this.getCourseList()
-    // } else {
-    //   this.goToSelect();
-    // }
+    if (localM.get(LOCAL_KEY.AREA)) {
+			this.areaData = localM.get(LOCAL_KEY.AREA);
+			this.getCourseList()
+    } else {
+      this.goToSelect();
+    }
 	},
 
   methods: {
     getCourseList() {
-			let data = {
-				cityName: this.areaData.name,
-				pageNo: this.pageNo,
-        pageSize: this.pageSize,
-			}
-      this.$http.data.getCourseList({
-				data,
-        success: (res) => {
-          this.totalPage = res.pages;
-					let data = res.records.reduce((result, item) => {
-						if (result[item.place]) {
-							result[item.place].push(item)
-						} else {
-							result[item.place] = [item]
-						}
-						return result
-					}, {})
-          this.placeData = Object.assign({}, this.placeData, data)
+      let list = [
+        {
+          "courseCity": "深圳市",
+          "courseIntro": "课程简介",
+          "courseName": "课程名称",
+          "coursePrice": 124,
+          "courseProvince": "广东省",
+          "courseSite": "华南城",
+          "courseThumbUrl": "string",
+          "courseVideoUrl": "string",
+          "createBy": "创建人",
+          "createTime": "2021-05-24T13:58:18.331Z",
+          "delFlag": "0",
+          "id": "123",
+          "mapId": "333",
+          "selectSatus": true,
+          "updateBy": "更信任",
+          "updateTime": "2021-05-24T13:58:18.331Z",
+          "videoId": "345"
         },
-      });
+        {
+          "courseCity": "深圳市",
+          "courseIntro": "课程简介",
+          "courseName": "课程名称",
+          "coursePrice": 124,
+          "courseProvince": "广东省",
+          "courseSite": "华南城",
+          "courseThumbUrl": "string",
+          "courseVideoUrl": "string",
+          "createBy": "创建人",
+          "createTime": "2021-05-24T13:58:18.331Z",
+          "delFlag": "0",
+          "id": "123",
+          "mapId": "333",
+          "selectSatus": true,
+          "updateBy": "更信任",
+          "updateTime": "2021-05-24T13:58:18.331Z",
+          "videoId": "345"
+        },
+      ]
+      let data = list.reduce((result, item) => {
+        if (result[item.courseSite]) {
+          result[item.courseSite].push(item)
+        } else {
+          result[item.courseSite] = [item]
+        }
+        return result
+      }, {})
+      this.placeData = Object.assign({}, this.placeData, data)
+      console.log('placeData', this.placeData)
+			// let data = {
+			// 	// cityName: this.areaData.name,
+			// 	page: this.page,
+      //   limit: this.limit,
+      //   sidx: 'courseSite',
+      //   order: 'desc',
+      //   userId: '1234234234'
+			// }
+      // this.$http.data.getCourseList({
+			// 	data,
+      //   success: (res) => {
+      //     this.totalPage = res.pages;
+			// 		let data = res.records.reduce((result, item) => {
+			// 			if (result[item.place]) {
+			// 				result[item.place].push(item)
+			// 			} else {
+			// 				result[item.place] = [item]
+			// 			}
+			// 			return result
+			// 		}, {})
+      //     this.placeData = Object.assign({}, this.placeData, data)
+      //   },
+      // });
 		},
+
+    sendToStudent(data) {
+      console.log('data', data)
+    },
 		
 		goToDetail(id) {
 			uni.navigateTo({
@@ -175,14 +226,14 @@ export default {
   },
 
   onReachBottom(e) {
-    if (this.pageNo < this.totalPage) {
-      this.pageNo = this.pageNo + 1;
+    if (this.page < this.totalPage) {
+      this.page = this.page + 1;
       this.getCourseList();
     }
   },
 
   onPullDownRefresh() {
-    this.pageNo = 1;
+    this.page = 1;
     this.placeData = {};
     this.getCourseList();
   },
@@ -193,60 +244,6 @@ export default {
 .index {
   width: 100%;
   padding-bottom: 120rpx;
-  .header {
-    display: flex;
-    align-items: center;
-    background: #fff;
-    padding: 20rpx 20rpx;
-    width: 100%;
-    box-sizing: border-box;
-
-    .search-wrap {
-      width: 100%;
-      height: 80rpx;
-      border: 1px solid #DFDFDF;
-      border-radius: 10rpx;
-      display: flex;
-      align-items: center;
-    }
-
-    .btn-icon {
-      width: 150rpx;
-      padding-left: 10rpx;
-      text-align: center;
-      color: #666;
-      font-size: 28rpx;
-      overflow: hidden;
-      text-overflow: ellipsis;
-
-      &::after {
-        display: inline-block;
-        font-family: unibtn;
-        content: "\e601";
-        margin-left: 2px;
-        transform: rotate(-90deg) scale(0.8);
-      }
-    }
-    .line {
-      width: 1px;
-      height: 30rpx;
-      background: rgba(155, 155, 155, .4);
-    }
-    .search-icon {
-      margin-left: 30rpx;
-      width: 30rpx;
-      height: 30rpx;
-    }
-
-    .search-bar {
-      margin-left: 20rpx;
-      flex: 1 0 auto;
-      padding: 0;
-      text-align: left;
-      color: #999;
-      font-size: 24rpx;
-    }
-  }
 
   .nav-list {
     margin-top: 30rpx;

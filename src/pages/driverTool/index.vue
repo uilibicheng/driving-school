@@ -40,6 +40,10 @@
         <image src="@/static/tool/poster.png" />
         <view>招生海报</view>
       </view>
+      <view class="tool-item" @click="handleAddCourse">
+        <image src="@/static/tool/poster.png" />
+        <view>添加课程</view>
+      </view>
       <view class="tool-item">
         <image src="@/static/tool/name-card.png" />
         <view>我的名片</view>
@@ -76,6 +80,14 @@ export default {
     return {
       labelList: ['脾气好', '合格率高', '拿证快', '效率高'],
       bannerList: [{url: '342343'}, {url: '232525'}]
+    }
+  },
+
+  methods: {
+    handleAddCourse() {
+      uni.navigateTo({
+        url: "/pages/selectArea/index?type=addCourse",
+      })
     }
   }
 }
@@ -195,7 +207,7 @@ export default {
     display: flex;
     justify-content: space-between;
     .tool-item {
-      width: 33%;
+      width: 25%;
       display: flex;
       flex-direction: column;
       align-items: center;

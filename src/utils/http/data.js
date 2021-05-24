@@ -3,7 +3,7 @@ import constants from '../../config/constants'
 
 export default {
   getCourseList(opts) {
-    opts.url = '/api/video/byPlaceIdQuery'
+    opts.url = `/video/courseinfo/courseList/{userId}`
     $http.post(opts)
   },
 
