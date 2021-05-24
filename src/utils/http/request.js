@@ -102,8 +102,9 @@ const decorator = Sup => class extends Sup { // 超类，实现多继承
     }
 
     const cb = await sendFun(opts)
+    console.log(2222, cb)
     if (!!cb) {
-      (cb.code === 200) && opts.success && opts.success(cb.result)
+      (cb.code === 200) && opts.success && opts.success(cb.data)
     }
   }
 

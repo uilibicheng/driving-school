@@ -19,7 +19,9 @@ export default {
     }
     var code = option.code;
     if (code) {
-      this.login(code)
+      // this.login(code)
+      console.log(code)
+      console.log(constants.APPID)
     } else {
       let urlarr = window.location.href.split('#')
       let url = urlarr[1] + '?' + urlarr[0].split('?')[1]

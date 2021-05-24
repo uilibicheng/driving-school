@@ -93,6 +93,12 @@ export default {
     // }
   },
 
+  onShow() {
+    if (!localM.get(LOCAL_KEY.TOKEN)) {
+      return common.toManage("/pages/login/login")
+    }
+  },
+
   methods: {
     getCurrentUser() {
       this.$http.user.getCurrentUser({

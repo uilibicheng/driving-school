@@ -13,7 +13,7 @@ export default {
   toManage: function (redirect_uri) {
     let url = encodeURIComponent(rootUrl + '/#' + redirect_uri)
     console.log('url', decodeURIComponent(url))
-    location.href = "https:/\/open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&response_type=code&scope=snsapi_base&redirect_uri=" + url + "&state=1#wechat_redirect"
+    location.href = "https:/\/open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&response_type=code&scope=snsapi_userinfo&redirect_uri=" + url + "&state=1#wechat_redirect"
   },
 
   formatDate: function (value) {

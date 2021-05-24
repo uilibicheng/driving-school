@@ -3,7 +3,7 @@ const DEV_APPID = 'wxd3741df9fe2e8a5e'
 const PRD_APPID = 'wxd3741df9fe2e8a5e'
 const DEV_BASE_URL = 'http://47.119.138.44:8081'
 const PRD_BASE_URL = 'https://photo.h5.fxpjiakao.com'
-const DEV_ROOT_URL = 'http://47.114.97.144:100'
+const DEV_ROOT_URL = 'https://photo.h5.fxpjiakao.com'
 const PRD_ROOT_URL = 'https://photo.h5.fxpjiakao.com'
 
 export default {

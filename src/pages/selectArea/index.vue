@@ -1,22 +1,23 @@
 <template>
   <view class="content">
-    <view class="left">
-      <view
-				:class="['left-item', {'left-active-item': selectIndex === item.uuid}]"
+		<scroll-view class="left" scroll-y :scroll-with-animation="true" :scroll-into-view="scrollView">
+			<view
+				:class="['left-item', {'left-active-item': selectIndex === index}]"
+				:id="'provice' + index"
 				v-for="(provice, index) in list"
 				:key="index"
-				@click="selectProvice(uuid)">
+				@click="selectProvice(index)">
 				{{provice.territoryName}}
 			</view>
-    </view>
+		</scroll-view>
     <view class="right">
       <view class="right-list" v-if="list[selectIndex]">
 				<view
 					class="right-item"
-					v-for="(item, index) in list[selectIndex].subs"
+					v-for="(item, index) in list[selectIndex].nextTerritory"
 					:key="index"
 					@click="selectArea(item)">
-					{{item.name}}
+					{{item.territoryName}}
 				</view>
 			</view>
     </view>
@@ -32,6 +33,7 @@ export default {
     return {
 			list: [],
 			selectIndex: 0,
+			scrollView: 'provice19'
 		};
 	},
 
@@ -45,12 +47,15 @@ export default {
 				success: res => {
 					console.log('res', res)
 					this.list = res
+					this.selectIndex = 19
+					this.scrollView = 'provice19'
 				}
 			})
 		},
 
 		selectProvice(index) {
 			this.selectIndex = index
+			this.scrollView = 'provice' + index
 		},
 
 		selectArea(data) {
