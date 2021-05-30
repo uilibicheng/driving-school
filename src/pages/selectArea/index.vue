@@ -64,7 +64,7 @@ export default {
 
 		selectArea(data, provice) {
 			if (this.type) {
-				uni.navigateTo({
+				uni.redirectTo({
 					url: `/pages/addCourse/index?city=${data.territoryName}&province=${provice}`
 				})
 			} else {

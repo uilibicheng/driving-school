@@ -1,11 +1,21 @@
 <template>
-  <view>
-    添加课程
+  <view class="index">
+    <HeaderSearch :areaData="areaData" />
+
+    <CourseList :courseData="courseData" buttonText="添加课程" :buttonClick="addCourse" />
   </view>
 </template>
 
 <script>
+import HeaderSearch from '@/components/common/headerSearch'
+import CourseList from '@/components/common/courseList'
+
 export default {
+  components: {
+    HeaderSearch,
+    CourseList,
+	},
+
   data() {
     return {
       queryParams: {
@@ -13,13 +23,111 @@ export default {
         page: 1,
         courseCity: '',
         courseProvince: '',
-      }
+      },
+      totalPage: 10,
+      areaData: {},
+      courseData: {},
     }
   },
 
   onLoad(options) {
+    this.areaData.territoryName = options.city
     this.queryParams.courseCity = options.city
     this.queryParams.courseProvince = options.province
-  }
+
+    this.getCourseGroup()
+  },
+
+  methods: {
+    getCourseGroup111() {
+      let list = [
+        {
+          "courseCity": "深圳市",
+          "courseIntro": "课程简介",
+          "courseName": "课程名称",
+          "coursePrice": 124,
+          "courseProvince": "广东省",
+          "courseSite": "华南城",
+          "courseThumbUrl": "string",
+          "courseVideoUrl": "string",
+          "createBy": "创建人",
+          "createTime": "2021-05-24T13:58:18.331Z",
+          "delFlag": "0",
+          "id": "123",
+          "mapId": "333",
+          "selectSatus": true,
+          "updateBy": "更信任",
+          "updateTime": "2021-05-24T13:58:18.331Z",
+          "videoId": "345"
+        },
+        {
+          "courseCity": "深圳市",
+          "courseIntro": "课程简介",
+          "courseName": "课程名称",
+          "coursePrice": 124,
+          "courseProvince": "广东省",
+          "courseSite": "华南城",
+          "courseThumbUrl": "string",
+          "courseVideoUrl": "string",
+          "createBy": "创建人",
+          "createTime": "2021-05-24T13:58:18.331Z",
+          "delFlag": "0",
+          "id": "123",
+          "mapId": "333",
+          "selectSatus": true,
+          "updateBy": "更信任",
+          "updateTime": "2021-05-24T13:58:18.331Z",
+          "videoId": "345"
+        },
+      ]
+      let data = list.reduce((result, item) => {
+        if (result[item.courseSite]) {
+          result[item.courseSite].push(item)
+        } else {
+          result[item.courseSite] = [item]
+        }
+        return result
+      }, {})
+      this.courseData = Object.assign({}, this.courseData, data)
+      console.log('courseData', this.courseData)
+		},
+
+    getCourseGroup() {
+			let data = {
+				// cityName: this.areaData.name,
+				page: this.page,
+        limit: this.limit,
+        sidx: 'courseSite',
+        order: 'desc',
+        userId: '1'
+			}
+      this.$http.course.getCourseGroup({
+				data,
+        success: (res) => {
+          this.totalPage = res.pages;
+					let data = res.records.reduce((result, item) => {
+						if (result[item.place]) {
+							result[item.place].push(item)
+						} else {
+							result[item.place] = [item]
+						}
+						return result
+					}, {})
+          this.courseData = Object.assign({}, this.courseData, data)
+        },
+      });
+		},
+
+    addCourse(data) {
+      console.log('addCourse', data)
+    }
+  },
+
+  onReachBottom(e) {
+    if (this.queryParams.page < this.totalPage) {
+      this.page = this.page + 1;
+      this.getCourseGroup();
+    }
+  },
 }
 </script>

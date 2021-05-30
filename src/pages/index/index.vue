@@ -11,39 +11,7 @@
         </view>
       </view>
     </view>
-
-    <view class="content">
-      <view class="area-item" v-for="(place, placeIndex) in Object.keys(placeData)" :key="placeIndex">
-        <view class="title">{{place}}</view>
-        <view class="exam-item" v-for="(item, index) in placeData[place]" :key="index">
-          <view class="image-wrap" @click="goToDetail(item.id)">
-            <view class="image-info">
-              <view class="image-info-title">{{item.courseName}}</view>
-              <view>{{item.courseIntro}}</view>
-              <view class="image-info-line"></view>
-            </view>
-            <image :src="item.courseThumbUrl" mode="aspectFit" />
-          </view>
-          <view class="exam-item-right">
-            <view class="exam-item-right-title" @click="goToDetail(item.id)">xxx考场观路</view>
-            <view class="right-bottom-wrap">
-              <view @click="goToDetail(item.id)">
-                <view class="price">
-                  <text class="symbol">￥</text>{{item.coursePrice}}
-                </view>
-                <view class="time">
-                  <image src="@/static/home/watch.png" />99人观看
-                </view>
-              </view>
-              <view class="right-btn" @click="sendToStudent(item)">
-                发给学员
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-      <view class="footer-tip">已经到底喽～</view>
-    </view>
+    <CourseList :courseData="courseData" buttonText="发给学员" :buttonClick="sendToStudent" />
 
     <BottomBar activeType="home" />
   </view>
@@ -52,6 +20,7 @@
 <script>
 import uniSearchBar from "../../components/uni-search-bar/uni-search-bar";
 import HeaderSearch from '@/components/common/headerSearch'
+import CourseList from '@/components/common/courseList'
 import BottomBar from '@/components/common/bottomBar'
 import localM from "@/utils/common/local";
 import common from '@/utils/common'
@@ -61,13 +30,14 @@ export default {
   components: {
     uniSearchBar,
     BottomBar,
-    HeaderSearch
+    HeaderSearch,
+    CourseList,
 	},
 
   data() {
     return {
 			areaData: {},
-			placeData: {},
+			courseData: {},
       page: 1,
       limit: 20,
       totalPage: 0,
@@ -133,81 +103,6 @@ export default {
 	},
 
   methods: {
-    // getCourseList() {
-    //   let list = [
-    //     {
-    //       "courseCity": "深圳市",
-    //       "courseIntro": "课程简介",
-    //       "courseName": "课程名称",
-    //       "coursePrice": 124,
-    //       "courseProvince": "广东省",
-    //       "courseSite": "华南城",
-    //       "courseThumbUrl": "string",
-    //       "courseVideoUrl": "string",
-    //       "createBy": "创建人",
-    //       "createTime": "2021-05-24T13:58:18.331Z",
-    //       "delFlag": "0",
-    //       "id": "123",
-    //       "mapId": "333",
-    //       "selectSatus": true,
-    //       "updateBy": "更信任",
-    //       "updateTime": "2021-05-24T13:58:18.331Z",
-    //       "videoId": "345"
-    //     },
-    //     {
-    //       "courseCity": "深圳市",
-    //       "courseIntro": "课程简介",
-    //       "courseName": "课程名称",
-    //       "coursePrice": 124,
-    //       "courseProvince": "广东省",
-    //       "courseSite": "华南城",
-    //       "courseThumbUrl": "string",
-    //       "courseVideoUrl": "string",
-    //       "createBy": "创建人",
-    //       "createTime": "2021-05-24T13:58:18.331Z",
-    //       "delFlag": "0",
-    //       "id": "123",
-    //       "mapId": "333",
-    //       "selectSatus": true,
-    //       "updateBy": "更信任",
-    //       "updateTime": "2021-05-24T13:58:18.331Z",
-    //       "videoId": "345"
-    //     },
-    //   ]
-    //   let data = list.reduce((result, item) => {
-    //     if (result[item.courseSite]) {
-    //       result[item.courseSite].push(item)
-    //     } else {
-    //       result[item.courseSite] = [item]
-    //     }
-    //     return result
-    //   }, {})
-    //   this.placeData = Object.assign({}, this.placeData, data)
-    //   console.log('placeData', this.placeData)
-		// 	// let data = {
-		// 	// 	// cityName: this.areaData.name,
-		// 	// 	page: this.page,
-    //   //   limit: this.limit,
-    //   //   sidx: 'courseSite',
-    //   //   order: 'desc',
-    //   //   userId: '1234234234'
-		// 	// }
-    //   // this.$http.data.getCourseList({
-		// 	// 	data,
-    //   //   success: (res) => {
-    //   //     this.totalPage = res.pages;
-		// 	// 		let data = res.records.reduce((result, item) => {
-		// 	// 			if (result[item.place]) {
-		// 	// 				result[item.place].push(item)
-		// 	// 			} else {
-		// 	// 				result[item.place] = [item]
-		// 	// 			}
-		// 	// 			return result
-		// 	// 		}, {})
-    //   //     this.placeData = Object.assign({}, this.placeData, data)
-    //   //   },
-    //   // });
-		// },
 
     getCourseList() {
 			let data = {
@@ -235,8 +130,34 @@ export default {
       });
 		},
 
+    // getCourseList() {
+		// 	let data = {
+		// 		// cityName: this.areaData.name,
+		// 		page: this.page,
+    //     limit: this.limit,
+    //     sidx: 'courseSite',
+    //     order: 'desc',
+    //     userId: '1'
+		// 	}
+    //   this.$http.course.getCourseList({
+		// 		data,
+    //     success: (res) => {
+    //       this.totalPage = res.pages;
+		// 			let data = res.records.reduce((result, item) => {
+		// 				if (result[item.place]) {
+		// 					result[item.place].push(item)
+		// 				} else {
+		// 					result[item.place] = [item]
+		// 				}
+		// 				return result
+		// 			}, {})
+    //       this.courseData = Object.assign({}, this.courseData, data)
+    //     },
+    //   });
+		// },
+
     sendToStudent(data) {
-      console.log('data', data)
+      console.log('sendToStudent', data)
     },
 		
 		goToDetail(id) {
@@ -261,7 +182,7 @@ export default {
 
   onPullDownRefresh() {
     this.page = 1;
-    this.placeData = {};
+    this.courseData = {};
     this.getCourseList();
   },
 };

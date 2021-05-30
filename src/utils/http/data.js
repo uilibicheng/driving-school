@@ -2,11 +2,6 @@ import $http from './request'
 import constants from '../../config/constants'
 
 export default {
-  getCourseList(opts) {
-    opts.url = `/video/courseinfo/courseList/{userId}`
-    $http.post(opts)
-  },
-
   getVideoById(opts) {
     opts.url = '/api/video/queryById'
     $http.post(opts)

@@ -33,7 +33,8 @@
 		{
 			"path": "pages/addCourse/index",
 			"style": {
-				"navigationBarTitleText": "添加课程"
+				"navigationBarTitleText": "添加课程",
+				"onReachBottomDistance": 60
 			}
 		},
 		{
