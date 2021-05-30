@@ -1,7 +1,7 @@
 import toast from '../common/toast'
 import localM from '../common/local' // 存取缓存
 import common from '../common'
-import constants, {LOCAL_KEY} from '../../config/constants' //常量
+import constants, {LOCAL_KEY} from '@/config/constants' //常量
 const errorMessage = '服务繁忙，稍后再试'
 const baseUrl = constants.BASE_URL
 
@@ -19,15 +19,15 @@ class SuperClass {
     }
 
     return new Promise(function(resolve, reject) {
-      opts.header = {
-        // "Content-Type": "application/json;charset=utf-8",
-        "X-Access-Token": _token,
-      }
+      // opts.header = {
+      //   // "Content-Type": "application/json;charset=utf-8",
+      //   "X-Access-Token": _token,
+      // }
 
-      opts.header = {
-        "Content-Type": "application/json;charset=utf-8",
-        "X-Access-Token": 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuSWQiOiJvSUVDUDVZVnZpR3RCVjFzajZUOFJfYXJlaVRVIiwiZXhwIjoxNjE2MDUwNjkxfQ.CQoTOZz-86kwgmbxDrWTvQ7WUfkPcWzd-vac4bhfkSU',
-      }
+      // opts.header = {
+      //   "Content-Type": "application/json;charset=utf-8",
+      //   "X-Access-Token": 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuSWQiOiJvSUVDUDVZVnZpR3RCVjFzajZUOFJfYXJlaVRVIiwiZXhwIjoxNjE2MDUwNjkxfQ.CQoTOZz-86kwgmbxDrWTvQ7WUfkPcWzd-vac4bhfkSU',
+      // }
 
       uni.request({
         url: baseUrl + opts.url,
@@ -41,7 +41,7 @@ class SuperClass {
           console.log(23333, data)
           if (data.code == 200) { // 成功
             resolve(data)
-          } else if (data.code === 401) { // token 失效或未登录
+          } else if (data.status === 501) { // token 失效或未登录
             // localM.remove(LOCAL_KEY.TOKEN)
             // localM.remove(LOCAL_KEY.USER)
             // 获取当前页面栈，登录后进行跳转
@@ -71,6 +71,7 @@ class SuperClass {
           }
         },
         fail: res => {
+          console.log('fail', res)
           reject(res.data)
           toast(res.data && res.data.message || errorMessage)
         },
