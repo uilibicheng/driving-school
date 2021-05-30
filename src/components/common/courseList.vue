@@ -23,7 +23,7 @@
               </view>
             </view>
             <view class="right-btn" @click="handleClick(item)">
-              {{buttonText}}
+              {{!item.selectSatus ? buttonText : disableText}}
             </view>
           </view>
         </view>
@@ -43,6 +43,10 @@ export default {
     buttonText: {
       type: String,
       default: '',
+    },
+    disableText: {
+      type: String,
+      default: ''
     },
     buttonClick: {
       type: Function,

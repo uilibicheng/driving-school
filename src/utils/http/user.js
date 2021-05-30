@@ -3,16 +3,12 @@ import constants from '../../config/constants'
 
 export default {
   getCurrentUser(opts) {
-    opts.url = `/api/user/info/${constants.APPID}`
-    opts.header = {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
+    opts.url = `/video/userInfo/info/${opts.data.uuid}`
     $http.post(opts)
   },
 
   login(opts) {
-    opts.url = `/login/${constants.APPID}`
-    opts.method = 'POST'
+    opts.url = `/login`
     $http.post(opts)
   },
 }

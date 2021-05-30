@@ -10,21 +10,26 @@
 </template>
 
 <script>
-import localM from "@/utils/common/local";
-import { LOCAL_KEY } from "@/config/constants";
-
 export default {
   props: {
     areaData: {
       type: Object,
       default: {}
+    },
+    type: {
+      type: String,
+      default: '',
     }
   },
 
   methods: {
     goToSelect() {
+      let url = '/pages/selectArea/index'
+      if (this.type) {
+        url = `${url}?type=${this.type}`
+      }
       uni.navigateTo({
-        url: "/pages/selectArea/index",
+        url,
       })
     },
   },

@@ -1,14 +1,16 @@
 <template>
   <view class="index">
-    <HeaderSearch :areaData="areaData" />
+    <HeaderSearch :areaData="areaData" type="addCourse" />
 
-    <CourseList :courseData="courseData" buttonText="添加课程" :buttonClick="addCourse" />
+    <CourseList :courseData="courseData" buttonText="添加课程" disableText="已添加" :buttonClick="handleAdd" />
   </view>
 </template>
 
 <script>
 import HeaderSearch from '@/components/common/headerSearch'
 import CourseList from '@/components/common/courseList'
+import localM from '@/utils/common/local'
+import {LOCAL_KEY} from '@/config/constants' //常量
 
 export default {
   components: {
@@ -94,32 +96,38 @@ export default {
 
     getCourseGroup() {
 			let data = {
-				// cityName: this.areaData.name,
-				page: this.page,
-        limit: this.limit,
         sidx: 'courseSite',
         order: 'desc',
-        userId: '1'
+        ...this.queryParams,
 			}
       this.$http.course.getCourseGroup({
 				data,
         success: (res) => {
           this.totalPage = res.pages;
-					let data = res.records.reduce((result, item) => {
-						if (result[item.place]) {
-							result[item.place].push(item)
-						} else {
-							result[item.place] = [item]
-						}
-						return result
-					}, {})
+					let data = res
           this.courseData = Object.assign({}, this.courseData, data)
         },
       });
 		},
 
-    addCourse(data) {
-      console.log('addCourse', data)
+    handleAdd(item) {
+      console.log('addCourse', item)
+      if (item.selectSatus) return
+      let data = {
+        courseId: item.id,
+        roleCode: localM.get(LOCAL_KEY.USER).roleCode || ''
+      }
+      this.$http.course.addCourse({
+        data,
+        success: res => {
+          console.log('res', res)
+          this.$toast('添加成功')
+        }
+      })
+    },
+
+    addCourse() {
+      
     }
   },
 

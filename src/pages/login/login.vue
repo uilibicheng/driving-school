@@ -17,7 +17,6 @@ export default {
     if (option.url) {
       this.navigateUrl = JSON.parse(decodeURIComponent(options.url));
     }
-    this.login(code)
     var code = option.code;
     if (code) {
       this.login(code)
@@ -33,7 +32,7 @@ export default {
       let data = {
         code,
         // code: '041iball2nIM774Y5Ukl2hTsuL2ibalw',
-        appid: constants.APPID,
+        appId: constants.APPID,
         ...localM.get(LOCAL_KEY.LOGIN_PARAMS)
         // recommendId: localM.get(LOCAL_KEY.LOGIN_PARAMS),
         // roleCode: '', // 角色code 加盟商为league，一级代理为one_level_proxy，二级代理为two_level_proxy
@@ -42,11 +41,11 @@ export default {
         data,
         success: (res) => {
           console.log('login', res)
-          localM.set(LOCAL_KEY.TOKEN, res.result.token);
-          localM.set(LOCAL_KEY.USER, res.result.userInfo);
+          localM.set(LOCAL_KEY.TOKEN, res.token);
+          localM.set(LOCAL_KEY.USER, res.userInfo);
           if (this.navigateUrl) {
             if (constants.SWITCH_TAB_URL.includes(this.navigateUrl)) {
-              uni.switchTab({
+              uni.redirectTo({
                 url: this.navigateUrl,
               });
             } else {
@@ -55,7 +54,7 @@ export default {
               });
             }
           } else {
-            uni.switchTab({
+            uni.redirectTo({
               url: "/pages/index/index",
             });
           }

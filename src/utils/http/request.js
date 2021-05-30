@@ -12,22 +12,23 @@ class SuperClass {
 
   _rq(opts = paramNoNull(), token) {
     const data = Object.assign(opts.data || {}),
-    _token = localM.get(LOCAL_KEY.TOKEN) || ''
+    _token = localM.get(LOCAL_KEY.TOKEN) || '',
+    userInfo = localM.get(LOCAL_KEY.USER)
 
     if (!opts.hideLoading) {
       uni.showNavigationBarLoading()
     }
 
     return new Promise(function(resolve, reject) {
-      // opts.header = {
-      //   // "Content-Type": "application/json;charset=utf-8",
-      //   "X-Access-Token": _token,
-      // }
+      opts.header = {
+        // "Content-Type": "application/json;charset=utf-8",
+        "token": _token,
+        ...opts.header
+      }
 
-      // opts.header = {
-      //   "Content-Type": "application/json;charset=utf-8",
-      //   "X-Access-Token": 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuSWQiOiJvSUVDUDVZVnZpR3RCVjFzajZUOFJfYXJlaVRVIiwiZXhwIjoxNjE2MDUwNjkxfQ.CQoTOZz-86kwgmbxDrWTvQ7WUfkPcWzd-vac4bhfkSU',
-      // }
+      if (userInfo && userInfo.id) {
+        data.userId = userInfo.id
+      }
 
       uni.request({
         url: baseUrl + opts.url,

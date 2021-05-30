@@ -82,26 +82,24 @@ export default {
   },
 
   onLoad() {
-    // if (!localM.get(LOCAL_KEY.TOKEN)) {
-    //   return common.toManage("/pages/login/login")
-    // }
-    this.getCurrentUser()
-    // if (localM.get(LOCAL_KEY.USER)) {
-    //   this.user = localM.get(LOCAL_KEY.USER)
-    // } else {
-    //   this.getCurrentUser()
-    // }
-  },
-
-  onShow() {
     if (!localM.get(LOCAL_KEY.TOKEN)) {
       return common.toManage("/pages/login/login")
+    }
+    // this.getCurrentUser()
+    if (localM.get(LOCAL_KEY.USER)) {
+      this.user = localM.get(LOCAL_KEY.USER)
+      console.log(111, this.user)
+    } else {
+      this.getCurrentUser()
     }
   },
 
   methods: {
     getCurrentUser() {
       this.$http.user.getCurrentUser({
+        data: {
+          uuid: localM.get(LOCAL_KEY.USER).id
+        },
         success: res => {
           this.user = res
           localM.set(LOCAL_KEY.USER, res);

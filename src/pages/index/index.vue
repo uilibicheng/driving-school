@@ -22,9 +22,10 @@ import uniSearchBar from "../../components/uni-search-bar/uni-search-bar";
 import HeaderSearch from '@/components/common/headerSearch'
 import CourseList from '@/components/common/courseList'
 import BottomBar from '@/components/common/bottomBar'
+import Clipboard from 'clipboard'
 import localM from "@/utils/common/local";
 import common from '@/utils/common'
-import { LOCAL_KEY } from "@/config/constants";
+import constants, { LOCAL_KEY } from "@/config/constants";
 
 export default {
   components: {
@@ -102,6 +103,23 @@ export default {
     // }
 	},
 
+  onLoad() {
+    var clipboard = new Clipboard('.copy-btn', {
+      text: () => {
+        let url = `${constants.ROOT_URL}/#/pages/index/index`
+        let userInfo = localM.get(LOCAL_KEY.USER)
+        if (userInfo && userInfo.id) {
+          url = `${url}?recommendId=${userInfo.id}`
+        }
+        return url
+      }
+    })
+    clipboard.on('success', e => {
+      console.log('e', e)
+      this.$toast('复制成功，快把链接分享给学员吧')
+    })
+  },
+
   methods: {
 
     getCourseList() {
@@ -111,21 +129,23 @@ export default {
         limit: this.limit,
         sidx: 'courseSite',
         order: 'desc',
-        userId: '1234234234'
+        parentId: 2
 			}
-      this.$http.data.getCourseList({
+      this.$http.course.getCourseList({
 				data,
         success: (res) => {
           this.totalPage = res.pages;
-					let data = res.records.reduce((result, item) => {
-						if (result[item.place]) {
-							result[item.place].push(item)
-						} else {
-							result[item.place] = [item]
-						}
-						return result
-					}, {})
-          this.placeData = Object.assign({}, this.placeData, data)
+          console.log('res', res)
+          let data = res
+					// let data = res.records.reduce((result, item) => {
+					// 	if (result[item.place]) {
+					// 		result[item.place].push(item)
+					// 	} else {
+					// 		result[item.place] = [item]
+					// 	}
+					// 	return result
+					// }, {})
+          this.courseData = Object.assign({}, this.courseData, data)
         },
       });
 		},
@@ -320,6 +340,8 @@ export default {
             .image-info-title {
               font-size: 32rpx;
               margin-bottom: 15rpx;
+            }
+            .image-info-item {
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
