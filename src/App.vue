@@ -1,15 +1,32 @@
 <script>
-	export default {
-		onLaunch: function() {
-			console.log('App Launch')
-		},
-		onShow: function() {
-			console.log('App Show')
-		},
-		onHide: function() {
-			console.log('App Hide')
+import common from '@/utils/common'
+import localM from "@/utils/common/local";
+import { LOCAL_KEY } from "@/config/constants";
+
+export default {
+	onLaunch: function(options) {
+		console.log('App Launch', options)
+		// if (options.path !== 'pages/login/login') {
+		// 	if (!localM.get(LOCAL_KEY.TOKEN)) {
+		// 		return common.toManage("/pages/login/login")
+		// 	}
+		// }
+		let params = {
+			recommendId: options.query.recommendId || '',
+			roleCode: options.query.roleCode || '',
 		}
+		localM.set(LOCAL_KEY.LOGIN_PARAMS, params);
+	},
+	onLoad: function(options) {
+		console.log('App onLoad', options)
+	},
+	onShow: function() {
+		console.log('App Show')
+	},
+	onHide: function() {
+		console.log('App Hide')
 	}
+}
 </script>
 
 <style>

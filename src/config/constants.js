@@ -11,8 +11,8 @@ export default {
   APPID: isDev ? DEV_APPID : PRD_APPID,
   ROOT_URL: isDev ? DEV_ROOT_URL : PRD_ROOT_URL,
   SWITCH_TAB_URL: [
-    '/pages/index/index',
-    '/pages/mine/index',
+    // '/pages/index/index',
+    // '/pages/mine/index',
   ]
 }
 
@@ -20,4 +20,5 @@ export const LOCAL_KEY = {
   TOKEN: 'token',
   USER: 'user',
   AREA: 'area',
+  LOGIN_PARAMS: 'loginParams'
 }
