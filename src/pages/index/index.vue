@@ -27,7 +27,7 @@ export default {
     // if (!localM.get(LOCAL_KEY.TOKEN)) {
     //   return common.toManage("/pages/login/login")
     // }
-    this.userInfo = localM.get(LOCAL_KEY.USER)
+    this.userInfo = localM.get(LOCAL_KEY.USER) || {}
     console.log('user', this.userInfo)
 	},
 }
