@@ -1,6 +1,6 @@
 <template>
   <view class="detail">
-    <video class="video-content" :src="detailInfo.videoUrl" />
+    <video class="video-content" :src="detailInfo.videoInfoVO && detailInfo.videoInfoVO.videoUrl" />
     <view class="tab">
       <view class="tab-item active">简介</view>
       <!-- <view class="tab-item">线路图</view> -->
@@ -12,9 +12,9 @@
       </view> -->
       <view class="view-desc">
         <!-- <view class="desc-title">本合集包括以上所有视频内容</view> -->
-        <view class="desc-num">{{detailInfo.playNumber}}次播放</view>
+        <view class="desc-num">{{detailInfo.videoInfoVO ? detailInfo.videoInfoVO.videoPlayCount : 0}}次播放</view>
         <view class="desc-price">
-          <text class="desc-symbol">￥</text>{{detailInfo.price}}
+          <text class="desc-symbol">￥</text>{{detailInfo.coursePrice}}
           <text class="desc-tip">付款后永久有效</text>
         </view>
       </view>
@@ -27,7 +27,8 @@
     <!-- <view class="line" v-if="false">
       <view class="line-item" v-for="item in 4">河源铺前2.3.5号线（自动挡）合集2021年新规</view>
     </view> -->
-		<view class="buy-btn" v-if="!(detailInfo.map && detailInfo.map.isBuyed)" @click="buyVideo">点击购买课程</view>
+		<view class="buy-btn" v-if="userInfo.roleCode" @click="sendToStudent">发给学员</view>
+		<view class="buy-btn" v-else @click="buyVideo">点击购买课程</view>
   </view>
 </template>
 
@@ -40,10 +41,12 @@ export default {
 		return {
 			detailInfo: {},
       id: '',
+      userInfo: {}
 		}
 	},
 
   onLoad(option) {
+    this.userInfo = localM.get(LOCAL_KEY.USER)
 		if (option.id) {
       this.id = option.id
 			this.getVideoById()
@@ -57,16 +60,24 @@ export default {
   methods: {
 		getVideoById() {
 			let data = {
-				id: this.id,
+				courseId: this.id,
 			}
-      this.$http.data.getVideoById({
+      this.$http.course.getCourseInfo({
 				data,
-        success: (res) => {
-					console.log('res', res)
-					this.detailInfo = res
+        success: (data) => {
+					console.log('data', data)
+          Object.keys(data)
+          if (Object.keys(data)[0]) {
+            this.detailInfo = data[Object.keys(data)[0]][0]
+            console.log('detailInfo', this.detailInfo)
+          }
         },
       });
 		},
+
+    sendToStudent() {
+      this.$toast('该功能开发中。。。')
+    },
 
     buyVideo() {
       if (typeof WeixinJSBridge === 'undefined') {
@@ -78,44 +89,58 @@ export default {
         return
       }
 
-      let data = {
-        userId: localM.get(LOCAL_KEY.USER) ? localM.get(LOCAL_KEY.USER).id : '',
-        videoId: this.detailInfo.id
+      const params = {
+        courseId: this.detailInfo.id,
+        price: String(this.detailInfo.coursePrice),
+        dealPrice: String(this.detailInfo.coursePrice),
+        recommendUserId: '',
+        token: localM.get(LOCAL_KEY.TOKEN)
       }
-      this.$http.data.buyVideo({
-        data,
-        success: result => {
-          this.$http.data.createOrder({
-            data: result,
-            success: res => {
-              WeixinJSBridge.invoke(
-                "getBrandWCPayRequest",
-                {
-                  appId: res.appId, //公众号名称，由商户传入
-                  timeStamp: res.timeStamp, //时间戳，自1970年以来的秒数
-                  nonceStr: res.nonceStr, //随机串
-                  package: res.packageValue,
-                  signType: res.signType, //微信签名方式：
-                  paySign: res.paySign //微信签名
-                },
-                function(res1) {
-                  if (res1.err_msg == "get_brand_wcpay_request:ok") {
-                    uni.showToast({
-                      title: "支付成功",
-                      duration: 3000
-                    });
-                    setTimeout(function() {
-                      this.getVideoById()
-                    }, 500);
-                  }
-                  // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+      this.wxPay(params)
+    },
+
+    wxPay(data) {
+      let that = this
+      this.$http.course.payCourse({
+        data: data,
+        success: res => {
+          //支付
+          try {
+            WeixinJSBridge.invoke(
+              "getBrandWCPayRequest",
+              {
+                appId: res.data.appId, //公众号名称，由商户传入
+                timeStamp: res.data.timeStamp, //时间戳，自1970年以来的秒数
+                nonceStr: res.data.nonceStr, //随机串
+                package: res.data.package,
+                signType: res.signType, //微信签名方式：
+                paySign: res.data.paySign //微信签名
+              },
+              function(res1) {
+                console.log('res1', res1)
+                if (res1.err_msg == "get_brand_wcpay_request:ok") {
+                  uni.showToast({
+                    title: "支付成功",
+                    duration: 3000
+                  });
+                  // setTimeout(function() {
+                  //   uni.redirectTo({
+                  //     url: "/pages/myWallet/myWallet"
+                  //   });
+                  // }, 3000);
                 }
-              );
-            }
-          })
+                // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+              }
+            );
+          } catch (err) {
+            this.$toast(JSON.stringify(err))
+          }
+        },
+        complete: () => {
+          this.unbind = true;
         }
-      })
-    }
+      });
+    },
 	},
 };
 </script>

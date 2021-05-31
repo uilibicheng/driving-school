@@ -1,8 +1,8 @@
 <template>
   <view class="index">
-    <HeaderSearch :areaData="areaData" type="addCourse" />
+    <HeaderSearch :areaData="areaData" type="addCourse" :isSelect="true" />
 
-    <CourseList :courseData="courseData" buttonText="添加课程" disableText="已添加" :buttonClick="handleAdd" />
+    <CourseList :courseData="courseData" buttonText="添加课程" disableText="移除" :buttonClick="handleClick" />
   </view>
 </template>
 
@@ -29,6 +29,7 @@ export default {
       totalPage: 10,
       areaData: {},
       courseData: {},
+      loading: false,
     }
   },
 
@@ -109,10 +110,22 @@ export default {
         },
       });
 		},
+    
+    handleClick(item) {
+      console.log(111, item.selectSatus)
+      if (!item.selectSatus) {
+        this.handleAdd(item)
+      } else {
+        this.handleRemove(item)
+      }
+    },
 
     handleAdd(item) {
-      console.log('addCourse', item)
-      if (item.selectSatus) return
+      if (this.loading) return
+      this.loading = true
+      if (item.selectSatus) {
+        return this.$toast('课程已添加')
+      }
       let data = {
         courseId: item.id,
         roleCode: localM.get(LOCAL_KEY.USER).roleCode || ''
@@ -120,8 +133,31 @@ export default {
       this.$http.course.addCourse({
         data,
         success: res => {
+          this.getCourseGroup()
           console.log('res', res)
           this.$toast('添加成功')
+        },
+        complete: () => {
+          this.loading = false
+        }
+      })
+    },
+
+    handleRemove(item) {
+      if (this.loading) return
+      this.loading = true
+      let data = {
+        courseId: item.id,
+      }
+      this.$http.course.removeCourse({
+        data,
+        success: res => {
+          this.getCourseGroup()
+          console.log('res', res)
+          this.$toast('移除成功成功')
+        },
+        complete: () => {
+          this.loading = false
         }
       })
     },

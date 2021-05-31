@@ -1,7 +1,7 @@
 <template>
-  <view class="header" @click="goToSelect">
+  <view class="header">
     <view class="search-wrap">
-      <view class="btn-icon">{{areaData.territoryName}}</view>
+      <view class="btn-icon" v-if="isSelect" @click="goToSelect">{{areaData.territoryName}}</view>
       <view class="line"></view>
       <image class="search-icon" src="@/static/home/icon-search.png">
       <input class="search-bar" type="text" placeholder="城市/考场" />
@@ -19,6 +19,10 @@ export default {
     type: {
       type: String,
       default: '',
+    },
+    isSelect: {
+      type: Boolean,
+      default: false
     }
   },
 

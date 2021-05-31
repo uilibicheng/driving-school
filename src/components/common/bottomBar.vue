@@ -31,27 +31,27 @@ export default {
     click(type) {
       switch (type) {
         case 'home':
-          uni.navigateTo({
+          uni.redirectTo({
             url: '/',
           })
           break
         case 'tool':
-          uni.navigateTo({
+          uni.redirectTo({
             url: '/pages/driverTool/index',
           })
           break
         case 'pertol':
-          uni.navigateTo({
+          uni.redirectTo({
             url: '/pages/pertolStation/index',
           })
           break
         case 'user':
-          uni.navigateTo({
+          uni.redirectTo({
             url: '/pages/mine/index',
           })
           break
         default:
-          uni.navigateTo({
+          uni.redirectTo({
             url: '/',
           })
       }

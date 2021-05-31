@@ -19,11 +19,14 @@
                 <text class="symbol">￥</text>{{item.coursePrice}}
               </view>
               <view class="time">
-                <image src="@/static/home/watch.png" />99人观看
+                <image src="@/static/home/watch.png" />{{item.videoInfoVO ? item.videoInfoVO.videoPlayCount : 0}}人观看
               </view>
             </view>
-            <view class="right-btn" @click="handleClick(item)">
+            <view class="right-btn" @click="handleClick(item)" v-if="disableText">
               {{!item.selectSatus ? buttonText : disableText}}
+            </view>
+            <view class="right-btn" @click="handleClick(item)" v-else>
+              {{buttonText}}
             </view>
           </view>
         </view>
@@ -62,7 +65,6 @@ export default {
 
   methods: {
     handleClick(data) {
-      console.log('data', data)
       this.buttonClick && this.buttonClick(data)
     },
     goToDetail(id) {

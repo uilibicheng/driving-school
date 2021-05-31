@@ -14,10 +14,30 @@ export default {
     $http.post(opts)
   },
 
+  // 查询课程详情
+  getCourseInfo(opts) {
+    opts.url = `/video/courseinfo/courseInfo`
+    $http.post(opts)
+  },
+
   // 添加课程
   addCourse(opts) {
     opts.url = `/video/courseinfo/addCourse`
     opts.method = 'POST'
+    $http.post(opts)
+  },
+
+  // 课程支付
+  payCourse(opts) {
+    opts.url = `/video/pay/coursePay`
+    opts.method = 'POST'
+    $http.post(opts)
+  },
+
+  // 移除课程
+  removeCourse(opts) {
+    opts.url = `/video/courseinfo/removeCourse`
+    opts.method = 'DELETE'
     $http.post(opts)
   },
 }
