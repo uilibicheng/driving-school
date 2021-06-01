@@ -6,8 +6,8 @@
       </view>
       <view class="header-info-wrap">
         <view class="info-top">
-          <image class="avatar" />
-          <view>宝小白</view>
+          <image class="avatar" :src="user.avatarUrl" />
+          <view>{{user.nickName}}</view>
         </view>
         <view class="info-bottom">
           <view class="tool-item">
@@ -82,10 +82,7 @@ export default {
   },
 
   onLoad() {
-    if (!localM.get(LOCAL_KEY.TOKEN)) {
-      return common.toManage("/pages/login/login")
-    }
-    // this.getCurrentUser()
+    this.getCurrentUser()
     if (localM.get(LOCAL_KEY.USER)) {
       this.user = localM.get(LOCAL_KEY.USER)
       console.log(111, this.user)
@@ -98,9 +95,10 @@ export default {
     getCurrentUser() {
       this.$http.user.getCurrentUser({
         data: {
-          uuid: localM.get(LOCAL_KEY.USER).id
+          unionid: localM.get(LOCAL_KEY.USER).unionid || ''
         },
         success: res => {
+          console.log('res', res)
           this.user = res
           localM.set(LOCAL_KEY.USER, res);
         }

@@ -3,7 +3,7 @@ import constants from '../../config/constants'
 
 export default {
   getCurrentUser(opts) {
-    opts.url = `/video/userInfo/info/${opts.data.uuid}`
+    opts.url = `/video/userInfo/${opts.data.unionid}`
     $http.post(opts)
   },
 
