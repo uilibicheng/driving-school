@@ -39,7 +39,6 @@ export default {
 	},
 
   onLoad(options) {
-		console.log('options', options)
 		this.type = options.type
 		this.getAllArea()
 	},
@@ -48,7 +47,6 @@ export default {
 		getAllArea() {
 			this.$http.area.getAllArea({
 				success: res => {
-					console.log('res', res)
 					this.list = res
 					this.$nextTick(() => {
 						this.selectProvice(19)

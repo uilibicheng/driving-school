@@ -23,7 +23,6 @@ import CourseList from '@/components/common/courseList'
 import BottomBar from '@/components/common/bottomBar'
 import Clipboard from 'clipboard'
 import localM from "@/utils/common/local";
-import common from '@/utils/common'
 import constants, { LOCAL_KEY } from "@/config/constants";
 
 export default {
@@ -33,13 +32,16 @@ export default {
     CourseList,
 	},
 
+  props: {
+    courseData: {
+      type: Object,
+      default: {},
+    },
+  },
+
   data() {
     return {
 			areaData: {},
-			courseData: {},
-      page: 1,
-      limit: 20,
-      totalPage: 0,
       navItems: [
         {
           id: 1,
@@ -82,16 +84,8 @@ export default {
     };
 	},
 
-	filters: {
-		filterTime(val) {
-			return common.getDateDiff(Date.parse(val))
-		}
-	},
-
   mounted() {
     this.userInfo = localM.get(LOCAL_KEY.USER)
-    console.log(3333, this.userInfo)
-    this.getCourseList()
     this.$nextTick(() => {
       var clipboard = new Clipboard('.copy-btn', {
         text: () => {
@@ -103,62 +97,15 @@ export default {
         }
       })
       clipboard.on('success', e => {
-        console.log('e', e)
         this.$toast('复制成功，快把链接分享给学员吧')
       })
     })
   },
 
   methods: {
-    getCourseList() {
-			let data = {
-				// cityName: this.areaData.name,
-				page: this.page,
-        limit: this.limit,
-        sidx: 'courseSite',
-        order: 'desc',
-        parentId: this.userInfo.pid || 0
-			}
-      this.$http.course.getCourseList({
-				data,
-        success: (res) => {
-          this.totalPage = res.pages;
-          console.log('res', res)
-          let data = res
-          this.courseData = Object.assign({}, this.courseData, data)
-        },
-      });
-		},
-  
     sendToStudent(data) {
-      console.log('sendToStudent', data)
+      this.$toast('该功能开发中...')
     },
-		
-		goToDetail(id) {
-			// uni.navigateTo({
-      //   url: `/pages/videoDetail/index?id=${id}`,
-      // })
-      this.wxPay()
-		},
-
-    goToSelect() {
-      uni.navigateTo({
-        url: "/pages/selectArea/index",
-      })
-    },
-  },
-
-  onReachBottom(e) {
-    if (this.page < this.totalPage) {
-      this.page = this.page + 1;
-      this.getCourseList();
-    }
-  },
-
-  onPullDownRefresh() {
-    this.page = 1;
-    this.courseData = {};
-    this.getCourseList();
   },
 };
 </script>

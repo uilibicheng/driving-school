@@ -85,7 +85,6 @@ export default {
     this.getCurrentUser()
     if (localM.get(LOCAL_KEY.USER)) {
       this.user = localM.get(LOCAL_KEY.USER)
-      console.log(111, this.user)
     } else {
       this.getCurrentUser()
     }

@@ -61,7 +61,7 @@
 			"path": "pages/driverTool/index",
 			"style": {
 				"navigationStyle": "custom",
-				"navigationBarTitleText": "学车工具"
+				"navigationBarTitleText": "教练工具"
 			}
 		},
 		{

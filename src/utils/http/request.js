@@ -38,7 +38,6 @@ class SuperClass {
         responseType: 'text',
         success: res => {
           const {data} = res
-          console.log('request', data)
           if (data.code == 200) { // 成功
             resolve(data)
           } else if (data.status === 501) { // token 失效或未登录
@@ -71,7 +70,6 @@ class SuperClass {
           }
         },
         fail: res => {
-          console.log('fail', res)
           reject(res.data)
           toast(res.data && res.data.message || errorMessage)
         },
@@ -103,7 +101,6 @@ const decorator = Sup => class extends Sup { // 超类，实现多继承
     }
 
     const cb = await sendFun(opts)
-    console.log(2222, cb)
     if (!!cb) {
       (cb.code === 200) && opts.success && opts.success(cb.data)
     }

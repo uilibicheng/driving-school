@@ -65,11 +65,9 @@ export default {
       this.$http.course.getCourseInfo({
 				data,
         success: (data) => {
-					console.log('data', data)
           Object.keys(data)
           if (Object.keys(data)[0]) {
-            this.detailInfo = data[Object.keys(data)[0]][0]
-            console.log('detailInfo', this.detailInfo)
+            this.detailInfo = data[Object.keys(data)[0]] ? data[Object.keys(data)[0]][0] : {}
           }
         },
       });
@@ -100,7 +98,6 @@ export default {
     },
 
     wxPay(data) {
-      let that = this
       this.$http.course.payCourse({
         data: data,
         success: res => {
@@ -119,15 +116,11 @@ export default {
               function(res1) {
                 console.log('res1', res1)
                 if (res1.err_msg == "get_brand_wcpay_request:ok") {
+                  this.getVideoById()
                   uni.showToast({
                     title: "支付成功",
                     duration: 3000
-                  });
-                  // setTimeout(function() {
-                  //   uni.redirectTo({
-                  //     url: "/pages/myWallet/myWallet"
-                  //   });
-                  // }, 3000);
+                  })
                 }
                 // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
               }
@@ -136,9 +129,6 @@ export default {
             this.$toast(JSON.stringify(err))
           }
         },
-        complete: () => {
-          this.unbind = true;
-        }
       });
     },
 	},

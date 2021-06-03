@@ -2,8 +2,8 @@
   <view class="index">
     <HeaderSearch :areaData="areaData" />
 
-    <!-- <CourseList :courseData="courseData" buttonText="查看详情" :buttonClick="goToDetail" /> -->
-    <CourseList :courseData="courseData" buttonText="立即购买" :buttonClick="goToDetail" />
+    <CourseList :courseData="courseData" buttonText="查看详情" :buttonClick="goToDetail" />
+    <!-- <CourseList :courseData="courseData" buttonText="立即购买" :buttonClick="goToDetail" /> -->
 
     <BottomBar activeType="home" />
   </view>
@@ -26,65 +26,39 @@ export default {
     CourseList,
 	},
 
+  props: {
+    courseData: {
+      type: Object,
+      default: {},
+    },
+  },
+
   data() {
     return {
 			areaData: {},
-			courseData: {},
-      page: 1,
-      limit: 20,
-      totalPage: 0,
+      userInfo: {}
     };
 	},
 
-	filters: {
-		filterTime(val) {
-			return common.getDateDiff(Date.parse(val))
-		}
-	},
-
   mounted() {
-    console.log(33333)
-    this.getCourseList()
+    this.userInfo = localM.get(LOCAL_KEY.USER)
     this.$nextTick(() => {
       var clipboard = new Clipboard('.copy-btn', {
         text: () => {
           let url = `${constants.ROOT_URL}/#/pages/index/index`
-          let userInfo = localM.get(LOCAL_KEY.USER)
-          if (userInfo && userInfo.id) {
-            url = `${url}?recommendId=${userInfo.id}`
+          if (this.userInfo && this.userInfo.id) {
+            url = `${url}?recommendId=${this.userInfo.id}`
           }
           return url
         }
       })
       clipboard.on('success', e => {
-        console.log('e', e)
         this.$toast('复制成功，快把链接分享给学员吧')
       })
     })
   },
 
   methods: {
-
-    getCourseList() {
-			let data = {
-				// cityName: this.areaData.name,
-				page: this.page,
-        limit: this.limit,
-        sidx: 'courseSite',
-        order: 'desc',
-        parentId: 2
-			}
-      this.$http.course.getCourseList({
-				data,
-        success: (res) => {
-          this.totalPage = res.pages;
-          console.log('res', res)
-          let data = res
-          this.courseData = Object.assign({}, this.courseData, data)
-        },
-      });
-		},
-
     wxPay(data) {
       let that = this
       this.$http.course.payCourse({
@@ -130,11 +104,11 @@ export default {
       });
     },
 		
-		// goToDetail(id) {
-		// 	uni.navigateTo({
-    //     url: `/pages/videoDetail/index?id=${id}`,
-    //   })
-		// },
+		goToDetail(id) {
+			uni.navigateTo({
+        url: `/pages/videoDetail/index?id=${id}`,
+      })
+		},
 
     goToDetail(data) {
       console.log('data', data)
@@ -146,25 +120,6 @@ export default {
       }
       this.wxPay(params)
 		},
-
-    goToSelect() {
-      uni.navigateTo({
-        url: "/pages/selectArea/index",
-      })
-    },
-  },
-
-  onReachBottom(e) {
-    if (this.page < this.totalPage) {
-      this.page = this.page + 1;
-      this.getCourseList();
-    }
-  },
-
-  onPullDownRefresh() {
-    this.page = 1;
-    this.courseData = {};
-    this.getCourseList();
   },
 };
 </script>

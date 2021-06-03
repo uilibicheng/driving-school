@@ -92,7 +92,6 @@ export default {
         return result
       }, {})
       this.courseData = Object.assign({}, this.courseData, data)
-      console.log('courseData', this.courseData)
 		},
 
     getCourseGroup() {
@@ -112,7 +111,6 @@ export default {
 		},
     
     handleClick(item) {
-      console.log(111, item.selectSatus)
       if (!item.selectSatus) {
         this.handleAdd(item)
       } else {
@@ -134,7 +132,6 @@ export default {
         data,
         success: res => {
           this.getCourseGroup()
-          console.log('res', res)
           this.$toast('添加成功')
         },
         complete: () => {
@@ -153,7 +150,6 @@ export default {
         data,
         success: res => {
           this.getCourseGroup()
-          console.log('res', res)
           this.$toast('移除成功成功')
         },
         complete: () => {

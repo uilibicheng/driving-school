@@ -40,7 +40,7 @@ export default {
   },
 
   onLoad() {
-    this.getOrderList();
+    // this.getOrderList();
   },
 
   methods: {
@@ -68,7 +68,6 @@ export default {
   },
 
   onReachBottom(e) {
-    console.log(111, this.pageNo)
     if (this.pageNo < this.totalPage) {
       this.pageNo = this.pageNo + 1;
       this.getOrderList();
