@@ -27,7 +27,7 @@
     <!-- <view class="line" v-if="false">
       <view class="line-item" v-for="item in 4">河源铺前2.3.5号线（自动挡）合集2021年新规</view>
     </view> -->
-		<view class="buy-btn" v-if="userInfo.roleCode" @click="sendToStudent">发给学员</view>
+		<view class="buy-btn" v-if="!userInfo.roleCode" @click="sendToStudent">发给学员</view>
 		<view class="buy-btn" v-else @click="buyVideo">点击购买课程</view>
   </view>
 </template>
@@ -94,6 +94,7 @@ export default {
         recommendUserId: '',
         token: localM.get(LOCAL_KEY.TOKEN)
       }
+      console.log('params', params)
       this.wxPay(params)
     },
 
@@ -102,16 +103,17 @@ export default {
         data: data,
         success: res => {
           //支付
+          console.log('pay', res)
           try {
             WeixinJSBridge.invoke(
               "getBrandWCPayRequest",
               {
-                appId: res.data.appId, //公众号名称，由商户传入
-                timeStamp: res.data.timeStamp, //时间戳，自1970年以来的秒数
-                nonceStr: res.data.nonceStr, //随机串
-                package: res.data.package,
+                appId: res.appId, //公众号名称，由商户传入
+                timeStamp: res.timeStamp, //时间戳，自1970年以来的秒数
+                nonceStr: res.nonceStr, //随机串
+                package: res.package,
                 signType: res.signType, //微信签名方式：
-                paySign: res.data.paySign //微信签名
+                paySign: res.paySign //微信签名
               },
               function(res1) {
                 console.log('res1', res1)

@@ -110,16 +110,35 @@ export default {
       })
 		},
 
-    goToDetail(data) {
-      console.log('data', data)
-      const params = {
-        courseId: data.id,
-        price: String(data.coursePrice),
-        dealPrice: String(data.coursePrice),
-        recommendUserId: '',
-      }
-      this.wxPay(params)
-		},
+    // goToDetail(data) {
+    //   console.log('data', data)
+    //   const params = {
+    //     courseId: data.id,
+    //     price: String(data.coursePrice),
+    //     dealPrice: String(data.coursePrice),
+    //     recommendUserId: '',
+    //   }
+    //   this.wxPay(params)
+		// },
+
+    goToSelect() {
+      uni.navigateTo({
+        url: "/pages/selectArea/index",
+      })
+    },
+  },
+
+  onReachBottom(e) {
+    if (this.page < this.totalPage) {
+      this.page = this.page + 1;
+      this.getCourseList();
+    }
+  },
+
+  onPullDownRefresh() {
+    this.page = 1;
+    this.courseData = {};
+    this.getCourseList();
   },
 };
 </script>
