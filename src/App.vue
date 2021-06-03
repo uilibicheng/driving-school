@@ -6,11 +6,11 @@ import { LOCAL_KEY } from "@/config/constants";
 export default {
 	onLaunch: function(options) {
 		console.log('App Launch', options)
-		// if (options.path !== 'pages/login/login') {
-		// 	if (!localM.get(LOCAL_KEY.TOKEN)) {
-		// 		return common.toManage("/pages/login/login")
-		// 	}
-		// }
+		if (options.path !== 'pages/login/login') {
+			if (!localM.get(LOCAL_KEY.TOKEN)) {
+				return common.toManage("/pages/login/login")
+			}
+		}
 		let params = {
 			recommendId: options.query.recommendId || '',
 			roleCode: options.query.roleCode || '',

@@ -68,8 +68,8 @@
 <script>
 import bottomBar from '@/components/common/bottomBar'
 import localM from '@/utils/common/local'
-import common from '@/utils/common'
 import {LOCAL_KEY} from '@/config/constants'
+import common from '@/utils/common'
 
 export default {
   components: {
@@ -82,27 +82,11 @@ export default {
   },
 
   onLoad() {
-    this.getCurrentUser()
     if (localM.get(LOCAL_KEY.USER)) {
       this.user = localM.get(LOCAL_KEY.USER)
     } else {
-      this.getCurrentUser()
+      common.toManage("/pages/login/login")
     }
-  },
-
-  methods: {
-    getCurrentUser() {
-      this.$http.user.getCurrentUser({
-        data: {
-          unionid: localM.get(LOCAL_KEY.USER).unionid || ''
-        },
-        success: res => {
-          console.log('res', res)
-          this.user = res
-          localM.set(LOCAL_KEY.USER, res);
-        }
-      })
-    },
   },
 };
 </script>

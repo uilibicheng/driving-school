@@ -64,7 +64,7 @@ class SuperClass {
             //     })
             //   }, 1000);
             // }
-            // common.toManage("/pages/login/login")
+            common.toManage("/pages/login/login")
           } else { //其他不可预测为失败
             reject(data)
           }

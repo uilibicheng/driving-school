@@ -16,21 +16,21 @@
           <view>今日收益</view>
           <view class="bottom-item-price">
             <text class="yuan">￥</text>
-            100
+            0.00
           </view>
         </view>
         <view class="bottom-item">
           <view>累计收益</view>
           <view class="bottom-item-price">
             <text class="yuan">￥</text>
-            10000.00
+            0.00
           </view>
         </view>
         <view class="bottom-item">
           <view>累计提现</view>
           <view class="bottom-item-price">
             <text class="yuan">￥</text>
-            10087987
+            0.00
           </view>
         </view>
       </view>
@@ -39,15 +39,15 @@
     <view class="income-wrap">
       <view class="income-item">
         <view>直接推广订单</view>
-        <view class="item-num">121241</view>
+        <view class="item-num">0</view>
       </view>
       <view class="income-item">
         <view>下级推广订单</view>
-        <view class="item-num">121241</view>
+        <view class="item-num">0</view>
       </view>
       <view class="income-item">
         <view>下级代理</view>
-        <view><text class="item-num">1000</text>人</view>
+        <view><text class="item-num">0</text>人</view>
       </view>
     </view>
 
