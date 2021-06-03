@@ -37,7 +37,7 @@ export default {
   },
   created() {
     let user = localM.get(LOCAL_KEY.USER)
-    this.isShow = !user.roleCode
+    this.isShow = user.roleCode
   },
   methods: {
     click(type) {
