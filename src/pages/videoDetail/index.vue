@@ -1,15 +1,17 @@
 <template>
   <view class="detail">
     <video
+      id="courseVideo"
       class="video-content"
       :src="detailInfo.videoInfoVO && detailInfo.videoInfoVO.videoUrl"
       object-fit="cover"
       @play="playVideo" />
     <view class="tab">
-      <view class="tab-item active">简介</view>
-      <!-- <view class="tab-item">线路图</view> -->
+      <view :class="['tab-item', {active: tabIndex === 1}]" @click="() => {tabIndex = 1}">简介</view>
+      <view :class="['tab-item', {active: tabIndex === 2}]" @click="() => {tabIndex = 2}">进度</view>
+      <view :class="['tab-item', {active: tabIndex === 3}]" @click="() => {tabIndex = 3}">线路图</view>
     </view>
-    <view class="intro">
+    <view class="intro" v-if="tabIndex === 1">
       <view class="intro-title">{{detailInfo.name}}</view>
       <!-- <view class="video-list">
         <view class="list-item" v-for="item in 3">河源铺前科三2号线（自动挡）最新</view>
@@ -28,10 +30,16 @@
       </view> -->
       <!-- <view class="intro-desc">河源铺前科三考场，阿萨德咖啡机五色机房问了句法六维空间二分了我解放路卡玩具鳄六维空间额返利网科技返利网科技了外壳及来我家二弗兰克我</view> -->
     </view>
-    <!-- <view class="line" v-if="false">
-      <view class="line-item" v-for="item in 4">河源铺前2.3.5号线（自动挡）合集2021年新规</view>
-    </view> -->
-		<view class="buy-btn copy-btn" v-if="userInfo.roleCode">发给学员</view>
+    <view v-if="tabIndex === 2">
+      <view class="line" v-if="detailInfo.videoInfoVO && detailInfo.videoInfoVO.scheduleInfoVOList.length">
+        <view
+          class="line-item"
+          v-for="(item, index) in detailInfo.videoInfoVO.scheduleInfoVOList"
+          @click="skep(item.scheduleTime)"
+          :key="index">进度{{index + 1}}</view>
+      </view>
+    </view>
+		<view class="buy-btn copy-btn" v-if="userInfo.roleCode" @click="sendToStudent">发给学员</view>
 		<view class="buy-btn" v-else-if="!(detailInfo.videoInfoVO && detailInfo.videoInfoVO.payStatus)" @click="buyVideo">点击购买课程</view>
   </view>
 </template>
@@ -46,7 +54,9 @@ export default {
 		return {
 			detailInfo: {},
       id: '',
-      userInfo: {}
+      userInfo: {},
+      videoContext: null,
+      tabIndex: 1, 
 		}
 	},
 
@@ -67,6 +77,10 @@ export default {
             let url = `${constants.ROOT_URL}/#/pages/index/index`
             if (this.userInfo && this.userInfo.id) {
               url = `${url}?recommendId=${this.userInfo.id}`
+            }
+            if (this.userInfo && this.userInfo.roleCode) {
+              let symbol = url.includes('?') ? '&' : '?'
+              url = `${url}${symbol}roleCode=${this.userInfo.roleCode}`
             }
             return url
           }
@@ -95,7 +109,7 @@ export default {
           Object.keys(data)
           if (Object.keys(data)[0]) {
             this.detailInfo = data[Object.keys(data)[0]] ? data[Object.keys(data)[0]][0] : {}
-            console.log('detailInfo', this.detailInfo)
+            this.videoContext = uni.createVideoContext('courseVideo')
           }
         },
       });
@@ -108,7 +122,17 @@ export default {
 
     // 学员端功能
     playVideo() {
+      if (this.userInfo.roleCode) return
+      if (!(this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.payStatus)) {
+        this.$toast('该课程需要购买才能查看')
+        this.videoContext.pause()
+      }
+    },
 
+    skep(position) {
+      if (position) {
+        this.videoContext.seek(position)
+      }
     },
 
     buyVideo() {

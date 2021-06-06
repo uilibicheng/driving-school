@@ -76,6 +76,10 @@ export default {
           if (this.userInfo && this.userInfo.id) {
             url = `${url}?recommendId=${this.userInfo.id}`
           }
+          if (this.userInfo && this.userInfo.roleCode) {
+              let symbol = url.includes('?') ? '&' : '?'
+              url = `${url}${symbol}roleCode=${this.userInfo.roleCode}`
+            }
           return url
         }
       })

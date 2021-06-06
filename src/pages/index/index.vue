@@ -39,6 +39,7 @@ export default {
         limit: this.limit,
         sidx: 'courseSite',
         order: 'desc',
+        roleCode: this.userInfo.roleCode || '',
         parentId: this.userInfo.pid || 0
 			}
       this.$http.course.getCourseList({

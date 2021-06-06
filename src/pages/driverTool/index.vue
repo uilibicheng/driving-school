@@ -6,10 +6,10 @@
           <image class="item-avatar" src="" />
           <view class="item-desc">
             <view class="item-concat">
-              宝小白 <text class="info-phone">123123123123</text>
+              {{coachInfo.nickname}} <text class="info-phone">{{coachInfo.phone}}</text>
             </view>
             <view class="item-belong">
-              <image src="" />所属驾校
+              <image src="" />{{coachInfo.affiliation}}
             </view>
           </view>
           <view class="item-modify">
@@ -18,16 +18,16 @@
         </view>
         <view class="info-item">
           <view class="item-title">练车地址</view>
-          <view class="item-intro">龙华区xx街道</view>
+          <view class="item-intro">{{coachInfo.address}}</view>
         </view>
         <view class="info-item">
           <view class="item-title">个人简介</view>
-          <view class="item-intro">本人有多年的驾驶经验，是业界的资深教练，教学态度端正，驾驶技术精湛,</view>
+          <view class="item-intro">{{coachInfo.synopsis}}</view>
         </view>
         <view class="info-item">
           <view class="item-title">个性标签</view>
           <view class="item-intro">
-            <view class="label-item" v-for="(item, index) in labelList" :key="index">{{item}}</view>
+            <view class="label-item" v-for="(item, index) in coachInfo.labelArrays" :key="index">{{item}}</view>
           </view>
         </view>
       </view>
@@ -56,7 +56,7 @@
 
     <view class="divider"></view>
 
-    <swiper style="width:100%;height:160rpx" indicator-color="#FFF" indicator-active-color="#9391FD" indicator-dots="true"
+    <swiper v-if="bannerList.length" style="width:100%;height:160rpx" indicator-color="#FFF" indicator-active-color="#9391FD" indicator-dots="true"
 		 autoplay="true" interval="4000" circular="true">
 			<swiper-item v-for="(banner,index) in bannerList" :key="index">
 				<view>
@@ -71,6 +71,8 @@
 
 <script>
 import bottomBar from '@/components/common/bottomBar'
+import localM from '@/utils/common/local'
+import {LOCAL_KEY} from '@/config/constants'
 
 export default {
   components: {
@@ -78,12 +80,31 @@ export default {
   },
   data() {
     return {
-      labelList: ['脾气好', '合格率高', '拿证快', '效率高'],
-      bannerList: [{url: '342343'}, {url: '232525'}]
+      bannerList: [],
+      coachInfo: {}
     }
   },
 
+  onLoad() {
+    this.getCoachInfo()
+  },
+
   methods: {
+    getCoachInfo() {
+      let user = localM.get(LOCAL_KEY.USER) || {}
+      const data = {
+        userId: user.id || '',
+        userName: user.nickName || '',
+      }
+      this.$http.user.getCoachInfo({
+        data,
+        success: res => {
+          console.log('res', res)
+          this.coachInfo = res
+        }
+      })
+    },
+
     handleAddCourse() {
       uni.navigateTo({
         url: "/pages/selectArea/index?type=addCourse",
