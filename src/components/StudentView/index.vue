@@ -15,7 +15,6 @@ import CourseList from '@/components/common/courseList'
 import BottomBar from '@/components/common/bottomBar'
 import Clipboard from 'clipboard'
 import localM from "@/utils/common/local";
-import common from '@/utils/common'
 import constants, { LOCAL_KEY } from "@/config/constants";
 import jweixin from "@/static/js/jweixin-module.js";
 
@@ -104,9 +103,9 @@ export default {
       });
     },
 		
-		goToDetail(id) {
+		goToDetail(data) {
 			uni.navigateTo({
-        url: `/pages/videoDetail/index?id=${id}`,
+        url: `/pages/videoDetail/index?id=${data.id}`,
       })
 		},
 

@@ -40,4 +40,9 @@ export default {
     opts.method = 'DELETE'
     $http.post(opts)
   },
+
+  getOrderList(opts) {
+    opts.url = '/video/pay/coursePay'
+    $http.post(opts)
+  },
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CoachView  v-if="userInfo.roleCode" :courseData="courseData" />
+    <CoachView  v-if="userInfo && userInfo.roleCode" :courseData="courseData" />
     <StudentView v-else :courseData="courseData" />
   </div>
 </template>
@@ -22,7 +22,7 @@ export default {
       userInfo: {},
 			courseData: {},
       page: 1,
-      limit: 20,
+      limit: 200,
       totalPage: 0,
     }
   },

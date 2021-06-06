@@ -29,18 +29,21 @@
 </template>
 
 <script>
+import localM from '@/utils/common/local'
+import {LOCAL_KEY} from '@/config/constants'
+
 export default {
   data() {
     return {
       list: [],
       pageNo: 1,
-      pageSize: 20,
+      pageSize: 200,
       totalPage: 0,
     };
   },
 
   onLoad() {
-    // this.getOrderList();
+    this.getOrderList();
   },
 
   methods: {
@@ -48,8 +51,9 @@ export default {
       let data = {
         pageNo: this.pageNo,
         pageSize: this.pageSize,
+        userId: localM.get(LOCAL_KEY.USER).id || ''
       };
-      this.$http.data.getOrderList({
+      this.$http.course.getOrderList({
         data,
         success: (res) => {
           this.totalPage = res.pages;

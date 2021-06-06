@@ -11,7 +11,7 @@
         </view>
       </view>
     </view>
-    <CourseList :courseData="courseData" buttonText="发给学员" :buttonClick="sendToStudent" />
+    <CourseList :courseData="courseData" buttonText="发给学员" :buttonClick="sendToStudent" :roleCode="userInfo.roleCode" />
 
     <BottomBar activeType="home" />
   </view>
@@ -86,20 +86,20 @@ export default {
 
   mounted() {
     this.userInfo = localM.get(LOCAL_KEY.USER)
-    this.$nextTick(() => {
-      var clipboard = new Clipboard('.copy-btn', {
-        text: () => {
-          let url = `${constants.ROOT_URL}/#/pages/index/index`
-          if (this.userInfo && this.userInfo.id) {
-            url = `${url}?recommendId=${this.userInfo.id}`
-          }
-          return url
-        }
-      })
-      clipboard.on('success', e => {
-        this.$toast('复制成功，快把链接分享给学员吧')
-      })
-    })
+    // this.$nextTick(() => {
+    //   var clipboard = new Clipboard('.copy-btn', {
+    //     text: () => {
+    //       let url = `${constants.ROOT_URL}/#/pages/index/index`
+    //       if (this.userInfo && this.userInfo.id) {
+    //         url = `${url}?recommendId=${this.userInfo.id}`
+    //       }
+    //       return url
+    //     }
+    //   })
+    //   clipboard.on('success', e => {
+    //     this.$toast('复制成功，快把链接分享给学员吧')
+    //   })
+    // })
   },
 
   methods: {

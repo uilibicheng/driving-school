@@ -9,7 +9,7 @@
             <view>{{item.courseIntro}}</view>
             <view class="image-info-line"></view>
           </view>
-          <image :src="item.courseThumbUrl" mode="aspectFit" />
+          <image :src="item.videoInfoVO && item.videoInfoVO.videoThumbUrl" mode="aspectFit" />
         </view>
         <view class="exam-item-right">
           <view class="exam-item-right-title" @click="goToDetail(item.id)">{{item.courseName}}</view>
@@ -22,8 +22,11 @@
                 <image src="@/static/home/watch.png" />{{item.videoInfoVO ? item.videoInfoVO.videoPlayCount : 0}}人观看
               </view>
             </view>
-            <view class="right-btn" @click="handleClick(item)" v-if="disableText">
+            <!-- <view class="right-btn" @click="handleClick(item)" v-if="disableText">
               {{!item.selectSatus ? buttonText : disableText}}
+            </view> -->
+            <view class="right-btn copy-btn" v-if="roleCode">
+              {{buttonText}}
             </view>
             <view class="right-btn" @click="handleClick(item)" v-else>
               {{buttonText}}
@@ -37,6 +40,8 @@
 </template>
 
 <script>
+import Clipboard from 'clipboard'
+
 export default {
   props: {
     courseData: {
@@ -47,7 +52,7 @@ export default {
       type: String,
       default: '',
     },
-    disableText: {
+    roleCode: {
       type: String,
       default: ''
     },
@@ -61,6 +66,23 @@ export default {
     return {
 
     }
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      let clipboard = new Clipboard('.copy-btn', {
+        text: () => {
+          let url = `${constants.ROOT_URL}/#/pages/index/index`
+          if (this.userInfo && this.userInfo.id) {
+            url = `${url}?recommendId=${this.userInfo.id}`
+          }
+          return url
+        }
+      })
+      clipboard.on('success', e => {
+        this.$toast('复制成功，快把链接分享给学员吧')
+      })
+    })
   },
 
   methods: {

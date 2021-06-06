@@ -9,7 +9,7 @@
           <image class="avatar" :src="user.avatarUrl" />
           <view>{{user.nickName}}</view>
         </view>
-        <view class="info-bottom">
+        <view class="info-bottom" v-if="user.roleCode">
           <view class="tool-item">
             <image src="@/static/user/coach.png" />
             教练工具
@@ -19,10 +19,16 @@
             学车工具
           </view>
         </view>
+        <view class="info-bottom" v-else>
+          <view class="tool-item" @click="goToOrder">
+            <image src="@/static/user/order.png" />
+            我的订单
+          </view>
+        </view>
       </view>
     </view>
 
-    <view class="function-wrap">
+    <view class="function-wrap" v-if="user.roleCode">
       <view class="function-item">
         <view class="item-left">
           <image class="video" src="@/static/user/video.png" />
@@ -88,13 +94,21 @@ export default {
       common.toManage("/pages/login/login")
     }
   },
+
+  methods: {
+    goToOrder() {
+      uni.navigateTo({
+        url: '/pages/mine/order'
+      })
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .mine {
-  // min-height: calc(100vh - 120rpx);
-  min-height: 100vh;
+  min-height: calc(100vh - 120rpx);
+  /* min-height: 100vh; */
   padding-bottom: 120rpx;
   background: #F4F6FA;
   .header {

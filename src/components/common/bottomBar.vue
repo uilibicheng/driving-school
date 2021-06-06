@@ -36,7 +36,7 @@ export default {
     }
   },
   created() {
-    let user = localM.get(LOCAL_KEY.USER)
+    let user = localM.get(LOCAL_KEY.USER) || {}
     this.isShow = user.roleCode
   },
   methods: {

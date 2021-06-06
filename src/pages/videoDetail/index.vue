@@ -1,6 +1,10 @@
 <template>
   <view class="detail">
-    <video class="video-content" :src="detailInfo.videoInfoVO && detailInfo.videoInfoVO.videoUrl" />
+    <video
+      class="video-content"
+      :src="detailInfo.videoInfoVO && detailInfo.videoInfoVO.videoUrl"
+      object-fit="cover"
+      @play="playVideo" />
     <view class="tab">
       <view class="tab-item active">简介</view>
       <!-- <view class="tab-item">线路图</view> -->
@@ -27,14 +31,15 @@
     <!-- <view class="line" v-if="false">
       <view class="line-item" v-for="item in 4">河源铺前2.3.5号线（自动挡）合集2021年新规</view>
     </view> -->
-		<view class="buy-btn" v-if="userInfo.roleCode" @click="sendToStudent">发给学员</view>
-		<view class="buy-btn" v-else @click="buyVideo">点击购买课程</view>
+		<view class="buy-btn copy-btn" v-if="userInfo.roleCode">发给学员</view>
+		<view class="buy-btn" v-else-if="!(detailInfo.videoInfoVO && detailInfo.videoInfoVO.payStatus)" @click="buyVideo">点击购买课程</view>
   </view>
 </template>
 
 <script>
 import localM from '@/utils/common/local'
 import {LOCAL_KEY} from '@/config/constants'
+import Clipboard from 'clipboard'
 
 export default {
 	data() {
@@ -51,11 +56,33 @@ export default {
       this.id = option.id
 			this.getVideoById()
 		} else {
-			uni.switchTab({
+			uni.redirectTo({
 				url: '/pages/index/index'
 			})
 		}
+    if (this.userInfo.roleCode) {
+      this.$nextTick(() => {
+        var clipboard = new Clipboard('.copy-btn', {
+          text: () => {
+            let url = `${constants.ROOT_URL}/#/pages/index/index`
+            if (this.userInfo && this.userInfo.id) {
+              url = `${url}?recommendId=${this.userInfo.id}`
+            }
+            return url
+          }
+        })
+        clipboard.on('success', e => {
+          this.$toast('复制成功，快把链接分享给学员吧')
+        })
+      })
+    }
 	},
+
+  onShow() {
+    if (this.id) {
+      this.getVideoById()
+    }
+  },
 
   methods: {
 		getVideoById() {
@@ -68,13 +95,20 @@ export default {
           Object.keys(data)
           if (Object.keys(data)[0]) {
             this.detailInfo = data[Object.keys(data)[0]] ? data[Object.keys(data)[0]][0] : {}
+            console.log('detailInfo', this.detailInfo)
           }
         },
       });
 		},
 
+    // 教练端功能
     sendToStudent() {
       this.$toast('该功能开发中。。。')
+    },
+
+    // 学员端功能
+    playVideo() {
+
     },
 
     buyVideo() {
@@ -89,12 +123,11 @@ export default {
 
       const params = {
         courseId: this.detailInfo.id,
-        price: String(this.detailInfo.coursePrice),
-        dealPrice: String(this.detailInfo.coursePrice),
+        price: String(this.detailInfo.coursePrice) || '',
+        dealPrice: String(this.detailInfo.coursePrice) || '',
         recommendUserId: '',
         token: localM.get(LOCAL_KEY.TOKEN)
       }
-      console.log('params', params)
       this.wxPay(params)
     },
 
@@ -116,7 +149,7 @@ export default {
                 paySign: res.paySign //微信签名
               },
               function(res1) {
-                console.log('res1', res1)
+                this.getVideoById()
                 if (res1.err_msg == "get_brand_wcpay_request:ok") {
                   this.getVideoById()
                   uni.showToast({
