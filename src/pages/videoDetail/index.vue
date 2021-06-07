@@ -7,9 +7,9 @@
       object-fit="cover"
       @play="playVideo" />
     <view class="tab">
-      <view :class="['tab-item', {active: tabIndex === 1}]" @click="() => {tabIndex = 1}">简介</view>
-      <view :class="['tab-item', {active: tabIndex === 2}]" @click="() => {tabIndex = 2}">进度</view>
-      <view :class="['tab-item', {active: tabIndex === 3}]" @click="() => {tabIndex = 3}">线路图</view>
+      <view :class="['tab-item', {active: tabIndex === 1}]" @click="switchTab(1)">简介</view>
+      <view :class="['tab-item', {active: tabIndex === 2}]" @click="switchTab(2)">进度</view>
+      <view :class="['tab-item', {active: tabIndex === 3}]" @click="switchTab(3)">线路图</view>
     </view>
     <view class="intro" v-if="tabIndex === 1">
       <view class="intro-title">{{detailInfo.name}}</view>
@@ -30,16 +30,25 @@
       </view> -->
       <!-- <view class="intro-desc">河源铺前科三考场，阿萨德咖啡机五色机房问了句法六维空间二分了我解放路卡玩具鳄六维空间额返利网科技返利网科技了外壳及来我家二弗兰克我</view> -->
     </view>
-    <view v-if="tabIndex === 2">
-      <view class="line" v-if="detailInfo.videoInfoVO && detailInfo.videoInfoVO.scheduleInfoVOList.length">
+    <view class="intro" v-if="tabIndex === 2">
+      <view class="schedule" v-if="detailInfo.videoInfoVO && detailInfo.videoInfoVO.scheduleInfoVOList.length">
         <view
-          class="line-item"
+          class="schedule-item"
           v-for="(item, index) in detailInfo.videoInfoVO.scheduleInfoVOList"
           @click="skep(item.scheduleTime)"
-          :key="index">进度{{index + 1}}</view>
+          :key="index">
+          <image :src="item.scheduleUrl" mode="aspectFit" />
+          <view class="item-name">{{item.scheduleName}}</view>
+        </view>
       </view>
     </view>
-		<view class="buy-btn copy-btn" v-if="userInfo.roleCode" @click="sendToStudent">发给学员</view>
+    <view class="intro" v-if="tabIndex === 3">
+      <view class="map" v-if="detailInfo.mapInfoVO">
+        <image :src="detailInfo.mapInfoVO.mapThumbUrl" mode="aspectFit" />
+      </view>
+      <view class="buy-btn" @click="downloadMap">点击下载</view>
+    </view>
+		<view class="buy-btn copy-btn" v-if="userInfo.roleCode">发给学员</view>
 		<view class="buy-btn" v-else-if="!(detailInfo.videoInfoVO && detailInfo.videoInfoVO.payStatus)" @click="buyVideo">点击购买课程</view>
   </view>
 </template>
@@ -115,24 +124,40 @@ export default {
       });
 		},
 
-    // 教练端功能
-    sendToStudent() {
-      this.$toast('该功能开发中。。。')
+    switchTab(index) {
+      // if (index !== 1) {
+      //   if (!this.hadBuy()) return
+      // }
+      this.tabIndex = index
     },
 
     // 学员端功能
     playVideo() {
       if (this.userInfo.roleCode) return
-      if (!(this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.payStatus)) {
-        this.$toast('该课程需要购买才能查看')
-        this.videoContext.pause()
-      }
+      console.log(3333)
+      this.hadBuy()
     },
 
+    hadBuy() {
+      if (!(this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.payStatus)) {
+        console.log(444444)
+        this.$toast('该课程需要购买才能查看')
+        this.videoContext.pause()
+        return false
+      }
+      return true
+    },
+
+    // 控制进度
     skep(position) {
       if (position) {
         this.videoContext.seek(position)
       }
+    },
+
+    // 下载线路图
+    downloadMap() {
+
     },
 
     buyVideo() {
@@ -293,18 +318,38 @@ export default {
     }
   }
 
-  .line {
+  .schedule {
     font-size: 28rpx;
 
-    .line-item {
+    .schedule-item {
       width: 100%;
-      height: 80rpx;
+      height: 100rpx;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 0 20rpx;
       box-sizing: border-box;
       border-bottom: 2rpx solid #f5f6f8;
+      margin-bottom: 20rpx;
+      image {
+        flex-shrink: 0;
+        width: 150rpx;
+        height: 100rpx;
+        margin-right: 15px;
+        background: #656565;
+      }
+      .item-name {
+        flex-grow: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .map {
+    image {
+      width: 100%;
+      height: 450rpx;
+      background: #656565;
     }
   }
 
