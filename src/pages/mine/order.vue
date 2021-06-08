@@ -14,9 +14,9 @@
           <view class="item-info">
             <image :src="item.thumbnailUrl" mode="aspectFit" />
             <view class="info-desc">
-              <view class="item-name">{{item.name}}</view>
+              <view class="item-name">{{item.courseName}}</view>
               <view class="price">
-                <text class="symbol">￥</text>{{item.price}}
+                <text class="symbol">￥</text>{{item.coursePrice}}
               </view>
             </view>
           </view>
@@ -43,23 +43,24 @@ export default {
   },
 
   onLoad() {
-    this.getOrderList();
+    this.getCoursePay();
   },
 
   methods: {
-    getOrderList() {
+    getCoursePay() {
       let data = {
-        pageNo: this.pageNo,
-        pageSize: this.pageSize,
         userId: localM.get(LOCAL_KEY.USER).id || ''
       };
-      this.$http.course.getOrderList({
+      this.$http.user.getCoursePay({
         data,
         success: (res) => {
+          console.log('res', res)
           this.totalPage = res.pages;
-          for (let i = 0; i < 10; i++) {
-            this.list = this.list.concat(res.records);
-          }
+          this.list = Object.keys(res).reduce((result, item) => {
+            result = result.concat(res[item])
+            return result
+          }, [])
+          console.log(2222, this.list)
         },
       });
     },
@@ -74,14 +75,14 @@ export default {
   onReachBottom(e) {
     if (this.pageNo < this.totalPage) {
       this.pageNo = this.pageNo + 1;
-      this.getOrderList();
+      this.getCoursePay();
     }
   },
 
   onPullDownRefresh() {
     this.pageNo = 1;
     this.list = [];
-    this.getOrderList();
+    this.getCoursePay();
   },
 };
 </script>

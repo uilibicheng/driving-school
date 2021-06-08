@@ -125,23 +125,21 @@ export default {
 		},
 
     switchTab(index) {
-      // if (index !== 1) {
-      //   if (!this.hadBuy()) return
-      // }
+      if (index !== 1) {
+        if (!this.hadBuy()) return
+      }
       this.tabIndex = index
     },
 
     // 学员端功能
     playVideo() {
-      if (this.userInfo.roleCode) return
-      console.log(3333)
       this.hadBuy()
     },
 
     hadBuy() {
+      if (this.userInfo.roleCode) return true
       if (!(this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.payStatus)) {
-        console.log(444444)
-        this.$toast('该课程需要购买才能查看')
+        this.$toast('需要购买该课程才能查看')
         this.videoContext.pause()
         return false
       }

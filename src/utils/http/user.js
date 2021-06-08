@@ -9,5 +9,10 @@ export default {
   getCoachInfo(opts) {
     opts.url = `/video/resumeinfo/info`
     $http.post(opts)
+  },
+
+  getCoursePay(opts) {
+    opts.url = `/video/pay/coursePay`
+    $http.post(opts)
   }
 }

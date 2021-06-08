@@ -1,6 +1,4 @@
 // import localM from '../common/local'
-import common from '../utils/common'
-
 const isDev = process.env.NODE_ENV === 'development' // 判断环境 true 测试环境  false 正式环境
 const DEV_APPID = 'wxd3741df9fe2e8a5e'
 const PRD_APPID = 'wxd3741df9fe2e8a5e'
@@ -25,7 +23,6 @@ export const LOCAL_KEY = {
   AREA: 'area',
   LOGIN_PARAMS: 'loginParams'
 }
-console.log(1111, common)
 export const USER_INFO = ''
 
 const rootUrl = isDev ? DEV_ROOT_URL : PRD_ROOT_URL
