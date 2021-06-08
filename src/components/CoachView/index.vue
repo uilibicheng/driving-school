@@ -22,7 +22,7 @@ import HeaderSearch from '@/components/common/headerSearch'
 import CourseList from '@/components/common/courseList'
 import BottomBar from '@/components/common/bottomBar'
 import localM from "@/utils/common/local";
-import constants, { LOCAL_KEY } from "@/config/constants";
+import { LOCAL_KEY } from "@/config/constants";
 
 export default {
   components: {

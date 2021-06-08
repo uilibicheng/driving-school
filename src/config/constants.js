@@ -46,6 +46,17 @@ export const POSTER_DATA = {
     height: '1330rpx',
     views: [
       {
+        type: 'image',
+        src: '../../static/poster/caoach_bg.png',
+        css: {
+          left: '0rpx',
+          top: '0rpx',
+          width: '750rpx',
+          height: '1330rpx',
+          zIndex: 100
+        }
+      },
+      {
         type: 'qrcode',
         text: INVITE_COACH_URL,
         css: {
@@ -53,6 +64,7 @@ export const POSTER_DATA = {
           top: '680rpx',
           width: '415rpx',
           height: '415rpx',
+          zIndex: 1000
         }
       }
     ]
