@@ -41,6 +41,7 @@
 
 <script>
 import Clipboard from 'clipboard'
+import { INVITE_COACH_URL } from "@/config/constants";
 
 export default {
   props: {
@@ -62,25 +63,11 @@ export default {
     }
   },
 
-  data() {
-    return {
-
-    }
-  },
-
   mounted() {
     this.$nextTick(() => {
       let clipboard = new Clipboard('.copy-btn', {
         text: () => {
-          let url = `${constants.ROOT_URL}/#/pages/index/index`
-          if (this.userInfo && this.userInfo.id) {
-            url = `${url}?recommendId=${this.userInfo.id}`
-          }
-          if (this.userInfo && this.userInfo.roleCode) {
-              let symbol = url.includes('?') ? '&' : '?'
-              url = `${url}${symbol}roleCode=${this.userInfo.roleCode}`
-            }
-          return url
+          return INVITE_COACH_URL
         }
       })
       clipboard.on('success', e => {

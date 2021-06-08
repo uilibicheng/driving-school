@@ -42,58 +42,6 @@ export default {
   },
 
   methods: {
-    getCourseGroup111() {
-      let list = [
-        {
-          "courseCity": "深圳市",
-          "courseIntro": "课程简介",
-          "courseName": "课程名称",
-          "coursePrice": 124,
-          "courseProvince": "广东省",
-          "courseSite": "华南城",
-          "courseThumbUrl": "string",
-          "courseVideoUrl": "string",
-          "createBy": "创建人",
-          "createTime": "2021-05-24T13:58:18.331Z",
-          "delFlag": "0",
-          "id": "123",
-          "mapId": "333",
-          "selectSatus": true,
-          "updateBy": "更信任",
-          "updateTime": "2021-05-24T13:58:18.331Z",
-          "videoId": "345"
-        },
-        {
-          "courseCity": "深圳市",
-          "courseIntro": "课程简介",
-          "courseName": "课程名称",
-          "coursePrice": 124,
-          "courseProvince": "广东省",
-          "courseSite": "华南城",
-          "courseThumbUrl": "string",
-          "courseVideoUrl": "string",
-          "createBy": "创建人",
-          "createTime": "2021-05-24T13:58:18.331Z",
-          "delFlag": "0",
-          "id": "123",
-          "mapId": "333",
-          "selectSatus": true,
-          "updateBy": "更信任",
-          "updateTime": "2021-05-24T13:58:18.331Z",
-          "videoId": "345"
-        },
-      ]
-      let data = list.reduce((result, item) => {
-        if (result[item.courseSite]) {
-          result[item.courseSite].push(item)
-        } else {
-          result[item.courseSite] = [item]
-        }
-        return result
-      }, {})
-      this.courseData = Object.assign({}, this.courseData, data)
-		},
-
     getCourseGroup() {
 			let data = {
         sidx: 'courseSite',

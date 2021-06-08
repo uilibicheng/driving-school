@@ -10,9 +10,30 @@
 			}
 		},
 		{
+			"path": "pages/driverTool/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "教练工具"
+			}
+		},
+		{
+			"path": "pages/pertolStation/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "加油站"
+			}
+		},
+		{
 			"path": "pages/mine/index",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "个人中心"
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
 			}
 		},
 		{
@@ -52,56 +73,18 @@
 			}
 		},
 		{
-			"path": "pages/login/login",
+			"path": "pages/mapList/index",
 			"style": {
-				"navigationBarTitleText": "登录"
+				"navigationBarTitleText": "线路图"
 			}
 		},
 		{
-			"path": "pages/driverTool/index",
+			"path": "pages/poster/index",
 			"style": {
-				"navigationStyle": "custom",
-				"navigationBarTitleText": "教练工具"
-			}
-		},
-		{
-			"path": "pages/pertolStation/index",
-			"style": {
-				"navigationStyle": "custom",
-				"navigationBarTitleText": "加油站"
+				"navigationBarTitleText": "分享海报"
 			}
 		}
 	],
-	// "tabBar": {
-	// 	"color": "#8a8a8a",
-	// 	"selectedColor": "#AB956D",
-	// 	"borderStyle": "black",
-	// 	"list": [{
-	// 			"pagePath": "pages/index/index",
-	// 			"iconPath": "static/home_unseleted.png",
-	// 			"selectedIconPath": "static/home_seleted.png",
-	// 			"text": "首页"
-	// 		},
-	// 		{
-	// 			"pagePath": "pages/driverTool/index",
-	// 			"iconPath": "static/tool_unselected.png",
-	// 			"selectedIconPath": "static/tool_selected.png",
-	// 			"text": "学车工具"
-	// 		},
-	// 		{
-	// 			"pagePath": "pages/pertolStation/index",
-	// 			"iconPath": "static/pertol_unselected.png",
-	// 			"selectedIconPath": "static/pertol_selected.png",
-	// 			"text": "加油站"
-	// 		},
-	// 		{
-	// 			"pagePath": "pages/mine/index",
-	// 			"iconPath": "static/mine_unselected.png",
-	// 			"selectedIconPath": "static/mine_selected.png",
-	// 			"text": "个人中心"
-	// 		}
-	// 	]
-	// },
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "驾考",

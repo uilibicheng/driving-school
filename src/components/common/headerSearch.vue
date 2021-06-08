@@ -14,7 +14,9 @@ export default {
   props: {
     areaData: {
       type: Object,
-      default: {}
+      default: () => {
+        return {}
+      }
     },
     type: {
       type: String,

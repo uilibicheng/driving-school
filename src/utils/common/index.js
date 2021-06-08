@@ -1,4 +1,5 @@
-import constants from '../../config/constants'
+import constants, {LOCAL_KEY} from '@/config/constants'
+import localM from "@/utils/common/local";
 
 let appid = constants.APPID;
 let rootUrl = constants.ROOT_URL;
@@ -93,5 +94,23 @@ export default {
     } else
       result = "刚刚";
     return result;
-  }
+  },
+
+  setUserInfo: function(info) {
+    localM.set(LOCAL_KEY.USER, info);
+  },
+
+  getUserInfo: function() {
+    let userInfo = localM.get(LOCAL_KEY.USER) || {}
+    return userInfo
+  },
+
+  setToken: function(token) {
+    localM.set(LOCAL_KEY.TOKEN, token);
+  },
+
+  getToken: function() {
+    return localM.get(LOCAL_KEY.TOKEN) || ''
+  },
+
 }
