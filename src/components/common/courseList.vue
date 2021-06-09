@@ -25,7 +25,7 @@
             <!-- <view class="right-btn" @click="handleClick(item)" v-if="disableText">
               {{!item.selectSatus ? buttonText : disableText}}
             </view> -->
-            <view class="right-btn copy-btn" v-if="!roleCode">
+            <view class="right-btn copy-btn" v-if="roleCode">
               {{buttonText}}
             </view>
             <view class="right-btn" @click="handleClick(item)" v-else>

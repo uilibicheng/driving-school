@@ -39,7 +39,7 @@
     <view class="income-wrap">
       <view class="income-item">
         <view>直接推广订单</view>
-        <view class="item-num">{{reportInfo.totalReward}}</view>
+        <view class="item-num">{{reportInfo.twoLevelProxyTotalCount}}</view>
       </view>
       <view class="income-item">
         <view>下级推广订单</view>
@@ -47,7 +47,7 @@
       </view>
       <view class="income-item">
         <view>下级代理</view>
-        <view><text class="item-num">{{reportInfo.orderedTotalCount}}</text>人</view>
+        <view><text class="item-num">{{reportInfo.twoLevelProxyTotalCount}}</text>人</view>
       </view>
     </view>
 
