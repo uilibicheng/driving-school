@@ -1,6 +1,7 @@
 <template>
   <view class="detail">
     <video
+      v-show="tabIndex !== 3"
       id="courseVideo"
       class="video-content"
       :src="detailInfo.videoInfoVO && detailInfo.videoInfoVO.videoUrl"
@@ -44,22 +45,29 @@
     </view>
     <view class="intro" v-if="tabIndex === 3">
       <view class="map" v-if="detailInfo.mapInfoVO">
-        <image :src="detailInfo.mapInfoVO.mapThumbUrl" mode="aspectFit" />
+        <image :src="detailInfo.mapInfoVO.mapThumbUrl" mode="aspectFit" @click="downloadMap" />
       </view>
-      <view class="buy-btn" @click="downloadMap">点击下载</view>
+      <view class="buy-btn" @click="downloadMap">点击查看大图</view>
     </view>
 		<view class="buy-btn copy-btn" v-if="userInfo.roleCode">发给学员</view>
 		<view class="buy-btn" v-else-if="!(detailInfo.videoInfoVO && detailInfo.videoInfoVO.payStatus)" @click="buyVideo">点击购买课程</view>
+
+    <BigImg v-if="visible" :path="imgUrl" :visible.sync="visible" />
   </view>
 </template>
 
 <script>
+import BigImg from '@/components/common/bigImg'
 import localM from '@/utils/common/local'
 import {LOCAL_KEY} from '@/config/constants'
 import utils from '@/utils/common'
 import Clipboard from 'clipboard'
 
 export default {
+  components: {
+    BigImg
+  },
+
 	data() {
 		return {
 			detailInfo: {},
@@ -67,6 +75,8 @@ export default {
       userInfo: {},
       videoContext: null,
       tabIndex: 1, 
+      visible: false,
+      imgUrl: '',
 		}
 	},
 
@@ -148,7 +158,8 @@ export default {
 
     // 下载线路图
     downloadMap() {
-
+      this.imgUrl = this.detailInfo.mapInfoVO ? this.detailInfo.mapInfoVO.mapUrl : ''
+      this.visible = true
     },
 
     buyVideo() {

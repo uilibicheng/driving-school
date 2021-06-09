@@ -32,38 +32,33 @@
       <view class="footer-tip">{{Object.keys(mapData) && Object.keys(mapData).length ? '已经到底喽～' : '暂无数据'}}</view>
     </view>
 
-    <view class="big-img-content" v-if="imgUrl">
-      <view class="mask" @click="imgUrl = ''"></view>
-      <view class="img-wrap">
-        <image
-          :src="imgUrl"
-          mode="aspectFit"
-        />
-        <view class="img-tip">长按保存到相册</view>
-      </view>
-    </view>
+    <BigImg v-if="visible" :path="imgUrl" :visible.sync="visible" />
   </view>
 </template>
 
 <script>
 import HeaderSearch from '@/components/common/headerSearch'
+import BigImg from '@/components/common/bigImg'
 import CourseList from '@/components/common/courseList'
-import { USER_INFO } from "@/config/constants";
+import localM from "@/utils/common/local";
+import { LOCAL_KEY } from "@/config/constants";
 
 export default {
   components: {
     HeaderSearch,
     CourseList,
+    BigImg
 	},
 
   data() {
     return {
-      userInfo: USER_INFO,
+      userInfo: localM.get(LOCAL_KEY.USER) || {},
       mapData: {},
       page: 1,
       limit: 200,
       totalPage: 0,
       imgUrl: '',
+      visible: false
     };
 	},
 
@@ -92,6 +87,7 @@ export default {
 
     handleClick(item) {
       this.imgUrl = item.mapUrl
+      this.visible = true
     }
   },
 }
@@ -254,40 +250,6 @@ export default {
       color: #999;
       text-align: center;
       margin-top: 30rpx;
-    }
-  }
-
-  .big-img-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    .mask {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, .6);
-    }
-
-    .img-wrap {
-      position: absolute;
-      top: 40%;
-      transform: translateY(-50%);
-      width: 100%;
-      z-index: 1000;
-    }
-    image {
-      width: 100%;
-      background: #000;
-    }
-    .img-tip {
-      color: #fff;
-      font-size: 32rpx;
-      margin-top: 20rpx;
-      text-align: center;
     }
   }
 }
