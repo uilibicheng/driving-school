@@ -151,7 +151,7 @@ export default {
       width: 100%;
       padding: 20rpx 30rpx;
       box-sizing: border-box;
-      border-top: 4rpx solid #ccc;
+      border-top: 1px solid #ccc;
       font-size: 28rpx;
       color: #676767;
     }

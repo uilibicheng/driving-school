@@ -14,8 +14,38 @@
 
 <script>
 import Painter from '@/components/lime-painter'
-import { POSTER_DATA } from "@/config/constants";
+import utils from '@/utils/common'
 
+const POSTER_DATA = {
+  INVITE_COACH: {
+    width: '750rpx',
+    height: '1330rpx',
+    views: [
+      {
+        type: 'image',
+        src: '../../static/poster/caoach_bg.png',
+        css: {
+          left: '0rpx',
+          top: '0rpx',
+          width: '750rpx',
+          height: '1330rpx',
+          zIndex: 100
+        }
+      },
+      {
+        type: 'qrcode',
+        text: utils.getInviteUrl(),
+        css: {
+          left: '169rpx',
+          top: '700rpx',
+          width: '415rpx',
+          height: '415rpx',
+          zIndex: 1000
+        }
+      }
+    ]
+  }
+}
 export default {
   components: {
     Painter

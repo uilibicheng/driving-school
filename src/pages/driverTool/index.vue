@@ -8,8 +8,13 @@
             <view class="item-concat">
               {{coachInfo.nickname}} <text class="info-phone">{{coachInfo.phone}}</text>
             </view>
-            <view class="item-belong">
-              <image src="" />{{coachInfo.affiliation}}
+            <view class="item-belong-wrap">
+              <view class="item-belong">
+                <image src="@/static/tool/cart.png" />
+                <view class="belong-name">
+                  {{coachInfo.affiliation}}
+                </view>
+              </view>
             </view>
           </view>
           <view class="item-modify">
@@ -41,7 +46,7 @@
         <view>招生海报</view>
       </view>
       <view class="tool-item" @click="handleAddCourse">
-        <image src="@/static/tool/poster.png" />
+        <image src="@/static/tool/add-course.png" />
         <view>添加课程</view>
       </view>
       <view class="tool-item">
@@ -143,9 +148,16 @@ export default {
         }
         .item-desc {
           margin-left: 15rpx;
+          display: flex;
+          flex-direction: column;
+          max-width: 350rpx;
+          position: relative;
           .item-concat {
+            flex-grow: 0;
             font-size: 34rpx;
             color: #fff;
+            overflow: hidden;
+            text-overflow: ellipsis;
             .info-phone {
               color: #fff;
               opacity: .8;
@@ -153,22 +165,41 @@ export default {
               margin-left: 20rpx;
             }
           }
-          .item-belong {
-            width: 170rpx;
-            height: 35rpx;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 22rpx;
-            border: 1px solid #E3E3E3;
-            border-radius: 18rpx;
-            font-size: 22rpx;
-            color: #fff;
-            opacity: .7;
-            image {
-              width: 25rpx;
-              height: 20rpx;
-              margin-right: 5rpx;
+          .item-belong-wrap {
+            flex-grow: 0;
+            flex-shrink: 1;
+            position: absolute;
+            top: 45rpx;
+            .item-belong {
+              min-width: 170rpx;
+              max-width: 350rpx;
+              width: auto;
+              height: 45rpx;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              padding: 020rpx;
+              margin-top: 22rpx;
+              box-sizing: border-box;
+              border: 1px solid #E3E3E3;
+              border-radius: 18rpx;
+              font-size: 22rpx;
+              color: #fff;
+              opacity: .7;
+              image {
+                flex-shrink: 0;
+                width: 26rpx;
+                height: 21rpx;
+                margin-right: 10rpx;
+                margin-top: 2rpx;
+                background: transparent;
+                opacity: 1;
+              }
+              .belong-name {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
             }
           }
         }

@@ -25,7 +25,7 @@
             <!-- <view class="right-btn" @click="handleClick(item)" v-if="disableText">
               {{!item.selectSatus ? buttonText : disableText}}
             </view> -->
-            <view class="right-btn copy-btn" v-if="roleCode">
+            <view class="right-btn copy-btn" v-if="!roleCode">
               {{buttonText}}
             </view>
             <view class="right-btn" @click="handleClick(item)" v-else>
@@ -35,13 +35,13 @@
         </view>
       </view>
     </view>
-    <view class="footer-tip">已经到底喽～</view>
+    <view class="footer-tip">{{Object.keys(courseData) && Object.keys(courseData).length ? '已经到底喽～' : '暂无数据'}}</view>
   </view>
 </template>
 
 <script>
 import Clipboard from 'clipboard'
-import { INVITE_COACH_URL } from "@/config/constants";
+import utils from '@/utils/common'
 
 export default {
   props: {
@@ -67,7 +67,7 @@ export default {
     this.$nextTick(() => {
       let clipboard = new Clipboard('.copy-btn', {
         text: () => {
-          return INVITE_COACH_URL
+          return utils.getInviteUrl()
         }
       })
       clipboard.on('success', e => {
@@ -127,6 +127,7 @@ export default {
       border-bottom: 1px solid rgba(153, 153, 153, .4);
 
       .image-wrap {
+        flex: 0 0 auto;
         width: 300rpx;
         height: 180rpx;
         position: relative;
@@ -170,9 +171,11 @@ export default {
 
 
       .exam-item-right {
-        flex: 1 0 auto;
+        // flex: 0 0 auto;
+        width: 100%;
         font-size: 16rpx;
         margin-left: 20rpx;
+        overflow: hidden;
         display: flex;
         flex-direction: column;
         justify-content: space-between;

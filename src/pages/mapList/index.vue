@@ -6,36 +6,41 @@
       <view class="area-item" v-for="(place, placeIndex) in Object.keys(mapData)" :key="placeIndex">
         <view class="title">{{place}}</view>
         <view class="exam-item" v-for="(item, index) in mapData[place]" :key="index">
-          <view class="image-wrap" @click="goToDetail(item.id)">
+          <view class="image-wrap">
             <view class="image-info">
-              <view class="image-info-title">{{item.courseName}}</view>
-              <view>{{item.courseIntro}}</view>
+              <view class="image-info-title">{{item.mapName}}</view>
+              <!-- <view>{{item.courseIntro}}</view> -->
               <view class="image-info-line"></view>
             </view>
-            <image :src="item.videoInfoVO && item.videoInfoVO.videoThumbUrl" mode="aspectFit" />
+            <image :src="item.mapThumbUrl" mode="aspectFit" />
           </view>
           <view class="exam-item-right">
-            <view class="exam-item-right-title" @click="goToDetail(item.id)">{{item.courseName}}</view>
+            <view class="exam-item-right-title">{{item.mapName}}</view>
             <view class="right-bottom-wrap">
-              <view @click="goToDetail(item.id)">
-                <view class="price">
-                  <text class="symbol">￥</text>{{item.coursePrice}}
-                </view>
+              <view>
                 <view class="time">
-                  <image src="@/static/home/watch.png" />{{item.videoInfoVO ? item.videoInfoVO.videoPlayCount : 0}}人观看
+                  {{item.downloadCount ? item.downloadCount : 0}}人下载
                 </view>
               </view>
-              <view class="right-btn copy-btn" v-if="roleCode">
-                {{buttonText}}
-              </view>
-              <view class="right-btn" @click="handleClick(item)" v-else>
-                {{buttonText}}
+              <view class="right-btn" @click="handleClick(item)">
+                查看大图
               </view>
             </view>
           </view>
         </view>
       </view>
-      <view class="footer-tip">已经到底喽～</view>
+      <view class="footer-tip">{{Object.keys(mapData) && Object.keys(mapData).length ? '已经到底喽～' : '暂无数据'}}</view>
+    </view>
+
+    <view class="big-img-content" v-if="imgUrl">
+      <view class="mask" @click="imgUrl = ''"></view>
+      <view class="img-wrap">
+        <image
+          :src="imgUrl"
+          mode="aspectFit"
+        />
+        <view class="img-tip">长按保存到相册</view>
+      </view>
     </view>
   </view>
 </template>
@@ -58,6 +63,7 @@ export default {
       page: 1,
       limit: 200,
       totalPage: 0,
+      imgUrl: '',
     };
 	},
 
@@ -84,25 +90,18 @@ export default {
       });
 		},
 
-		goToDetail(data) {
-			uni.navigateTo({
-        url: `/pages/videoDetail/index?id=${data.id}`,
-      })
-		},
-
-    goToSelect() {
-      uni.navigateTo({
-        url: "/pages/selectArea/index",
-      })
-    },
+    handleClick(item) {
+      this.imgUrl = item.mapUrl
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
 .index {
   width: 100%;
   padding-bottom: 120rpx;
+  position: relative;
 
   .content {
     padding: 20rpx 20rpx;
@@ -135,12 +134,13 @@ export default {
         width: 100%;
         background: #fff;
         display: flex;
-        margin-top: 40rpx;
+        margin-top: 30rpx;
         padding-bottom: 40rpx;
         box-sizing: border-box;
         border-bottom: 1px solid rgba(153, 153, 153, .4);
 
         .image-wrap {
+          flex: 0 0 auto;
           width: 300rpx;
           height: 180rpx;
           position: relative;
@@ -186,18 +186,24 @@ export default {
 
 
         .exam-item-right {
-          flex: 1 0 auto;
+          width: 100%;
           font-size: 16rpx;
           margin-left: 20rpx;
+          overflow: hidden;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
 
           .exam-item-right-title {
+            flex-grow: 0;
+            margin-top: 10rpx;
             font-size: 32rpx;
             overflow: hidden;
+            word-break: break-all;
             text-overflow: ellipsis;
-            white-space: nowrap;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
             color: #000;
           }
 
@@ -205,6 +211,7 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
+            margin-top: 5px;
             margin-bottom: 15rpx;
             .time {
               margin-top: 10rpx;
@@ -220,20 +227,17 @@ export default {
               }
             }
 
-            .price {
+            .date {
               margin-top: 20rpx;
               margin-bottom: 20rpx;
-              font-size: 36rpx;
-              color: #FF3B0D;
-
-              .symbol {
-                font-size: 24rpx;
-              }
+              font-size: 22rpx;
+              color: #9f9f9f;
+              
             }
             .right-btn {
-              width: 160rpx;
-              height: 85rpx;
-              line-height: 85rpx;
+              width: 150rpx;
+              height: 70rpx;
+              line-height: 70rpx;
               text-align: center;
               font-size: 26rpx;
               color: #fff;
@@ -250,6 +254,40 @@ export default {
       color: #999;
       text-align: center;
       margin-top: 30rpx;
+    }
+  }
+
+  .big-img-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    .mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, .6);
+    }
+
+    .img-wrap {
+      position: absolute;
+      top: 40%;
+      transform: translateY(-50%);
+      width: 100%;
+      z-index: 1000;
+    }
+    image {
+      width: 100%;
+      background: #000;
+    }
+    .img-tip {
+      color: #fff;
+      font-size: 32rpx;
+      margin-top: 20rpx;
+      text-align: center;
     }
   }
 }

@@ -56,6 +56,7 @@
 <script>
 import localM from '@/utils/common/local'
 import {LOCAL_KEY} from '@/config/constants'
+import utils from '@/utils/common'
 import Clipboard from 'clipboard'
 
 export default {
@@ -83,15 +84,7 @@ export default {
       this.$nextTick(() => {
         var clipboard = new Clipboard('.copy-btn', {
           text: () => {
-            let url = `${constants.ROOT_URL}/#/pages/index/index`
-            if (this.userInfo && this.userInfo.id) {
-              url = `${url}?recommendId=${this.userInfo.id}`
-            }
-            if (this.userInfo && this.userInfo.roleCode) {
-              let symbol = url.includes('?') ? '&' : '?'
-              url = `${url}${symbol}roleCode=${this.userInfo.roleCode}`
-            }
-            return url
+            return utils.getInviteUrl()
           }
         })
         clipboard.on('success', e => {

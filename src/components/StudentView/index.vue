@@ -41,84 +41,14 @@ export default {
 
   mounted() {
     this.userInfo = localM.get(LOCAL_KEY.USER)
-    this.$nextTick(() => {
-      var clipboard = new Clipboard('.copy-btn', {
-        text: () => {
-          let url = `${constants.ROOT_URL}/#/pages/index/index`
-          if (this.userInfo && this.userInfo.id) {
-            url = `${url}?recommendId=${this.userInfo.id}`
-          }
-          return url
-        }
-      })
-      clipboard.on('success', e => {
-        this.$toast('复制成功，快把链接分享给学员吧')
-      })
-    })
   },
 
   methods: {
-    wxPay(data) {
-      let that = this
-      this.$http.course.payCourse({
-        data: data,
-        success: res => {
-          //支付
-          try {
-            WeixinJSBridge.invoke(
-              "getBrandWCPayRequest",
-              {
-                appId: res.appId, //公众号名称，由商户传入
-                timeStamp: res.timeStamp, //时间戳，自1970年以来的秒数
-                nonceStr: res.nonceStr, //随机串
-                package: res.packageValue,
-                signType: "MD5", //微信签名方式：
-                paySign: res.paySign //微信签名
-              },
-              function(res1) {
-                if (res1.err_msg == "get_brand_wcpay_request:ok") {
-                  uni.showToast({
-                    title: "支付成功",
-                    duration: 3000
-                  });
-                  setTimeout(function() {
-                    uni.redirectTo({
-                      url: "/pages/myWallet/myWallet"
-                    });
-                  }, 3000);
-                }
-                // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
-                ZENG.msgbox._hide();
-              }
-            );
-          } catch (err) {
-            ZENG.msgbox._hide();
-            that.unbind = true;
-            this.$toast(JSON.stringify(err))
-          }
-        },
-        complete: () => {
-          this.unbind = true;
-        }
-      });
-    },
-		
 		goToDetail(data) {
 			uni.navigateTo({
         url: `/pages/videoDetail/index?id=${data.id}`,
       })
 		},
-
-    // goToDetail(data) {
-    //   console.log('data', data)
-    //   const params = {
-    //     courseId: data.id,
-    //     price: String(data.coursePrice),
-    //     dealPrice: String(data.coursePrice),
-    //     recommendUserId: '',
-    //   }
-    //   this.wxPay(params)
-		// },
 
     goToSelect() {
       uni.navigateTo({
