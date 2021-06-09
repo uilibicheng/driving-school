@@ -61,7 +61,7 @@ export default {
   }
   image {
     width: 100%;
-    background: #000;
+    // background: #000;
   }
   .img-tip {
     color: #fff;

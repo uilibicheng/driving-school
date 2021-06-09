@@ -36,14 +36,14 @@
         </view>
         <image class="arrow" src="@/static/user/arrow.png" />
       </view>
-      <view class="function-item">
+      <view class="function-item" @click="handleClick(2)">
         <view class="item-left">
           <image class="invite" src="@/static/user/invite.png" />
           邀请代理
         </view>
         <image class="arrow" src="@/static/user/arrow.png" />
       </view>
-      <view class="function-item">
+      <view class="function-item" @click="openQRCode">
         <view class="item-left">
           <image class="cooperation" src="@/static/user/cooperation.png" />
           大客户合作
@@ -59,7 +59,7 @@
           关注公众号
         </view>
       </view>
-      <view class="function-item">
+      <view class="function-item" @click="openQRCode">
         <view class="item-left">
           <image class="service" src="@/static/user/service.png" />
           联系客服
@@ -67,23 +67,28 @@
       </view>
     </view>
 
+    <BigImg v-if="visible" :path="imgUrl" :visible.sync="visible" />
     <bottomBar activeType="user" />
   </view>
 </template>
 
 <script>
 import bottomBar from '@/components/common/bottomBar'
+import BigImg from '@/components/common/bigImg'
 import localM from '@/utils/common/local'
 import {LOCAL_KEY} from '@/config/constants'
 import common from '@/utils/common'
 
 export default {
   components: {
-    bottomBar
+    bottomBar,
+    BigImg
   },
   data() {
     return {
-      user: {}
+      user: {},
+      visible: false,
+      imgUrl: ''
     }
   },
 
@@ -100,6 +105,21 @@ export default {
       uni.navigateTo({
         url: '/pages/mine/order'
       })
+    },
+
+    handleClick(id) {
+      switch(id) {
+        case 2:
+          uni.navigateTo({
+            url: `/pages/poster/index?type=INVITE_COACH`
+          })
+          break
+      }
+    },
+
+    openQRCode() {
+      this.visible = true
+      this.imgUrl = require('@/static/user/service_customer.png')
     }
   }
 };

@@ -2,10 +2,10 @@
   <view class="pertol">
     <view class="pertol-info">
       <view class="pertol-info-top">
-        <image src="" />
+        <image :src="reportInfo.avatar" />
         <view class="pertol-info-concat">
-          <view>包小白</view>
-          <view class="pertol-info-phone">123****2345</view>
+          <view>{{reportInfo.nickName}}</view>
+          <view class="pertol-info-phone"></view>
         </view>
         <view class="pertol-message active">
           <image src="@/static/pertol/message.png" />
@@ -16,21 +16,21 @@
           <view>今日收益</view>
           <view class="bottom-item-price">
             <text class="yuan">￥</text>
-            0.00
+            {{reportInfo.totayReward || 0}}
           </view>
         </view>
         <view class="bottom-item">
           <view>累计收益</view>
           <view class="bottom-item-price">
             <text class="yuan">￥</text>
-            0.00
+            {{reportInfo.totalReward}}
           </view>
         </view>
         <view class="bottom-item">
           <view>累计提现</view>
           <view class="bottom-item-price">
             <text class="yuan">￥</text>
-            0.00
+            {{reportInfo.totalReward}}
           </view>
         </view>
       </view>
@@ -39,15 +39,15 @@
     <view class="income-wrap">
       <view class="income-item">
         <view>直接推广订单</view>
-        <view class="item-num">0</view>
+        <view class="item-num">{{reportInfo.totalReward}}</view>
       </view>
       <view class="income-item">
         <view>下级推广订单</view>
-        <view class="item-num">0</view>
+        <view class="item-num">{{reportInfo.twoLevelProxyTotalCount}}</view>
       </view>
       <view class="income-item">
         <view>下级代理</view>
-        <view><text class="item-num">0</text>人</view>
+        <view><text class="item-num">{{reportInfo.orderedTotalCount}}</text>人</view>
       </view>
     </view>
 
@@ -65,6 +65,8 @@
 
 <script>
 import bottomBar from '@/components/common/bottomBar'
+import localM from '@/utils/common/local'
+import {LOCAL_KEY} from '@/config/constants'
 
 export default {
   components: {
@@ -72,7 +74,28 @@ export default {
   },
   data() {
     return {
+      reportInfo: {}
     }
+  },
+
+  onLoad() {
+    this.getUserReport()
+  },
+
+  methods: {
+    getUserReport() {
+      let token = localM.get(LOCAL_KEY.TOKEN) || ''
+      const data = {
+        token,
+      }
+      this.$http.user.getUserReport({
+        data,
+        success: res => {
+          console.log('res', res)
+          this.reportInfo = res
+        }
+      })
+    },
   }
 }
 </script>

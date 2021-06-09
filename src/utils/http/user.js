@@ -14,5 +14,10 @@ export default {
   getCoursePay(opts) {
     opts.url = `/video/pay/coursePay`
     $http.post(opts)
+  },
+
+  getUserReport(opts) {
+    opts.url = `/video/userInfo/report`
+    $http.post(opts)
   }
 }
