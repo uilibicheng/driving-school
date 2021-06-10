@@ -113,13 +113,13 @@ export default {
     return localM.get(LOCAL_KEY.TOKEN) || ''
   },
 
-  getInviteUrl: function() {
+  getInviteUrl: function(isNormal) {
     const userInfo = this.getUserInfo()
     let inviteUrl = `${constants.ROOT_URL}/#/pages/index/index`
     if (userInfo && userInfo.id) {
       inviteUrl = `${inviteUrl}?recommendId=${userInfo.id}`
     }
-    if (userInfo && userInfo.roleCode) {
+    if (!isNormal && userInfo && userInfo.roleCode) {
       let symbol = inviteUrl.includes('?') ? '&' : '?'
       inviteUrl = `${inviteUrl}${symbol}roleCode=${userInfo.roleCode}`
     }

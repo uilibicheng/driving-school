@@ -24,10 +24,6 @@ export default {
     }
   },
 
-  mounted() {
-    console.log(1111, this.path)
-  },
-
   methods: {
     close() {
       this.$emit('update:visible', false)
@@ -38,7 +34,7 @@ export default {
 
 <style lang="scss" scoped>
 .big-img-content {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -54,19 +50,18 @@ export default {
 
   .img-wrap {
     position: absolute;
-    top: 40%;
+    top: 50%;
     transform: translateY(-50%);
     width: 100%;
     z-index: 1000;
   }
   image {
     width: 100%;
-    // background: #000;
   }
   .img-tip {
     color: #fff;
     font-size: 32rpx;
-    margin-top: 20rpx;
+    margin-top: 40rpx;
     text-align: center;
   }
 }

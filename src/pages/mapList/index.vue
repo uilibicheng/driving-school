@@ -7,12 +7,7 @@
         <view class="title">{{place}}</view>
         <view class="exam-item" v-for="(item, index) in mapData[place]" :key="index">
           <view class="image-wrap">
-            <view class="image-info">
-              <view class="image-info-title">{{item.mapName}}</view>
-              <!-- <view>{{item.courseIntro}}</view> -->
-              <view class="image-info-line"></view>
-            </view>
-            <image :src="item.mapThumbUrl" mode="aspectFit" />
+            <image :src="item.mapThumbUrl" mode="aspectFill" />
           </view>
           <view class="exam-item-right">
             <view class="exam-item-right-title">{{item.mapName}}</view>
@@ -88,6 +83,11 @@ export default {
       this.visible = true
     }
   },
+  onPullDownRefresh(e) {
+    this.page = 1;
+    this.mapData = {};
+    this.getMapList();
+  },
 }
 </script>
 
@@ -139,42 +139,9 @@ export default {
           height: 180rpx;
           position: relative;
 
-          .image-info {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            color: #69658A;
-            font-size: 24rpx;
-            z-index: 500;
-            padding: 0 15rpx;
-            box-sizing: border-box;
-            .image-info-title {
-              font-size: 32rpx;
-              margin-bottom: 15rpx;
-            }
-            .image-info-item {
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-            }
-            .image-info-line {
-              margin-top: 20rpx;
-              width: 40rpx;
-              height: 1px;
-              background: #69658A;
-            }
-          }
-
           image {
             width: 300rpx;
             height: 180rpx;
-            background: #000;
-            border-radius: 10rpx;
           }
         }
 

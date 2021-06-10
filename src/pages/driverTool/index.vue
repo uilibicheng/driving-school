@@ -3,7 +3,7 @@
     <view class="info-wrap">
       <view class="info-box">
         <view class="info-item">
-          <image class="item-avatar" src="" />
+          <image class="item-avatar" :src="userInfo.avatarUrl" />
           <view class="item-desc">
             <view class="item-concat">
               {{coachInfo.nickname}} <text class="info-phone">{{coachInfo.phone}}</text>
@@ -47,7 +47,7 @@
       </view>
       <view class="tool-item" @click="handleAddCourse">
         <image src="@/static/tool/add-course.png" />
-        <view>添加课程</view>
+        <view>课程管理</view>
       </view>
       <view class="tool-item">
         <image src="@/static/tool/name-card.png" />
@@ -61,11 +61,11 @@
 
     <view class="divider"></view>
 
-    <swiper v-if="bannerList.length" style="width:100%;height:160rpx" indicator-color="#FFF" indicator-active-color="#9391FD" indicator-dots="true"
+    <swiper v-if="bannerList.length" style="width:100%;height:400rpx" indicator-color="#FFF" indicator-active-color="#9391FD" indicator-dots="true"
 		 autoplay="true" interval="4000" circular="true">
 			<swiper-item v-for="(banner,index) in bannerList" :key="index">
 				<view>
-					<image src="@/static/tool/banner.png" style="width:300rpx;height:160rpx"></image>
+					<image :src="banner.advertisingUrl" mode="aspectFill" style="width: 100%;height:400rpx"></image>
 				</view>
 			</swiper-item>
 		</swiper>
@@ -86,26 +86,37 @@ export default {
   data() {
     return {
       bannerList: [],
-      coachInfo: {}
+      coachInfo: {},
+      userInfo: {}
     }
   },
 
   onLoad() {
+    this.userInfo = localM.get(LOCAL_KEY.USER) || {}
     this.getCoachInfo()
+    this.getAdList()
   },
 
   methods: {
     getCoachInfo() {
-      let user = localM.get(LOCAL_KEY.USER) || {}
       const data = {
-        userId: user.id || '',
-        userName: user.nickName || '',
+        userId: this.userInfo.id || '',
+        userName: this.userInfo.nickName || '',
       }
       this.$http.user.getCoachInfo({
         data,
         success: res => {
           console.log('res', res)
           this.coachInfo = res
+        }
+      })
+    },
+
+    getAdList() {
+      this.$http.data.getAdList({
+        success: res => {
+          console.log('res', res)
+          this.bannerList = res
         }
       })
     },

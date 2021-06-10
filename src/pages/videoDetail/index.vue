@@ -12,6 +12,7 @@
       <view :class="['tab-item', {active: tabIndex === 2}]" @click="switchTab(2)">进度</view>
       <view :class="['tab-item', {active: tabIndex === 3}]" @click="switchTab(3)">线路图</view>
     </view>
+    <!-- 简介 -->
     <view class="intro" v-if="tabIndex === 1">
       <view class="intro-title">{{detailInfo.name}}</view>
       <!-- <view class="video-list">
@@ -31,6 +32,7 @@
       </view> -->
       <!-- <view class="intro-desc">河源铺前科三考场，阿萨德咖啡机五色机房问了句法六维空间二分了我解放路卡玩具鳄六维空间额返利网科技返利网科技了外壳及来我家二弗兰克我</view> -->
     </view>
+    <!-- 进度 -->
     <view class="intro" v-if="tabIndex === 2">
       <view class="schedule" v-if="detailInfo.videoInfoVO && detailInfo.videoInfoVO.scheduleInfoVOList.length">
         <view
@@ -43,6 +45,7 @@
         </view>
       </view>
     </view>
+    <!-- 线路图 -->
     <view class="intro" v-if="tabIndex === 3">
       <view class="map" v-if="detailInfo.mapInfoVO">
         <image :src="detailInfo.mapInfoVO.mapThumbUrl" mode="aspectFit" @click="downloadMap" />
@@ -94,7 +97,7 @@ export default {
       this.$nextTick(() => {
         var clipboard = new Clipboard('.copy-btn', {
           text: () => {
-            return utils.getInviteUrl()
+            return utils.getInviteUrl(true)
           }
         })
         clipboard.on('success', e => {
@@ -336,7 +339,7 @@ export default {
         width: 150rpx;
         height: 100rpx;
         margin-right: 15px;
-        background: #656565;
+        // background: #656565;
       }
       .item-name {
         flex-grow: 0;
@@ -351,7 +354,6 @@ export default {
     image {
       width: 100%;
       height: 450rpx;
-      background: #656565;
     }
   }
 

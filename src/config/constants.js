@@ -23,3 +23,10 @@ export const LOCAL_KEY = {
   AREA: 'area',
   LOGIN_PARAMS: 'loginParams'
 }
+
+// 角色code 加盟商为league，一级代理为one_level_proxy，二级代理为two_level_proxy
+export const ROLE_CODE = {
+  LEAGE: 'league',
+  ONE_LEVEL_PROXY: 'one_level_proxy',
+  TWO_LEVEL_PROXY: 'two_level_proxy',
+}

@@ -55,6 +55,7 @@
 			"path": "pages/addCourse/index",
 			"style": {
 				"navigationBarTitleText": "添加课程",
+				"enablePullDownRefresh": true,
 				"onReachBottomDistance": 60
 			}
 		},
@@ -75,7 +76,9 @@
 		{
 			"path": "pages/mapList/index",
 			"style": {
-				"navigationBarTitleText": "线路图"
+				"navigationBarTitleText": "线路图",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance": 60
 			}
 		},
 		{

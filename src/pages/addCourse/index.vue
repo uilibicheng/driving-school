@@ -2,7 +2,7 @@
   <view class="index">
     <HeaderSearch :areaData="areaData" type="addCourse" :isSelect="true" />
 
-    <CourseList :courseData="courseData" buttonText="添加课程" disableText="移除" :roleCode="userInfo.roleCode" :buttonClick="handleClick" />
+    <CourseList :courseData="courseData" buttonText="添加课程" disableText="移除" :buttonClick="handleClick" />
   </view>
 </template>
 
@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       queryParams: {
-        limit: 10,
+        limit: 200,
         page: 1,
         courseCity: '',
         courseProvince: '',
@@ -100,17 +100,13 @@ export default {
         data,
         success: res => {
           this.getCourseGroup()
-          this.$toast('移除成功成功')
+          this.$toast('移除成功')
         },
         complete: () => {
           this.loading = false
         }
       })
     },
-
-    addCourse() {
-      
-    }
   },
 
   onReachBottom(e) {
@@ -118,6 +114,12 @@ export default {
       this.page = this.page + 1;
       this.getCourseGroup();
     }
+  },
+
+  onPullDownRefresh(e) {
+    this.queryParams.page = 1;
+    this.courseData = {};
+    this.getCourseGroup();
   },
 }
 </script>

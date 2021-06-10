@@ -9,7 +9,7 @@
             <view>{{item.courseIntro}}</view>
             <view class="image-info-line"></view>
           </view>
-          <image :src="item.videoInfoVO && item.videoInfoVO.videoThumbUrl" mode="aspectFit" />
+          <image :src="item.videoInfoVO && item.videoInfoVO.videoThumbUrl" mode="aspectFill" />
         </view>
         <view class="exam-item-right">
           <view class="exam-item-right-title" @click="goToDetail(item.id)">{{item.courseName}}</view>
@@ -28,8 +28,8 @@
             <view class="right-btn copy-btn" v-if="isCopy">
               {{buttonText}}
             </view>
-            <view class="right-btn" @click="handleClick(item)" v-else-if="roleCode">
-              {{item.selectStatus ? disableText : buttonText}}
+            <view class="right-btn" @click="handleClick(item)" v-else-if="disableText">
+              {{item.selectSatus ? disableText : buttonText}}
             </view>
             <view class="right-btn" @click="handleClick(item)" v-else>
               {{buttonText}}
@@ -60,10 +60,6 @@ export default {
       type: String,
       default: '',
     },
-    roleCode: {
-      type: String,
-      default: ''
-    },
     isCopy: {
       type: Boolean,
       default: false,
@@ -75,16 +71,18 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(() => {
-      let clipboard = new Clipboard('.copy-btn', {
-        text: () => {
-          return utils.getInviteUrl()
-        }
+    if (this.isCopy) {
+      this.$nextTick(() => {
+        let clipboard = new Clipboard('.copy-btn', {
+          text: () => {
+            return utils.getInviteUrl(true)
+          }
+        })
+        clipboard.on('success', () => {
+          this.$toast('复制成功，快把链接分享给学员吧')
+        })
       })
-      clipboard.on('success', e => {
-        this.$toast('复制成功，快把链接分享给学员吧')
-      })
-    })
+    }
   },
 
   methods: {
@@ -175,7 +173,7 @@ export default {
         image {
           width: 300rpx;
           height: 180rpx;
-          background: #000;
+          // background: #000;
           border-radius: 10rpx;
         }
       }
