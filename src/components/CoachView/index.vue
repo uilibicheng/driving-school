@@ -12,7 +12,7 @@
       </view>
     </view>
 
-    <CourseList :courseData="courseData" buttonText="发给学员" :roleCode="userInfo.roleCode" />
+    <CourseList :courseData="courseData" buttonText="发给学员" :isCopy="true" />
     <BottomBar activeType="home" />
   </view>
 </template>

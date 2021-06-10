@@ -39,14 +39,12 @@
 <script>
 import HeaderSearch from '@/components/common/headerSearch'
 import BigImg from '@/components/common/bigImg'
-import CourseList from '@/components/common/courseList'
 import localM from "@/utils/common/local";
 import { LOCAL_KEY } from "@/config/constants";
 
 export default {
   components: {
     HeaderSearch,
-    CourseList,
     BigImg
 	},
 

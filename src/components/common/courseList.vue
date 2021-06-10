@@ -25,8 +25,11 @@
             <!-- <view class="right-btn" @click="handleClick(item)" v-if="disableText">
               {{!item.selectSatus ? buttonText : disableText}}
             </view> -->
-            <view class="right-btn copy-btn" v-if="roleCode">
+            <view class="right-btn copy-btn" v-if="isCopy">
               {{buttonText}}
+            </view>
+            <view class="right-btn" @click="handleClick(item)" v-else-if="roleCode">
+              {{item.selectStatus ? disableText : buttonText}}
             </view>
             <view class="right-btn" @click="handleClick(item)" v-else>
               {{buttonText}}
@@ -53,9 +56,17 @@ export default {
       type: String,
       default: '',
     },
+    disableText: {
+      type: String,
+      default: '',
+    },
     roleCode: {
       type: String,
       default: ''
+    },
+    isCopy: {
+      type: Boolean,
+      default: false,
     },
     buttonClick: {
       type: Function,

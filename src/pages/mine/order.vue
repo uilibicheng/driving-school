@@ -9,10 +9,10 @@
       >
         <view class="item-top">
           <view class="item-header">
-            <view>订单编号：{{item.id}}</view>
+            <view>订单编号：{{item.payInfo.orderId ? item.payInfo.orderId : item.id}}</view>
           </view>
           <view class="item-info">
-            <image :src="item.thumbnailUrl" mode="aspectFit" />
+            <image :src="item.videoInfoVO && item.videoInfoVO.videoThumbUrl" mode="aspectFit" />
             <view class="info-desc">
               <view class="item-name">{{item.courseName}}</view>
               <view class="price">
@@ -21,7 +21,7 @@
             </view>
           </view>
         </view>
-        <view class="item-bottom">订单日期：{{item.createTime}}</view>
+        <view class="item-bottom">订单日期：{{item.payInfo.payTime}}</view>
       </view>
     </view>
     <view class="no-order" v-else>还没有相关订单</view>
@@ -60,7 +60,6 @@ export default {
             result = result.concat(res[item])
             return result
           }, [])
-          console.log(2222, this.list)
         },
       });
     },
@@ -94,6 +93,7 @@ export default {
   height: 100%;
   padding: 30rpx 20rpx;
   box-sizing: border-box;
+  background: #F9F9F9;
 
   .order-item {
     width: 100%;

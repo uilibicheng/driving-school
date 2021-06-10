@@ -2,7 +2,7 @@
   <view class="index">
     <HeaderSearch :areaData="areaData" type="addCourse" :isSelect="true" />
 
-    <CourseList :courseData="courseData" buttonText="添加课程" disableText="移除" :buttonClick="handleClick" />
+    <CourseList :courseData="courseData" buttonText="添加课程" disableText="移除" :roleCode="userInfo.roleCode" :buttonClick="handleClick" />
   </view>
 </template>
 
@@ -30,10 +30,12 @@ export default {
       areaData: {},
       courseData: {},
       loading: false,
+      userInfo: {},
     }
   },
 
   onLoad(options) {
+    this.userInfo = localM.get(LOCAL_KEY.USER)
     this.areaData.territoryName = options.city
     this.queryParams.courseCity = options.city
     this.queryParams.courseProvince = options.province
@@ -74,7 +76,7 @@ export default {
       }
       let data = {
         courseId: item.id,
-        roleCode: localM.get(LOCAL_KEY.USER).roleCode || ''
+        roleCode: this.userInfo.roleCode || ''
       }
       this.$http.course.addCourse({
         data,

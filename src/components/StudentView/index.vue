@@ -3,7 +3,6 @@
     <HeaderSearch :areaData="areaData" />
 
     <CourseList :courseData="courseData" buttonText="查看详情" :buttonClick="goToDetail" />
-    <!-- <CourseList :courseData="courseData" buttonText="立即购买" :buttonClick="goToDetail" /> -->
 
     <BottomBar activeType="home" />
   </view>
@@ -13,10 +12,8 @@
 import HeaderSearch from '@/components/common/headerSearch'
 import CourseList from '@/components/common/courseList'
 import BottomBar from '@/components/common/bottomBar'
-import Clipboard from 'clipboard'
 import localM from "@/utils/common/local";
-import constants, { LOCAL_KEY } from "@/config/constants";
-import jweixin from "@/static/js/jweixin-module.js";
+import { LOCAL_KEY } from "@/config/constants";
 
 export default {
   components: {
@@ -49,25 +46,6 @@ export default {
         url: `/pages/videoDetail/index?id=${data.id}`,
       })
 		},
-
-    goToSelect() {
-      uni.navigateTo({
-        url: "/pages/selectArea/index",
-      })
-    },
-  },
-
-  onReachBottom(e) {
-    if (this.page < this.totalPage) {
-      this.page = this.page + 1;
-      this.getCourseList();
-    }
-  },
-
-  onPullDownRefresh() {
-    this.page = 1;
-    this.courseData = {};
-    this.getCourseList();
   },
 };
 </script>
