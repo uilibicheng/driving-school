@@ -8,7 +8,7 @@
             <view class="item-concat">
               {{coachInfo.nickname}} <text class="info-phone">{{coachInfo.phone}}</text>
             </view>
-            <view class="item-belong-wrap">
+            <view class="item-belong-wrap" v-if="coachInfo.affiliation">
               <view class="item-belong">
                 <image src="@/static/tool/cart.png" />
                 <view class="belong-name">
