@@ -11,6 +11,10 @@ class SuperClass {
   }
 
   _rq(opts = paramNoNull(), token) {
+    uni.showLoading({
+      title: '加载中...',
+      mask: true
+    })
     const data = Object.assign(opts.data || {}),
     _token = localM.get(LOCAL_KEY.TOKEN) || '',
     userInfo = localM.get(LOCAL_KEY.USER)
@@ -74,6 +78,7 @@ class SuperClass {
           toast(res.data && res.data.message || errorMessage)
         },
         complete: res => {
+          uni.hideLoading()
           uni.stopPullDownRefresh()
           !opts.hideLoading && uni.hideNavigationBarLoading() //完成停止加载 
           opts.complete && opts.complete(res.data)
