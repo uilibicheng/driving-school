@@ -82,6 +82,11 @@ export default {
             url: `/pages/poster/index?type=INVITE_COACH`
           })
           break
+        case 2:
+          uni.navigateTo({
+            url: `/pages/poster/index?type=STUDENT`
+          })
+          break
         case 5:
           uni.navigateTo({
             url: `/pages/mapList/index`

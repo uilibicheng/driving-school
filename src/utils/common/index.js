@@ -1,4 +1,4 @@
-import constants, {LOCAL_KEY} from '@/config/constants'
+import constants, {LOCAL_KEY, ROLE_CODE} from '@/config/constants'
 import localM from "@/utils/common/local";
 
 let appid = constants.APPID;
@@ -120,8 +120,9 @@ export default {
       inviteUrl = `${inviteUrl}?recommendId=${userInfo.id}`
     }
     if (!isNormal && userInfo && userInfo.roleCode) {
+      let roleCode = userInfo.roleCode === ROLE_CODE.ONE_LEVEL_PROXY ? ROLE_CODE.TWO_LEVEL_PROXY : ''
       let symbol = inviteUrl.includes('?') ? '&' : '?'
-      inviteUrl = `${inviteUrl}${symbol}roleCode=${userInfo.roleCode}`
+      inviteUrl = `${inviteUrl}${symbol}roleCode=${roleCode}`
     }
     return inviteUrl
   }

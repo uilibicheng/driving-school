@@ -23,7 +23,7 @@ const POSTER_DATA = {
     views: [
       {
         type: 'image',
-        src: '../../static/poster/caoach_bg.png',
+        src: '../../static/poster/caoach_bg.jpg',
         css: {
           left: '0rpx',
           top: '0rpx',
@@ -36,10 +36,38 @@ const POSTER_DATA = {
         type: 'qrcode',
         text: utils.getInviteUrl(),
         css: {
-          left: '169rpx',
-          top: '700rpx',
-          width: '415rpx',
-          height: '415rpx',
+          left: '185rpx',
+          top: '695rpx',
+          width: '380rpx',
+          height: '380rpx',
+          zIndex: 1000
+        }
+      }
+    ]
+  },
+  STUDENT: {
+    width: '750rpx',
+    height: '1330rpx',
+    views: [
+      {
+        type: 'image',
+        src: '../../static/poster/recruit-student.jpg',
+        css: {
+          left: '0rpx',
+          top: '0rpx',
+          width: '750rpx',
+          height: '1280rpx',
+          zIndex: 100
+        }
+      },
+      {
+        type: 'qrcode',
+        text: utils.getInviteUrl(true),
+        css: {
+          left: '240rpx',
+          top: '705rpx',
+          width: '260rpx',
+          height: '260rpx',
           zIndex: 1000
         }
       }

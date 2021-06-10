@@ -182,7 +182,7 @@ export default {
             position: absolute;
             top: 45rpx;
             .item-belong {
-              min-width: 170rpx;
+              min-width: 100rpx;
               max-width: 350rpx;
               width: auto;
               height: 45rpx;
