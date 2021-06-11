@@ -5,24 +5,25 @@
         class="order-item"
         v-for="(item, index) in list"
         :key="index"
-        @click="goToDetail(item.id)"
+        @click="goToDetail(item.courseInfoVOList[0].id)"
       >
         <view class="item-top">
           <view class="item-header">
-            <view>订单编号：{{item.payInfo.orderId ? item.payInfo.orderId : item.id}}</view>
+            <view>订单编号：{{item.courseInfoVOList[0].payInfo ? item.courseInfoVOList[0].payInfo.orderId : item.courseInfoVOList[0].id}}</view>
           </view>
           <view class="item-info">
-            <image :src="item.videoInfoVO && item.videoInfoVO.videoThumbUrl" mode="aspectFit" />
+            <image :src="item.courseInfoVOList[0].videoInfoVO && item.courseInfoVOList[0].videoInfoVO.videoThumbUrl" mode="aspectFit" />
             <view class="info-desc">
-              <view class="item-name">{{item.courseName}}</view>
+              <view class="item-name">{{item.courseInfoVOList[0].courseName}}</view>
               <view class="price">
-                <text class="symbol">￥</text>{{item.coursePrice}}
+                <text class="symbol">￥</text>{{item.courseInfoVOList[0].coursePrice}}
               </view>
             </view>
           </view>
         </view>
-        <view class="item-bottom">订单日期：{{item.payInfo.payTime}}</view>
+        <view class="item-bottom">订单日期：{{item.courseInfoVOList[0].payInfo && item.courseInfoVOList[0].payInfo.payTime}}</view>
       </view>
+      <view class="footer-tip">已经到底喽～</view>
     </view>
     <view class="no-order" v-else>还没有相关订单</view>
   </view>
@@ -36,8 +37,8 @@ export default {
   data() {
     return {
       list: [],
-      pageNo: 1,
-      pageSize: 200,
+      page: 1,
+      limit: 10,
       totalPage: 0,
     };
   },
@@ -49,17 +50,22 @@ export default {
   methods: {
     getCoursePay() {
       let data = {
-        userId: localM.get(LOCAL_KEY.USER).id || ''
+        userId: localM.get(LOCAL_KEY.USER).id || '',
+        page: this.page,
+        limit: this.limit,
+        sidx: 'courseSite',
+        order: 'desc',
       };
       this.$http.user.getCoursePay({
         data,
         success: (res) => {
-          console.log('res', res)
           this.totalPage = res.pages;
-          this.list = Object.keys(res).reduce((result, item) => {
-            result = result.concat(res[item])
-            return result
-          }, [])
+          let data = res.list
+          if (res.current === 1) {
+            this.list = data
+          } else {
+            this.list = this.list.concat(data)
+          }
         },
       });
     },
@@ -71,15 +77,15 @@ export default {
     },
   },
 
-  onReachBottom(e) {
-    if (this.pageNo < this.totalPage) {
-      this.pageNo = this.pageNo + 1;
+  onReachBottom() {
+    if (this.page < this.totalPage) {
+      this.page = this.page + 1;
       this.getCoursePay();
     }
   },
 
   onPullDownRefresh() {
-    this.pageNo = 1;
+    this.page = 1;
     this.list = [];
     this.getCoursePay();
   },
@@ -155,6 +161,14 @@ export default {
       font-size: 28rpx;
       color: #676767;
     }
+  }
+
+  .footer-tip {
+    font-size: 24rpx;
+    color: #999;
+    text-align: center;
+    margin-top: 30rpx;
+    margin-bottom: 30rpx;
   }
 
   .no-order {

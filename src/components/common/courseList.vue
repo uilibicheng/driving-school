@@ -3,14 +3,16 @@
     <view class="area-item" v-for="(place, placeIndex) in courseList" :key="placeIndex">
       <view class="title">{{place.courseSite}}</view>
       <view class="exam-item" v-for="(item, index) in place.courseInfoVOList" :key="index">
+        <!-- 左边 -->
         <view class="image-wrap" @click="goToDetail(item.id)">
           <view class="image-info">
             <view class="image-info-title">{{item.courseName}}</view>
-            <view>{{item.courseIntro}}</view>
+            <view class="image-info-desc">{{item.courseIntro}}</view>
             <view class="image-info-line"></view>
           </view>
           <image :src="item.videoInfoVO && item.videoInfoVO.videoThumbUrl" mode="aspectFill" />
         </view>
+        <!-- 右边 -->
         <view class="exam-item-right">
           <view class="exam-item-right-title" @click="goToDetail(item.id)">{{item.courseName}}</view>
           <view class="right-bottom-wrap">
@@ -161,6 +163,14 @@ export default {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+          }
+          .image-info-desc {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
           }
           .image-info-line {
             margin-top: 20rpx;

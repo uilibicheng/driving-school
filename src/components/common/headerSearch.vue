@@ -2,7 +2,7 @@
   <view class="header">
     <view class="search-wrap">
       <view class="btn-icon" v-if="isSelect" @click="goToSelect">{{areaData.territoryName}}</view>
-      <view class="line"></view>
+      <view class="line" v-if="isSelect"></view>
       <image class="search-icon" src="@/static/home/icon-search.png">
       <input class="search-bar" type="text" placeholder="城市/考场" />
     </view>
