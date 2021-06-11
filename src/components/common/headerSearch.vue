@@ -62,13 +62,17 @@ export default {
   }
 
   .btn-icon {
-    width: 150rpx;
+    min-width: 150rpx;
+    max-width: 200rpx;
     padding-left: 10rpx;
+    // padding-right: 20px;
+    box-sizing: border-box;
     text-align: center;
     color: #666;
     font-size: 28rpx;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
 
     &::after {
       display: inline-block;

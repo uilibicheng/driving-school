@@ -1,8 +1,8 @@
 <template>
   <view class="content">
-    <view class="area-item" v-for="(place, placeIndex) in Object.keys(courseData)" :key="placeIndex">
-      <view class="title">{{place}}</view>
-      <view class="exam-item" v-for="(item, index) in courseData[place]" :key="index">
+    <view class="area-item" v-for="(place, placeIndex) in courseList" :key="placeIndex">
+      <view class="title">{{place.courseSite}}</view>
+      <view class="exam-item" v-for="(item, index) in place.courseInfoVOList" :key="index">
         <view class="image-wrap" @click="goToDetail(item.id)">
           <view class="image-info">
             <view class="image-info-title">{{item.courseName}}</view>
@@ -38,7 +38,7 @@
         </view>
       </view>
     </view>
-    <view class="footer-tip">{{Object.keys(courseData) && Object.keys(courseData).length ? '已经到底喽～' : '暂无数据'}}</view>
+    <view class="footer-tip">{{Object.keys(courseList) && Object.keys(courseList).length ? '已经到底喽～' : '暂无数据'}}</view>
   </view>
 </template>
 
@@ -48,9 +48,9 @@ import utils from '@/utils/common'
 
 export default {
   props: {
-    courseData: {
-      type: Object,
-      default: {},
+    courseList: {
+      type: Array,
+      default: [],
     },
     buttonText: {
       type: String,

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <CoachView  v-if="userInfo && userInfo.roleCode" :courseData="courseData" />
-    <StudentView v-else :courseData="courseData" />
+    <CoachView  v-if="userInfo && userInfo.roleCode" :courseList="courseList" />
+    <StudentView v-else :courseList="courseList" />
   </div>
 </template>
 
@@ -20,10 +20,10 @@ export default {
   data() {
     return {
       userInfo: {},
-			courseData: {},
+			courseList: [],
       page: 1,
-      limit: 200,
-      totalPage: 0,
+      limit: 10,
+      totalPage: 1,
     }
   },
 
@@ -46,8 +46,20 @@ export default {
 				data,
         success: (res) => {
           this.totalPage = res.pages;
-          let data = res
-          this.courseData = Object.assign({}, this.courseData, data)
+          let data = res.list
+          if (res.current === 1) {
+            this.courseList = data
+          } else {
+            if (data && data.length && this.courseList.length) {
+              const length = this.courseList.length
+              // 如果新的第一条考场和旧列表最后一条是同个考场
+              if (data[0].courseSite === this.courseList[length - 1].courseSite) {
+                this.courseList[length - 1].courseInfoVOList = this.courseList[length - 1].courseInfoVOList.concat(data[0].courseInfoVOList)
+                data.splice(0, 1)
+              }
+            }
+            this.courseList = this.courseList.concat(data)
+          }
         },
       });
 		},
@@ -62,7 +74,7 @@ export default {
 
   onPullDownRefresh() {
     this.page = 1;
-    this.courseData = {};
+    this.courseList = [];
     this.getCourseList();
   },
 }

@@ -41,7 +41,7 @@
     <view class="divider"></view>
     
     <view class="tool-box">
-      <view class="tool-item">
+      <view class="tool-item" @click="handleToStudent">
         <image src="@/static/tool/poster.png" />
         <view>招生海报</view>
       </view>
@@ -115,9 +115,14 @@ export default {
     getAdList() {
       this.$http.data.getAdList({
         success: res => {
-          console.log('res', res)
           this.bannerList = res
         }
+      })
+    },
+
+    handleToStudent() {
+      uni.navigateTo({
+        url: `/pages/poster/index?type=STUDENT`
       })
     },
 

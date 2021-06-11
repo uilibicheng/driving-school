@@ -13,7 +13,7 @@
     </view> -->
     <NavList />
 
-    <CourseList :courseData="courseData" buttonText="发给学员" :isCopy="true" />
+    <CourseList :courseList="courseList" buttonText="发给学员" :isCopy="true" />
     <BottomBar activeType="home" />
   </view>
 </template>
@@ -33,9 +33,9 @@ export default {
 	},
 
   props: {
-    courseData: {
-      type: Object,
-      default: {},
+    courseList: {
+      type: Array,
+      default: [],
     },
   },
 

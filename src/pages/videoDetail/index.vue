@@ -14,12 +14,13 @@
     </view>
     <!-- 简介 -->
     <view class="intro" v-if="tabIndex === 1">
-      <view class="intro-title">{{detailInfo.name}}</view>
+      <view class="intro-title">{{detailInfo.courseName}}</view>
+      <view class="intro-desc">{{detailInfo.courseIntro}}</view>
       <!-- <view class="video-list">
         <view class="list-item" v-for="item in 3">河源铺前科三2号线（自动挡）最新</view>
       </view> -->
       <view class="view-desc">
-        <!-- <view class="desc-title">本合集包括以上所有视频内容</view> -->
+        <!-- <view class="desc-title">{{detailInfo.courseIntro}}</view> -->
         <view class="desc-num">{{detailInfo.videoInfoVO ? detailInfo.videoInfoVO.videoPlayCount : 0}}次播放</view>
         <view class="desc-price">
           <text class="desc-symbol">￥</text>{{detailInfo.coursePrice}}
@@ -84,10 +85,10 @@ export default {
 	},
 
   onLoad(option) {
+    console.log(11111)
     this.userInfo = localM.get(LOCAL_KEY.USER)
 		if (option.id) {
       this.id = option.id
-			this.getVideoById()
 		} else {
 			uni.redirectTo({
 				url: '/pages/index/index'
@@ -121,10 +122,16 @@ export default {
       this.$http.course.getCourseInfo({
 				data,
         success: (data) => {
-          Object.keys(data)
-          if (Object.keys(data)[0]) {
-            this.detailInfo = data[Object.keys(data)[0]] ? data[Object.keys(data)[0]][0] : {}
+          console.log('data', data)
+          const list = data.list
+          if (list && list[0]) {
+            const infoList = list[0].courseInfoVOList
+            this.detailInfo = infoList && infoList[0] ? infoList[0] : {}
             this.videoContext = uni.createVideoContext('courseVideo')
+          } else {
+            uni.redirectTo({
+              url: '/pages/index/index'
+            })
           }
         },
       });
@@ -280,7 +287,7 @@ export default {
       font-size: 28rpx;
 
       .desc-title {
-        font-size: 32rpx;
+        font-size: 28rpx;
         margin-bottom: 15rpx;
       }
 
@@ -318,7 +325,7 @@ export default {
     }
 
     .intro-desc {
-      margin-top: 30rpx;
+      margin-top: 15rpx;
       font-size: 28rpx;
     }
   }
