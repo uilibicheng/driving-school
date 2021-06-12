@@ -10,11 +10,11 @@
           <view>{{user.nickName}}</view>
         </view>
         <view class="info-bottom" v-if="user.roleCode">
-          <view class="tool-item">
+          <view class="tool-item" @click="handleDevelop">
             <image src="@/static/user/coach.png" />
             教练工具
           </view>
-          <view class="tool-item">
+          <view class="tool-item" @click="handleDevelop">
             <image src="@/static/user/order.png" />
             学车工具
           </view>
@@ -36,7 +36,7 @@
         </view>
         <image class="arrow" src="@/static/user/arrow.png" />
       </view>
-      <view class="function-item" @click="handleClick(2)">
+      <view class="function-item" @click="handleClick(2)" v-if="isOneLevelProxy">
         <view class="item-left">
           <image class="invite" src="@/static/user/invite.png" />
           邀请代理
@@ -76,9 +76,10 @@
 import bottomBar from '@/components/common/bottomBar'
 import BigImg from '@/components/common/bigImg'
 import localM from '@/utils/common/local'
-import {LOCAL_KEY} from '@/config/constants'
+import {LOCAL_KEY, ROLE_CODE} from '@/config/constants'
 import common from '@/utils/common'
 
+const userInfo = localM.get(LOCAL_KEY.USER)
 export default {
   components: {
     bottomBar,
@@ -88,7 +89,8 @@ export default {
     return {
       user: {},
       visible: false,
-      imgUrl: ''
+      imgUrl: '',
+      isOneLevelProxy: userInfo.roleCode === ROLE_CODE.ONE_LEVEL_PROXY
     }
   },
 
@@ -116,7 +118,10 @@ export default {
           break
       }
     },
-
+    handleDevelop() {
+      this.$toast('该功能正在火速开发中...')
+    },
+  
     openQRCode() {
       this.visible = true
       this.imgUrl = require('@/static/user/service_customer.png')

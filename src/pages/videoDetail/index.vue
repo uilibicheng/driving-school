@@ -3,10 +3,11 @@
     <video
       v-show="tabIndex !== 3"
       id="courseVideo"
-      class="video-content"
+      :class="[!isFullscreen ? 'video-content' : 'fullscreen-video-content']"
       :src="detailInfo.videoInfoVO && detailInfo.videoInfoVO.videoUrl"
-      object-fit="cover"
-      @play="playVideo" />
+      object-fit="contain"
+      @play="playVideo"
+      @fullscreenchange="fullscreenchange" />
     <view class="tab">
       <view :class="['tab-item', {active: tabIndex === 1}]" @click="switchTab(1)">简介</view>
       <view :class="['tab-item', {active: tabIndex === 2}]" @click="switchTab(2)">进度</view>
@@ -81,6 +82,7 @@ export default {
       tabIndex: 1, 
       visible: false,
       imgUrl: '',
+      isFullscreen: false,
 		}
 	},
 
@@ -147,6 +149,14 @@ export default {
     // 学员端功能
     playVideo() {
       this.hadBuy()
+    },
+
+    // 全屏
+    fullscreenchange(event) {
+      const {fullScreen, direction} = event.detail
+      console.log(1111, fullScreen, direction)
+      this.$toast('111' + fullScreen + '方向' + direction)
+      this.isFullscreen = !fullScreen
     },
 
     hadBuy() {
@@ -236,6 +246,12 @@ export default {
   padding-bottom: 120rpx;
   .video-content {
     width: 100%;
+  }
+
+  .fullscreen-video-content {
+    width: 100vh;
+    height: 100vw;
+    transform: rotate(-90deg);
   }
 
   .tab {

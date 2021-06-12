@@ -40,7 +40,7 @@ export default {
         sidx: 'courseSite',
         order: 'desc',
         roleCode: this.userInfo.roleCode || '',
-        parentId: this.userInfo.pid || 0
+        parentId: this.userInfo.pid || ''
 			}
       this.$http.course.getCourseList({
 				data,

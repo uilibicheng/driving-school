@@ -5,23 +5,23 @@
         class="order-item"
         v-for="(item, index) in list"
         :key="index"
-        @click="goToDetail(item.courseInfoVOList[0].id)"
+        @click="goToDetail(item.id)"
       >
         <view class="item-top">
           <view class="item-header">
-            <view>订单编号：{{item.courseInfoVOList[0].payInfo ? item.courseInfoVOList[0].payInfo.orderId : item.courseInfoVOList[0].id}}</view>
+            <view>订单编号：{{item.orderId || item.id}}</view>
           </view>
           <view class="item-info">
-            <image :src="item.courseInfoVOList[0].videoInfoVO && item.courseInfoVOList[0].videoInfoVO.videoThumbUrl" mode="aspectFit" />
+            <image :src="item.videoThumbUrl" mode="aspectFit" />
             <view class="info-desc">
-              <view class="item-name">{{item.courseInfoVOList[0].courseName}}</view>
+              <view class="item-name">{{item.videoName}}</view>
               <view class="price">
-                <text class="symbol">￥</text>{{item.courseInfoVOList[0].coursePrice}}
+                <text class="symbol">￥</text>{{item.coursePrice}}
               </view>
             </view>
           </view>
         </view>
-        <view class="item-bottom">订单日期：{{item.courseInfoVOList[0].payInfo && item.courseInfoVOList[0].payInfo.payTime}}</view>
+        <view class="item-bottom">订单日期：{{item.payTime}}</view>
       </view>
       <view class="footer-tip">已经到底喽～</view>
     </view>

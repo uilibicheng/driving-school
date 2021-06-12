@@ -1,8 +1,8 @@
 <template>
   <view class="index">
     <HeaderSearch :areaData="areaData" />
-
-    <CourseList :courseData="courseData" buttonText="查看详情" :buttonClick="goToDetail" />
+    <NavList />
+    <CourseList :courseList="courseList" buttonText="查看详情" :buttonClick="goToDetail" />
 
     <BottomBar activeType="home" />
   </view>
@@ -11,6 +11,7 @@
 <script>
 import HeaderSearch from '@/components/common/headerSearch'
 import CourseList from '@/components/common/courseList'
+import NavList from '@/components/common/navList'
 import BottomBar from '@/components/common/bottomBar'
 import localM from "@/utils/common/local";
 import { LOCAL_KEY } from "@/config/constants";
@@ -19,13 +20,14 @@ export default {
   components: {
     BottomBar,
     HeaderSearch,
+    NavList,
     CourseList,
 	},
 
   props: {
-    courseData: {
-      type: Object,
-      default: {},
+    courseList: {
+      type: Array,
+      default: [],
     },
   },
 

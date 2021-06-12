@@ -66,7 +66,8 @@ export default {
         limit: this.limit,
         sidx: 'mapPlace',
         order: 'desc',
-        userId: this.userInfo.userId || 0
+        userId: this.userInfo.userId || '',
+        parentId: this.userInfo.pid || ''
 			}
       this.$http.data.getMapList({
 				data,
