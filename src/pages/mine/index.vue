@@ -90,7 +90,7 @@ export default {
       user: {},
       visible: false,
       imgUrl: '',
-      isOneLevelProxy: userInfo.roleCode === ROLE_CODE.ONE_LEVEL_PROXY
+      isOneLevelProxy: userInfo && userInfo.roleCode === ROLE_CODE.ONE_LEVEL_PROXY
     }
   },
 

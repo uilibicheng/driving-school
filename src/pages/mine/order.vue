@@ -5,11 +5,11 @@
         class="order-item"
         v-for="(item, index) in list"
         :key="index"
-        @click="goToDetail(item.id)"
+        @click="goToDetail(item.courseId)"
       >
         <view class="item-top">
           <view class="item-header">
-            <view>订单编号：{{item.orderId || item.id}}</view>
+            <view>订单编号：{{item.orderId || item.courseId}}</view>
           </view>
           <view class="item-info">
             <image :src="item.videoThumbUrl" mode="aspectFit" />

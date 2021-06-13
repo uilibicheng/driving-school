@@ -41,11 +41,11 @@
         <view>直接推广订单</view>
         <view class="item-num">{{reportInfo.twoLevelProxyTotalCount}}</view>
       </view>
-      <view class="income-item">
+      <view class="income-item" v-if="isOneLevelProxy">
         <view>下级推广订单</view>
         <view class="item-num">{{reportInfo.twoLevelProxyTotalCount}}</view>
       </view>
-      <view class="income-item">
+      <view class="income-item" v-if="isOneLevelProxy">
         <view>下级代理</view>
         <view><text class="item-num">{{reportInfo.twoLevelProxyTotalCount}}</text>人</view>
       </view>
@@ -66,15 +66,17 @@
 <script>
 import bottomBar from '@/components/common/bottomBar'
 import localM from '@/utils/common/local'
-import {LOCAL_KEY} from '@/config/constants'
+import {LOCAL_KEY, ROLE_CODE} from '@/config/constants'
 
+const userInfo = localM.get(LOCAL_KEY.USER)
 export default {
   components: {
     bottomBar,
   },
   data() {
     return {
-      reportInfo: {}
+      reportInfo: {},
+      isOneLevelProxy: userInfo && userInfo.roleCode === ROLE_CODE.ONE_LEVEL_PROXY
     }
   },
 
@@ -91,7 +93,6 @@ export default {
       this.$http.user.getUserReport({
         data,
         success: res => {
-          console.log('res', res)
           this.reportInfo = res
         }
       })
