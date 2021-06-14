@@ -53,7 +53,7 @@
     </view>
 
     <view class="function-wrap">
-      <view class="function-item">
+      <view class="function-item" @click="followOfficalAccount">
         <view class="item-left">
           <image class="concern" src="@/static/user/concern.png" />
           关注公众号
@@ -120,6 +120,11 @@ export default {
     },
     handleDevelop() {
       this.$toast('该功能正在火速开发中...')
+    },
+
+    followOfficalAccount() {
+      this.visible = true
+      this.imgUrl = require('@/static/user/offical-accounts.jpg')
     },
   
     openQRCode() {

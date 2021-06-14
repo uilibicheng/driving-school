@@ -6,7 +6,7 @@
         :src="path"
         mode="aspectFit"
       />
-      <view class="img-tip">长按图片保存到相册</view>
+      <view class="img-tip">长按图片扫描或保存到相册</view>
     </view>
   </view>
 </template>
