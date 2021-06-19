@@ -5,7 +5,6 @@ import { LOCAL_KEY } from "@/config/constants";
 
 export default {
 	onLaunch: function(options) {
-		console.log('App Launch', options)
 		// 非登录页进行判断是否有登陆
 		if (options.path !== 'pages/login/login') {
 			let params = {}
@@ -15,7 +14,6 @@ export default {
 			if (options.query.roleCode) {
 				params.roleCode = options.query.roleCode
 			}
-			console.log('LOGIN_PARAMS', params)
 			localM.set(LOCAL_KEY.LOGIN_PARAMS, params);
 			if (!localM.get(LOCAL_KEY.TOKEN)) {
 				return common.toManage("/pages/login/login")

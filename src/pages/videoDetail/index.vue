@@ -87,7 +87,6 @@ export default {
 	},
 
   onLoad(option) {
-    console.log(11111)
     this.userInfo = localM.get(LOCAL_KEY.USER)
 		if (option.id) {
       this.id = option.id
@@ -207,7 +206,6 @@ export default {
         data: data,
         success: res => {
           //支付
-          console.log('pay', res)
           try {
             WeixinJSBridge.invoke(
               "getBrandWCPayRequest",

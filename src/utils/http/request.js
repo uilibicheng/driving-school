@@ -32,9 +32,10 @@ class SuperClass {
       if (userInfo && userInfo.id) {
         data.userId = userInfo.id
       }
-
+      const url = String(opts.url).includes('http') ? opts.ur : baseUrl + opts.url
+      console.log('url', url)
       uni.request({
-        url: baseUrl + opts.url,
+        url,
         data: data,
         header: opts.header,
         method: opts.method || 'GET',
@@ -107,7 +108,7 @@ const decorator = Sup => class extends Sup { // 超类，实现多继承
 
     const cb = await sendFun(opts)
     if (!!cb) {
-      (cb.code === 200) && opts.success && opts.success(cb.data)
+      (cb.code === 200) && opts.success && opts.success(cb.data || cb.result)
     }
   }
 

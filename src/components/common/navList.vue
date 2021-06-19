@@ -1,13 +1,22 @@
 <template>
   <view class="nav-list">
     <template v-for="item in navItems">
-      <view :class="['nav-item', item.className]" :key="item.id" v-if="item.isShow" @click="handleClick(item.id)">
-        <image :src="item.icon" />
-        <view class="nav-item-right">
-          <view class="right-title">{{item.title}}</view>
-          <view class="right-sub">{{item.sub}}</view>
+      <template>
+        <view :class="['nav-item', item.className]" :key="item.id" v-if="item.isShow" @click="handleClick(item.id)">
+          <image :src="item.icon" />
+          <view class="nav-item-right">
+            <view class="right-title">{{item.title}}</view>
+            <view class="right-sub">{{item.sub}}</view>
+          </view>
+          <view class="launch-app" v-if="item.id === 3 || item.id === 6">
+            <wx-open-launch-weapp :username="username" path="/pages/index/index.html">
+              <script type="text/wxtag-template">
+                <view></view>
+              </script>
+            </wx-open-launch-weapp>
+          </view>
         </view>
-      </view>
+      </template>
     </template>
   </view>
 </template>
@@ -70,8 +79,13 @@ export default {
           isShow: true
         }
       ],
-      userInfo: {}
+      userInfo: {},
+      username: ''
     }
+  },
+
+  mounted() {
+    this.getMiniPhotoPath()
   },
 
   methods: {
@@ -87,14 +101,41 @@ export default {
             url: `/pages/poster/index?type=STUDENT`
           })
           break
+        case 3:
+          break
         case 5:
           uni.navigateTo({
             url: `/pages/mapList/index`
           })
           break
+        case 6:
+          break
         default:
           this.$toast('该功能正在火速开发中...')
       }
+    },
+
+    getMiniPhotoPath() {
+      const data = {
+        url: window.location.href
+      }
+      this.$http.user.getMiniPhotoPath({
+        data,
+        success: res => {
+          console.log('res', res)
+          console.log('wx', jWeixin)
+          this.username = res.username
+          jWeixin.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
+            appId: res.config.appId, // 必填，公众号的唯一标识
+            timestamp: res.config.timestamp, // 必填，生成签名的时间戳
+            nonceStr: res.config.nonceStr, // 必填，生成签名的随机串
+            signature: res.config.signature,// 必填，签名
+            jsApiList: ['chooseImage'], // 必填，需要使用的JS接口列表
+            openTagList: ['wx-open-launch-weapp'] // 可选，需要使用的开放标签列表，例如['wx-open-launch-app']
+          });
+        }
+      })
     }
   }
 }
@@ -122,6 +163,14 @@ export default {
     box-sizing: border-box;
     font-size: 24rpx;
     color: #fff;
+    position: relative;
+    .launch-app {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+    }
     image {
       width: 50rpx;
       height: 70rpx;
