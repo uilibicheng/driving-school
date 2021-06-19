@@ -10,7 +10,7 @@
             <view class="image-info-desc">{{item.courseIntro}}</view>
             <view class="image-info-line"></view>
           </view>
-          <image :src="item.videoInfoVO && item.videoInfoVO.videoThumbUrl" mode="aspectFill" />
+          <image :src="(item.videoInfoVO && item.videoInfoVO.videoThumbUrl) || videoThumb" mode="aspectFill" />
         </view>
         <!-- 右边 -->
         <view class="exam-item-right">
@@ -69,6 +69,12 @@ export default {
     buttonClick: {
       type: Function,
       default: () => {}
+    }
+  },
+
+  data() {
+    return {
+      videoThumb: require("@/static/home/video-thumb.png")
     }
   },
 
@@ -147,7 +153,7 @@ export default {
           position: absolute;
           top: 0;
           left: 0;
-          width: 100%;
+          width: 210rpx;
           height: 100%;
           display: flex;
           flex-direction: column;

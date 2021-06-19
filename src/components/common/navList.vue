@@ -9,9 +9,16 @@
             <view class="right-sub">{{item.sub}}</view>
           </view>
           <view class="launch-app" v-if="item.id === 3 || item.id === 6">
-            <wx-open-launch-weapp :username="username" path="/pages/index/index.html">
+            <wx-open-launch-weapp
+              :username="username"
+              :path="item.path">
               <script type="text/wxtag-template">
-                <view></view>
+                <style>.box{width: 100%; height: 100%}</style>
+                <div class="box">
+                  <div>　　　</div><!-- 中间为占位符 -->
+                  <div>　　　</div><!-- 中间为占位符 -->
+                  <div>　　　</div><!-- 中间为占位符 -->
+                </div>
               </script>
             </wx-open-launch-weapp>
           </view>
@@ -52,7 +59,8 @@ export default {
           title: "学车工具",
           sub: 'Instructor',
           className: 'instructor',
-          isShow: !!userInfo.roleCode
+          isShow: !!userInfo.roleCode,
+          path: '/pages/packageB/pages/queryZone/queryIndex/queryIndex.html'
         },
         {
           id: 4,
@@ -76,7 +84,8 @@ export default {
           title: "回执拍照",
           sub: 'Shot',
           className: 'photo',
-          isShow: true
+          isShow: true,
+          path: '/pages/tabBar/home/home.html'
         }
       ],
       userInfo: {},
@@ -84,7 +93,7 @@ export default {
     }
   },
 
-  mounted() {
+  created() {
     this.getMiniPhotoPath()
   },
 
@@ -122,11 +131,9 @@ export default {
       this.$http.user.getMiniPhotoPath({
         data,
         success: res => {
-          console.log('res', res)
-          console.log('wx', jWeixin)
           this.username = res.username
           jWeixin.config({
-            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
             appId: res.config.appId, // 必填，公众号的唯一标识
             timestamp: res.config.timestamp, // 必填，生成签名的时间戳
             nonceStr: res.config.nonceStr, // 必填，生成签名的随机串
@@ -136,7 +143,7 @@ export default {
           });
         }
       })
-    }
+    },
   }
 }
 </script>
@@ -172,6 +179,13 @@ export default {
       top: 0;
       z-index: 999;
       opacity: 0;
+      wx-open-launch-weapp {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+      }
     }
     image {
       width: 50rpx;
