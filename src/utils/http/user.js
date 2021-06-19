@@ -22,8 +22,7 @@ export default {
   },
 
   getMiniPhotoPath(opts) {
-    // opts.url = `http://47.114.97.144:50/api/wx/navigate/to/mini/photo`
-    opts.url = `/api/wx/navigate/to/mini/photo`
+    opts.url = `/video/appSkip/toPhotoApp`
     $http.post(opts)
   },
 }

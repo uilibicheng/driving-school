@@ -117,7 +117,7 @@ export default {
 
     getMiniPhotoPath() {
       const data = {
-        url: window.location.href
+        photoUrl: window.location.href
       }
       this.$http.user.getMiniPhotoPath({
         data,
@@ -170,6 +170,8 @@ export default {
       height: 100%;
       left: 0;
       top: 0;
+      z-index: 999;
+      opacity: 0;
     }
     image {
       width: 50rpx;
