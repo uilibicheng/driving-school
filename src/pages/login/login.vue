@@ -15,7 +15,7 @@ export default {
   },
   onLoad(option) {
     if (option.url) {
-      this.navigateUrl = JSON.parse(decodeURIComponent(options.url));
+      this.navigateUrl = decodeURIComponent(option.url);
     }
     var code = option.code;
     if (code) {
@@ -40,19 +40,12 @@ export default {
       this.$http.user.login({
         data,
         success: (res) => {
-          console.log('login', res)
           localM.set(LOCAL_KEY.TOKEN, res.token);
           localM.set(LOCAL_KEY.USER, res.userInfo);
           if (this.navigateUrl) {
-            if (constants.SWITCH_TAB_URL.includes(this.navigateUrl)) {
-              uni.redirectTo({
-                url: this.navigateUrl,
-              });
-            } else {
-              uni.redirectTo({
-                url: this.navigateUrl,
-              });
-            }
+            uni.redirectTo({
+              url: this.navigateUrl,
+            });
           } else {
             uni.redirectTo({
               url: "/pages/index/index",

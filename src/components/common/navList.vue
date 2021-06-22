@@ -59,13 +59,13 @@ export default {
           title: "学车工具",
           sub: 'Instructor',
           className: 'instructor',
-          isShow: !!userInfo.roleCode,
+          isShow: true,
           path: '/pages/packageB/pages/queryZone/queryIndex/queryIndex.html'
         },
         {
           id: 4,
           icon: require("@/static/home/icon-free.png"),
-          title: "申请免费",
+          title: "免费试看",
           sub: '观看',
           className: 'free',
           isShow: true

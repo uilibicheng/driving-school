@@ -12,6 +12,22 @@ var month = day * 30;
 
 export default {
   toManage: function (redirect_uri) {
+    let pages = getCurrentPages()
+    let currentPage = pages[pages.length - 1]
+    console.log('pages', currentPage)
+    if (currentPage) {
+      let navigateUrl = '/' + currentPage.route
+      let params = Object.keys(currentPage.options) || []
+      if (params.length) {
+        params.forEach((key, index) => {
+          navigateUrl = `${navigateUrl}${index === 0 ? '?' : '&'}${key}=${currentPage.options[key]}`
+        })
+      }
+      if (navigateUrl) {
+        redirect_uri = `${redirect_uri}?url=${encodeURIComponent(navigateUrl)}`
+      }
+    }
+    console.log('redirect_uri', redirect_uri)
     let url = encodeURIComponent(rootUrl + '/#' + redirect_uri)
     location.href = "https:/\/open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&response_type=code&scope=snsapi_userinfo&redirect_uri=" + url + "&state=1#wechat_redirect"
   },

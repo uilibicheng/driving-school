@@ -5,7 +5,7 @@
       <view class="exam-item" v-for="(item, index) in place.courseInfoVOList" :key="index">
         <!-- 左边 -->
         <view class="image-wrap" @click="goToDetail(item.id)">
-          <view class="image-info">
+          <view class="image-info" v-if="!(item.videoInfoVO && item.videoInfoVO.videoThumbUrl)">
             <view class="image-info-title">{{item.courseName}}</view>
             <view class="image-info-desc">{{item.courseIntro}}</view>
             <view class="image-info-line"></view>

@@ -205,6 +205,7 @@ export default {
       this.$http.course.payCourse({
         data: data,
         success: res => {
+          this.$toast('获取支付信息成功')
           //支付
           try {
             WeixinJSBridge.invoke(
@@ -219,8 +220,10 @@ export default {
               },
               function(res1) {
                 this.getVideoById()
+                alert('获取视频详情1')
                 if (res1.err_msg == "get_brand_wcpay_request:ok") {
                   this.getVideoById()
+                  alert('获取视频详情2')
                   uni.showToast({
                     title: "支付成功",
                     duration: 3000
@@ -233,6 +236,9 @@ export default {
             this.$toast(JSON.stringify(err))
           }
         },
+        fail: err => {
+          this.$toast(`获取支付失败${err}`)
+        }
       });
     },
 	},
