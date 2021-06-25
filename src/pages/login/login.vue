@@ -14,11 +14,14 @@ export default {
     };
   },
   onLoad(option) {
-    if (option.url) {
-      this.navigateUrl = decodeURIComponent(option.url);
-    }
+    console.log('option', option)
     var code = option.code;
+    console.log(code)
+    return
     if (code) {
+      if (option.url) {
+        this.navigateUrl = decodeURIComponent(option.url);
+      }
       this.login(code)
     } else {
       let urlarr = window.location.href.split('#')
@@ -31,7 +34,6 @@ export default {
     login(code) {
       let data = {
         code,
-        // code: '041iball2nIM774Y5Ukl2hTsuL2ibalw',
         appId: constants.APPID,
         ...localM.get(LOCAL_KEY.LOGIN_PARAMS)
         // recommendId: localM.get(LOCAL_KEY.LOGIN_PARAMS),

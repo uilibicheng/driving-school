@@ -95,7 +95,7 @@ export default {
   },
 
   onLoad() {
-    if (localM.get(LOCAL_KEY.USER)) {
+    if (localM.get(LOCAL_KEY.USER) && localM.get(LOCAL_KEY.USER).id) {
       this.user = localM.get(LOCAL_KEY.USER)
     } else {
       common.toManage("/pages/login/login")

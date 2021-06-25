@@ -16,7 +16,9 @@ export default {
 			}
 			localM.set(LOCAL_KEY.LOGIN_PARAMS, params);
 			if (!localM.get(LOCAL_KEY.TOKEN)) {
-				return common.toManage("/pages/login/login")
+				// return common.toManage("/pages/login/login")
+				localM.set(LOCAL_KEY.TOKEN, '');
+        localM.set(LOCAL_KEY.USER, {});
 			}
 		}
 	},
