@@ -17,15 +17,17 @@ export default {
     console.log('option', option)
     var code = option.code;
     console.log(code)
-    return
     if (code) {
+      console.log('url', option.url)
       if (option.url) {
         this.navigateUrl = decodeURIComponent(option.url);
       }
       this.login(code)
     } else {
+      // 进入登录页，由于地址规则不正确，需要重新组合，才能拿到code，再去登录
       let urlarr = window.location.href.split('#')
-      let url = urlarr[1] + '?' + urlarr[0].split('?')[1]
+      let index = urlarr[1].indexOf('?')
+      let url = `${urlarr[1]}${index > -1 ? '&' : '?'}${urlarr[0].split('?')[1]}`
       location.replace(window.location.origin + '/#' + url)
     }
   },
@@ -44,6 +46,7 @@ export default {
         success: (res) => {
           localM.set(LOCAL_KEY.TOKEN, res.token);
           localM.set(LOCAL_KEY.USER, res.userInfo);
+          console.log('navigateUrl', this.navigateUrl)
           if (this.navigateUrl) {
             uni.redirectTo({
               url: this.navigateUrl,

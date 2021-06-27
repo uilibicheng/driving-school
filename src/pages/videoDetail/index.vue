@@ -125,6 +125,7 @@ export default {
         success: (data) => {
           console.log('data', data)
           const list = data.list
+          alert('获取视频详情')
           if (list && list[0]) {
             const infoList = list[0].courseInfoVOList
             this.detailInfo = infoList && infoList[0] ? infoList[0] : {}
@@ -147,14 +148,16 @@ export default {
 
     // 学员端功能
     playVideo() {
-      this.hadBuy()
+      if (!this.hadBuy()) return
+      // 视频点击播放增加播放量
+      this.$http.course.incrementDownloadVideo({
+				id: this.id,
+      });
     },
 
     // 全屏
     fullscreenchange(event) {
       const {fullScreen, direction} = event.detail
-      console.log(1111, fullScreen, direction)
-      this.$toast('111' + fullScreen + '方向' + direction)
       this.isFullscreen = !fullScreen
     },
 
@@ -179,9 +182,47 @@ export default {
     downloadMap() {
       this.imgUrl = this.detailInfo.mapInfoVO ? this.detailInfo.mapInfoVO.mapUrl : ''
       this.visible = true
+      // 视频点击播放增加播放量
+      this.$http.course.incrementDownloadMap({
+				id: this.id,
+      });
     },
 
     buyVideo() {
+      // 判断是否在微信
+      let ua = navigator.userAgent.toLowerCase()
+      if (ua.match(/MicroMessenger/i) == "micromessenger") {
+        // ios的ua中无miniProgram，但都有MicroMessenger（表示是微信浏览器）
+        jWeixin.miniProgram.getEnv(res => {
+          // 支付参数
+          const data = {
+            courseId: this.detailInfo.id,
+            price: String(this.detailInfo.coursePrice) || '',
+            dealPrice: String(this.detailInfo.coursePrice) || '',
+            recommendUserId: '',
+          }
+          if (res.miniprogram) {
+            // 在小程序里
+            alert('在小程序里')
+            data.userId = localM.get(LOCAL_KEY.USER).id
+            let options = ''
+            Object.keys(data).forEach(key => {
+              options = options + `&${key}=${data[key]}`
+            })
+            jWeixin.miniProgram.navigateTo({
+              url: `/pages/packageB/pages/queryZone/coursePay/coursePay?${options}`
+            })
+          } else {
+            // 不在小程序里
+            alert('不在小程序里')
+            data.token = localM.get(LOCAL_KEY.TOKEN)
+            this.wxPay(data)
+          }
+        })
+      }
+    },
+
+    wxPay(data) {
       if (typeof WeixinJSBridge === 'undefined') {
         uni.showToast({
           title: "支付失败，请在微信浏览器中打开",
@@ -190,22 +231,10 @@ export default {
         })
         return
       }
-
-      const params = {
-        courseId: this.detailInfo.id,
-        price: String(this.detailInfo.coursePrice) || '',
-        dealPrice: String(this.detailInfo.coursePrice) || '',
-        recommendUserId: '',
-        token: localM.get(LOCAL_KEY.TOKEN)
-      }
-      this.wxPay(params)
-    },
-
-    wxPay(data) {
       this.$http.course.payCourse({
-        data: data,
+        data,
         success: res => {
-          this.$toast('获取支付信息成功')
+          alert(`获取支付信息成功${res}`)
           //支付
           try {
             WeixinJSBridge.invoke(
@@ -220,7 +249,7 @@ export default {
               },
               function(res1) {
                 this.getVideoById()
-                alert('获取视频详情1')
+                alert(`获取视频详情1${res1}`)
                 if (res1.err_msg == "get_brand_wcpay_request:ok") {
                   this.getVideoById()
                   alert('获取视频详情2')
@@ -233,6 +262,7 @@ export default {
               }
             );
           } catch (err) {
+            alert(`支付失败${err}`)
             this.$toast(JSON.stringify(err))
           }
         },

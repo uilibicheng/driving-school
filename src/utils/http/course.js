@@ -45,4 +45,16 @@ export default {
     opts.url = '/video/pay/coursePay'
     $http.post(opts)
   },
+
+  // 视频下载量增量
+  incrementDownloadVideo(opts) {
+    opts.url = '/video/videoInfo/incrementDownloadVideo'
+    $http.post(opts)
+  },
+
+  // 地图下载量增量
+  incrementDownloadMap(opts) {
+    opts.url = '/video/mapInfo/incrementDownloadMap'
+    $http.post(opts)
+  },
 }

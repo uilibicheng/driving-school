@@ -89,12 +89,13 @@ export default {
         }
       ],
       userInfo: {},
-      username: ''
+      username: 'gh_e2e98df7fd1c', // 小程序username
     }
   },
 
   created() {
-    this.getMiniPhotoPath()
+    console.log('jWeixin', jWeixin)
+    // this.getMiniPhotoPath()
   },
 
   methods: {
