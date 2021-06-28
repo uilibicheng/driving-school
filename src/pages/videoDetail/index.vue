@@ -123,9 +123,7 @@ export default {
       this.$http.course.getCourseInfo({
 				data,
         success: (data) => {
-          console.log('data', data)
           const list = data.list
-          alert('获取视频详情')
           if (list && list[0]) {
             const infoList = list[0].courseInfoVOList
             this.detailInfo = infoList && infoList[0] ? infoList[0] : {}
@@ -151,7 +149,9 @@ export default {
       if (!this.hadBuy()) return
       // 视频点击播放增加播放量
       this.$http.course.incrementDownloadVideo({
-				id: this.id,
+				data: {
+          id: this.id,
+        }
       });
     },
 
@@ -162,6 +162,7 @@ export default {
     },
 
     hadBuy() {
+      return true
       if (this.userInfo.roleCode) return true
       if (!(this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.payStatus)) {
         this.$toast('需要购买该课程才能查看')
@@ -184,7 +185,9 @@ export default {
       this.visible = true
       // 视频点击播放增加播放量
       this.$http.course.incrementDownloadMap({
-				id: this.id,
+				data: {
+          id: this.id,
+        }
       });
     },
 
@@ -203,7 +206,6 @@ export default {
           }
           if (res.miniprogram) {
             // 在小程序里
-            alert('在小程序里')
             data.userId = localM.get(LOCAL_KEY.USER).id
             let options = ''
             Object.keys(data).forEach(key => {
@@ -214,7 +216,6 @@ export default {
             })
           } else {
             // 不在小程序里
-            alert('不在小程序里')
             data.token = localM.get(LOCAL_KEY.TOKEN)
             this.wxPay(data)
           }
@@ -234,7 +235,6 @@ export default {
       this.$http.course.payCourse({
         data,
         success: res => {
-          alert(`获取支付信息成功${res}`)
           //支付
           try {
             WeixinJSBridge.invoke(
@@ -249,10 +249,8 @@ export default {
               },
               function(res1) {
                 this.getVideoById()
-                alert(`获取视频详情1${res1}`)
                 if (res1.err_msg == "get_brand_wcpay_request:ok") {
                   this.getVideoById()
-                  alert('获取视频详情2')
                   uni.showToast({
                     title: "支付成功",
                     duration: 3000
@@ -262,7 +260,6 @@ export default {
               }
             );
           } catch (err) {
-            alert(`支付失败${err}`)
             this.$toast(JSON.stringify(err))
           }
         },

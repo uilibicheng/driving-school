@@ -33,7 +33,6 @@ class SuperClass {
         data.userId = userInfo.id
       }
       const url = String(opts.url).includes('http') ? opts.ur : baseUrl + opts.url
-      console.log('url', url)
       uni.request({
         url,
         data: data,
@@ -101,7 +100,7 @@ const decorator = Sup => class extends Sup { // 超类，实现多继承
   async _h(opts, token) {
     const sendFun = opts => {
       return super._rq(opts, token).catch(res => { //转化http请求 catch捕获promise的reject
-        toast((res && res.msg) || errorMessage) //统一提示，若有其他提示，会执行覆盖
+        toast((res && res.message) || errorMessage) //统一提示，若有其他提示，会执行覆盖
         opts.fail && opts.fail(res)
       })
     }
