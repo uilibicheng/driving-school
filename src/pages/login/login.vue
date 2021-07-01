@@ -14,11 +14,8 @@ export default {
     };
   },
   onLoad(option) {
-    console.log('option', option)
     var code = option.code;
-    console.log(code)
     if (code) {
-      console.log('url', option.url)
       if (option.url) {
         this.navigateUrl = decodeURIComponent(option.url);
       }
@@ -46,7 +43,6 @@ export default {
         success: (res) => {
           localM.set(LOCAL_KEY.TOKEN, res.token);
           localM.set(LOCAL_KEY.USER, res.userInfo);
-          console.log('navigateUrl', this.navigateUrl)
           if (this.navigateUrl) {
             uni.redirectTo({
               url: this.navigateUrl,

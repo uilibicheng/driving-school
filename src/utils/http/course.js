@@ -46,7 +46,7 @@ export default {
     $http.post(opts)
   },
 
-  // 视频下载量增量
+  // 视频播放量增量
   incrementPlayVideo(opts) {
     opts.url = '/video/videoInfo/incrementPlayVideo'
     opts.method = 'POST'

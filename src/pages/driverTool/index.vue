@@ -106,7 +106,6 @@ export default {
       this.$http.user.getCoachInfo({
         data,
         success: res => {
-          console.log('res', res)
           this.coachInfo = res
         }
       })

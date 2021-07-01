@@ -89,9 +89,11 @@ export default {
 	},
 
   onLoad(option) {
+    console.log('onLoad', option)
     this.userInfo = localM.get(LOCAL_KEY.USER)
 		if (option.id) {
       this.id = option.id
+      this.getVideoById()
 		} else {
 			uni.redirectTo({
 				url: '/pages/index/index'
@@ -111,11 +113,11 @@ export default {
     }
 	},
 
-  onShow() {
-    if (this.id) {
-      this.getVideoById()
-    }
-  },
+  // onShow() {
+  //   if (this.id) {
+  //     this.getVideoById()
+  //   }
+  // },
 
   methods: {
 		getVideoById() {
@@ -226,7 +228,7 @@ export default {
             Object.keys(data).forEach(key => {
               options = options + `&${key}=${data[key]}`
             })
-            jWeixin.miniProgram.navigateTo({
+            jWeixin.miniProgram.redirectTo({
               url: `/pages/packageB/pages/queryZone/coursePay/coursePay?${options}`
             })
           } else {

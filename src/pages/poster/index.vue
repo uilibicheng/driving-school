@@ -88,7 +88,6 @@ export default {
   },
 
   onLoad(options) {
-    console.log('options', options)
     if (options.type) {
       uni.showLoading({
         title: '海报加载中...'

@@ -53,7 +53,6 @@ export default {
       this.$http.course.getCourseGroup({
 				data,
         success: (res) => {
-          console.log('res', res)
           this.totalPage = res.pages;
 					let data = res.list
           if (res.current === 1) {
