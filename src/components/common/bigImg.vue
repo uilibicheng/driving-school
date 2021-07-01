@@ -57,6 +57,7 @@ export default {
   }
   image {
     width: 100%;
+    height: 500rpx;
   }
   .img-tip {
     color: #fff;

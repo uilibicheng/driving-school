@@ -7,6 +7,8 @@
       :src="detailInfo.videoInfoVO && detailInfo.videoInfoVO.videoUrl"
       object-fit="contain"
       @play="playVideo"
+      @loadedmetadata="completeLoad"
+      @progress="progress"
       @fullscreenchange="fullscreenchange" />
     <view class="tab">
       <view :class="['tab-item', {active: tabIndex === 1}]" @click="switchTab(1)">简介</view>
@@ -128,6 +130,10 @@ export default {
             const infoList = list[0].courseInfoVOList
             this.detailInfo = infoList && infoList[0] ? infoList[0] : {}
             this.videoContext = uni.createVideoContext('courseVideo')
+            uni.showLoading({
+              title: '视频加载中...',
+              mask: true,
+            });
           } else {
             uni.redirectTo({
               url: '/pages/index/index'
@@ -148,11 +154,20 @@ export default {
     playVideo() {
       if (!this.hadBuy()) return
       // 视频点击播放增加播放量
-      this.$http.course.incrementDownloadVideo({
+      this.$http.course.incrementPlayVideo({
 				data: {
-          id: this.id,
+          id: this.detailInfo.videoInfoVO.id,
         }
       });
+    },
+
+    // 视频加载
+    completeLoad() {
+      uni.hideLoading();
+    },
+
+    progress(e) {
+      console.log('e', e.detail.buffered)
     },
 
     // 全屏
@@ -186,7 +201,7 @@ export default {
       // 视频点击播放增加播放量
       this.$http.course.incrementDownloadMap({
 				data: {
-          id: this.id,
+          id: this.detailInfo.mapInfoVO.id,
         }
       });
     },

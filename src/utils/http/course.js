@@ -47,8 +47,8 @@ export default {
   },
 
   // 视频下载量增量
-  incrementDownloadVideo(opts) {
-    opts.url = '/video/videoInfo/incrementDownloadVideo'
+  incrementPlayVideo(opts) {
+    opts.url = '/video/videoInfo/incrementPlayVideo'
     opts.method = 'POST'
     $http.post(opts)
   },
@@ -56,6 +56,7 @@ export default {
   // 地图下载量增量
   incrementDownloadMap(opts) {
     opts.url = '/video/mapInfo/incrementDownloadMap'
+    opts.method = 'POST'
     $http.post(opts)
   },
 }
