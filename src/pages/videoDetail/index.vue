@@ -1,6 +1,6 @@
 <template>
   <view class="detail">
-    <video
+    <!-- <video
       v-show="tabIndex !== 3"
       id="courseVideo"
       :class="[!isFullscreen ? 'video-content' : 'fullscreen-video-content']"
@@ -9,7 +9,10 @@
       @play="playVideo"
       @loadedmetadata="completeLoad"
       @progress="progress"
-      @fullscreenchange="fullscreenchange" />
+      @fullscreenchange="fullscreenchange" /> -->
+    <view v-if="videoSrc" class="video-content">
+      <Video ref="videoRef" :video-src="videoSrc" :poster-src="posterSrc" :id="detailInfo.videoInfoVO.id" :can-play="hadBuy" />
+    </view>
     <view class="tab">
       <view :class="['tab-item', {active: tabIndex === 1}]" @click="switchTab(1)">简介</view>
       <view :class="['tab-item', {active: tabIndex === 2}]" @click="switchTab(2)">进度</view>
@@ -65,6 +68,7 @@
 
 <script>
 import BigImg from '@/components/common/bigImg'
+import Video from '@/components/common/video'
 import localM from '@/utils/common/local'
 import {LOCAL_KEY} from '@/config/constants'
 import utils from '@/utils/common'
@@ -72,7 +76,8 @@ import Clipboard from 'clipboard'
 
 export default {
   components: {
-    BigImg
+    BigImg,
+    Video
   },
 
 	data() {
@@ -80,16 +85,16 @@ export default {
 			detailInfo: {},
       id: '',
       userInfo: {},
-      videoContext: null,
       tabIndex: 1, 
       visible: false,
       imgUrl: '',
       isFullscreen: false,
+      videoSrc: '',
+      posterSrc: '',
 		}
 	},
 
   onLoad(option) {
-    console.log('onLoad', option)
     this.userInfo = localM.get(LOCAL_KEY.USER)
 		if (option.id) {
       this.id = option.id
@@ -131,11 +136,8 @@ export default {
           if (list && list[0]) {
             const infoList = list[0].courseInfoVOList
             this.detailInfo = infoList && infoList[0] ? infoList[0] : {}
-            this.videoContext = uni.createVideoContext('courseVideo')
-            uni.showLoading({
-              title: '视频加载中...',
-              mask: true,
-            });
+            this.videoSrc = this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.videoUrl
+            this.posterSrc = this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.videoThumbUrl
           } else {
             uni.redirectTo({
               url: '/pages/index/index'
@@ -168,10 +170,6 @@ export default {
       uni.hideLoading();
     },
 
-    progress(e) {
-      console.log('e', e.detail.buffered)
-    },
-
     // 全屏
     fullscreenchange(event) {
       const {fullScreen, direction} = event.detail
@@ -183,7 +181,6 @@ export default {
       if (this.userInfo.roleCode) return true
       if (!(this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.payStatus)) {
         this.$toast('需要购买该课程才能查看')
-        this.videoContext.pause()
         return false
       }
       return true
@@ -192,7 +189,9 @@ export default {
     // 控制进度
     skep(position) {
       if (position) {
-        this.videoContext.seek(position)
+        let player = this.$refs['videoRef'].player
+        console.log('player', player)
+        player.currentTime(position)
       }
     },
 
