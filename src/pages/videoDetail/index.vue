@@ -170,12 +170,6 @@ export default {
       uni.hideLoading();
     },
 
-    // 全屏
-    fullscreenchange(event) {
-      const {fullScreen, direction} = event.detail
-      this.isFullscreen = !fullScreen
-    },
-
     hadBuy() {
       return true
       if (this.userInfo.roleCode) return true
@@ -190,7 +184,6 @@ export default {
     skep(position) {
       if (position) {
         let player = this.$refs['videoRef'].player
-        console.log('player', player)
         player.currentTime(position)
       }
     },
@@ -285,6 +278,12 @@ export default {
       });
     },
 	},
+
+  beforeDestroy() {
+    console.log(3333)
+    this.videoSrc = ''
+    this.$refs['videoRef'].player.dispose()
+  }
 };
 </script>
 

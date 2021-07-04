@@ -66,6 +66,12 @@
 			}
 		},
 		{
+			"path": "pages/videoDetail/video",
+			"style": {
+				"navigationBarTitleText": "视频"
+			}
+		},
+		{
 			"path": "pages/mine/order",
 			"style": {
 				"navigationBarTitleText": "订单",

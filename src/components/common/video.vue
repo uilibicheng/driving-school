@@ -39,6 +39,7 @@
 			let source = document.createElement('source');
 			source.src = this.videoSrc;
 			source.type = 'video/mp4';
+			source.withCredentials = true,
 			video.appendChild(source);
 			this.$refs.video.$el.appendChild(video);
 			let that = this;
