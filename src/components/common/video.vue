@@ -97,9 +97,6 @@
 					
 					// console.log(this.currentTime())
 				})
-				this.on('durationchange', function(e) {
-					console.log(111, this.currentTime())
-				})
 			});
 		},
 	}
