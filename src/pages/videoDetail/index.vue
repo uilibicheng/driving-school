@@ -138,6 +138,14 @@ export default {
             this.detailInfo = infoList && infoList[0] ? infoList[0] : {}
             this.videoSrc = this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.videoUrl
             this.posterSrc = this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.videoThumbUrl
+            uni.showLoading({
+              title: '视频加载中...',
+              mask: true
+            })
+            let timer = setTimeout(() => {
+              uni.hideLoading()
+              clearTimeout(timer)
+            }, 3500)
           } else {
             uni.redirectTo({
               url: '/pages/index/index'
@@ -171,7 +179,6 @@ export default {
     },
 
     hadBuy() {
-      return true
       if (this.userInfo.roleCode) return true
       if (!(this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.payStatus)) {
         this.$toast('需要购买该课程才能查看')
