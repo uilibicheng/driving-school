@@ -138,14 +138,6 @@ export default {
             this.detailInfo = infoList && infoList[0] ? infoList[0] : {}
             this.videoSrc = this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.videoUrl
             this.posterSrc = this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.videoThumbUrl
-            uni.showLoading({
-              title: '视频加载中...',
-              mask: true
-            })
-            let timer = setTimeout(() => {
-              uni.hideLoading()
-              clearTimeout(timer)
-            }, 3500)
           } else {
             uni.redirectTo({
               url: '/pages/index/index'
@@ -286,8 +278,11 @@ export default {
     },
 	},
 
+  onPullDownRefresh() {
+    window.location.reload();
+  },
+
   beforeDestroy() {
-    console.log(3333)
     this.videoSrc = ''
     this.$refs['videoRef'].player.dispose()
   }

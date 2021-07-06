@@ -62,13 +62,8 @@
 		{
 			"path": "pages/videoDetail/index",
 			"style": {
-				"navigationBarTitleText": "视频详情"
-			}
-		},
-		{
-			"path": "pages/videoDetail/video",
-			"style": {
-				"navigationBarTitleText": "视频"
+				"navigationBarTitleText": "视频详情",
+				"enablePullDownRefresh": true
 			}
 		},
 		{

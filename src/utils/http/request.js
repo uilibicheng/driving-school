@@ -32,7 +32,7 @@ class SuperClass {
       if (userInfo && userInfo.id) {
         data.userId = userInfo.id
       }
-      const url = String(opts.url).includes('http') ? opts.ur : baseUrl + opts.url
+      const url = String(opts.url).includes('http') ? opts.url : baseUrl + opts.url
       uni.request({
         url,
         data: data,

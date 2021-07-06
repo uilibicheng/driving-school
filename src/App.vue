@@ -15,11 +15,31 @@ export default {
 				params.roleCode = options.query.roleCode
 			}
 			localM.set(LOCAL_KEY.LOGIN_PARAMS, params);
+			if (options.query.token) {
+				localM.set(LOCAL_KEY.TOKEN, options.query.token);
+			}
+			if (options.query.userInfo) {
+				const userInfo = JSON.parse(options.query.userInfo)
+				localM.set(LOCAL_KEY.USER, userInfo);
+			}
 			if (!localM.get(LOCAL_KEY.TOKEN)) {
-				// return common.toManage("/pages/login/login")
 				localM.set(LOCAL_KEY.TOKEN, '');
         localM.set(LOCAL_KEY.USER, {});
 			}
+
+			// const data = {
+			// 	location: '23.08331,2C113.3172',
+			// 	key: "OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77",
+			// 	get_poi: 1,
+			// }
+			// console.log('data', data)
+			// this.$http.area.getLocation({
+			// 	data,
+			// 	success: res => {
+			// 		let city = res.data.result
+			// 		alert(city)
+			// 	}
+			// })
 
       this.$http.user.getMiniPhotoPath({
         data: {
@@ -35,6 +55,29 @@ export default {
             jsApiList: ['chooseImage', 'chooseWXPay'], // 必填，需要使用的JS接口列表
             openTagList: ['wx-open-launch-weapp'] // 可选，需要使用的开放标签列表，例如['wx-open-launch-app']
           });
+
+					// jWeixin.ready(() => {
+					// 	console.log('ready')
+					// 	jWeixin.getLocation({
+					// 		type: 'gcj02',
+					// 		success: res => {
+					// 			console.log('res', res)
+					// 			const locationString = res.latitude + "," + res.longitude;
+					// 			alert(`获取地址成功${locationString}`)
+					// 			const data = {
+					// 				"key": "434BZ-NWPWS-JN5OL-6EQQM-2VOCQ-WFFQG",
+					// 				"location": locationString
+					// 			}
+					// 			this.$http.area.getLocation({
+					// 				data,
+					// 				success: res => {
+					// 					let city = res.data.result
+					// 					alert(city)
+					// 				}
+					// 			})
+					// 		}
+					// 	})
+					// })
         }
       })
 		}

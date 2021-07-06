@@ -70,12 +70,45 @@
 					pictureInPictureToggle: true, //画中画
 				}
 			}, function() {
+				this.on('loadstart', function(){
+					console.log("开始请求数据 ");
+					uni.showLoading({
+						title: '视频加载中...',
+						mask: true
+					})
+				})
 				this.on('error', function() { //请求数据时遇到错误
 					console.log("请求数据时遇到错误")
+					uni.showToast({
+						title: "请求数据时遇到错误，请下拉刷新",
+						icon: 'none',
+						duration: 3000
+					})
 				});
-				this.on('stalled', function() { //网速失速
-					console.log("网速失速")
+				this.on('stalled', function() { // 网速异常
+					console.log("网速异常")
+					uni.showToast({
+						title: "网速异常，请下拉刷新",
+						icon: 'none',
+						duration: 3000
+					})
 				});
+				this.on('progress', function() {
+					console.log('正在请求数据')
+				})
+				this.on('canplaythrough', function() {
+					console.log('视频源数据加载完成')
+					let timer = setTimeout(() => {
+						uni.hideLoading()
+						clearTimeout(timer)
+					}, 1500)
+				})
+				this.on('loadedmetadata', function() {
+					console.log('获取资源长度完成')
+				})
+				this.on('wait', function() {
+					console.log('等待数据')
+				})
 				this.on('play', function() { //开始播放
 					console.log("开始播放")
 					if (!(that.canPlay && that.canPlay())) {
