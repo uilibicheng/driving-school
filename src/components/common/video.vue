@@ -20,6 +20,10 @@
 				type: Function,
 				default: () => {}
 			},
+			payStatus: {
+				type: Boolean,
+				default: false,
+			}
 		},
 		data() {
 			return {
@@ -48,7 +52,7 @@
 				title:'',
 				playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
 				autoDisable: true,
-				preload: 'auto', //auto - 当页面加载后载入整个视频 meta - 当页面加载后只载入元数据 none - 当页面加载后不载入视频
+				preload: this.payStatus ? 'meta' : 'none', //auto - 当页面加载后载入整个视频 meta - 当页面加载后只载入元数据 none - 当页面加载后不载入视频
 				language: 'zh-CN',
 				fluid: true, // 自适应宽高
 				muted: false, //  是否静音
@@ -71,11 +75,13 @@
 				}
 			}, function() {
 				this.on('loadstart', function(){
-					console.log("开始请求数据 ");
-					uni.showLoading({
-						title: '视频加载中...',
-						mask: true
-					})
+					console.log("开始请求数据 ", that.payStatus);
+					if (that.payStatus) {
+						uni.showLoading({
+							title: '视频加载中...',
+							mask: true
+						})
+					}
 				})
 				this.on('error', function() { //请求数据时遇到错误
 					console.log("请求数据时遇到错误")
@@ -98,10 +104,12 @@
 				})
 				this.on('canplaythrough', function() {
 					console.log('视频源数据加载完成')
-					let timer = setTimeout(() => {
-						uni.hideLoading()
-						clearTimeout(timer)
-					}, 1500)
+					if (that.payStatus) {
+						let timer = setTimeout(() => {
+							uni.hideLoading()
+							clearTimeout(timer)
+						}, 1000)
+					}
 				})
 				this.on('loadedmetadata', function() {
 					console.log('获取资源长度完成')

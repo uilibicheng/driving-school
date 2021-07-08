@@ -11,7 +11,13 @@
       @progress="progress"
       @fullscreenchange="fullscreenchange" /> -->
     <view v-if="videoSrc" class="video-content">
-      <Video ref="videoRef" :video-src="videoSrc" :poster-src="posterSrc" :id="detailInfo.videoInfoVO.id" :can-play="hadBuy" />
+      <Video
+        ref="videoRef"
+        :video-src="videoSrc"
+        :poster-src="posterSrc"
+        :id="detailInfo.videoInfoVO.id"
+        :can-play="hadBuy"
+        :pay-status="!!detailInfo.videoInfoVO.payStatus" />
     </view>
     <view class="tab">
       <view :class="['tab-item', {active: tabIndex === 1}]" @click="switchTab(1)">简介</view>
