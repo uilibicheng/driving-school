@@ -76,7 +76,7 @@
 import BigImg from '@/components/common/bigImg'
 import Video from '@/components/common/video'
 import localM from '@/utils/common/local'
-import {LOCAL_KEY} from '@/config/constants'
+import constants, {LOCAL_KEY} from '@/config/constants'
 import utils from '@/utils/common'
 import Clipboard from 'clipboard'
 
@@ -104,7 +104,7 @@ export default {
     this.userInfo = localM.get(LOCAL_KEY.USER)
 		if (option.id) {
       this.id = option.id
-      this.getVideoById()
+      // this.getVideoById()
 		} else {
 			uni.redirectTo({
 				url: '/pages/index/index'
@@ -124,11 +124,11 @@ export default {
     }
 	},
 
-  // onShow() {
-  //   if (this.id) {
-  //     this.getVideoById()
-  //   }
-  // },
+  onShow() {
+    if (this.id) {
+      this.getVideoById()
+    }
+  },
 
   methods: {
 		getVideoById() {
@@ -231,6 +231,7 @@ export default {
           } else {
             // 不在小程序里
             data.token = localM.get(LOCAL_KEY.TOKEN)
+            data.appid = constants.APPID
             this.wxPay(data)
           }
         })
