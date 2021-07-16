@@ -93,11 +93,11 @@
 				});
 				this.on('stalled', function() { // 网速异常
 					console.log("网速异常")
-					uni.showToast({
-						title: "网速异常，请下拉刷新",
-						icon: 'none',
-						duration: 3000
-					})
+					// uni.showToast({
+					// 	title: "网速异常，请下拉刷新",
+					// 	icon: 'none',
+					// 	duration: 3000
+					// })
 				});
 				this.on('progress', function() {
 					console.log('正在请求数据')

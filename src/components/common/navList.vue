@@ -8,7 +8,7 @@
             <view class="right-title">{{item.title}}</view>
             <view class="right-sub">{{item.sub}}</view>
           </view>
-          <view class="launch-app" v-if="item.id === 3 || item.id === 6">
+          <view class="launch-app" v-if="!isMiniProgram && (item.id === 3 || item.id === 6)">
             <wx-open-launch-weapp
               :username="username"
               :path="item.path">
@@ -90,6 +90,17 @@ export default {
       ],
       userInfo: {},
       username: 'gh_e2e98df7fd1c', // 小程序username
+      isMiniProgram: false,
+    }
+  },
+
+  mounted() {
+    // 判断是否在微信
+    let ua = navigator.userAgent.toLowerCase()
+    if (ua.match(/MicroMessenger/i) == "micromessenger") {
+      jWeixin.miniProgram.getEnv(res => {
+        this.isMiniProgram = res.miniprogram
+      })
     }
   },
 
@@ -107,6 +118,11 @@ export default {
           })
           break
         case 3:
+          if (this.isMiniProgram) {
+            jWeixin.miniProgram.redirectTo({
+              url: `/pages/packageB/pages/queryZone/queryIndex/queryIndex`
+            })
+          }
           break
         case 5:
           uni.navigateTo({
@@ -114,6 +130,11 @@ export default {
           })
           break
         case 6:
+          if (this.isMiniProgram) {
+            jWeixin.miniProgram.switchTab({
+              url: `/pages/tabBar/home/home`
+            })
+          }
           break
         default:
           this.$toast('该功能正在火速开发中...')

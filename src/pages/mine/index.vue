@@ -9,27 +9,40 @@
           <image class="avatar" :src="user.avatarUrl" />
           <view>{{user.nickName}}</view>
         </view>
-        <view class="info-bottom" v-if="user.roleCode">
-          <view class="tool-item" @click="handleDevelop">
+        <view class="info-bottom">
+          <view class="tool-item" @click="handleToCoach" v-if="user.roleCode">
             <image src="@/static/user/coach.png" />
             教练工具
           </view>
-          <view class="tool-item" @click="handleDevelop">
-            <image src="@/static/user/order.png" />
-            学车工具
-          </view>
-        </view>
-        <view class="info-bottom" v-else>
-          <view class="tool-item" @click="goToOrder">
+          <view class="tool-item" @click="goToOrder" v-else>
             <image src="@/static/user/order.png" />
             我的订单
+          </view>
+          <view class="tool-item" @click="handleToDrive">
+            <image src="@/static/user/order.png" v-if="user.roleCode" />
+            <image src="@/static/user/coach.png" v-if="!user.roleCode" />
+            学车工具
+            <view class="launch-app" v-if="!isMiniProgram">
+              <wx-open-launch-weapp
+                username="gh_e2e98df7fd1c"
+                path="/pages/packageB/pages/queryZone/queryIndex/queryIndex.html">
+                <script type="text/wxtag-template">
+                  <style>.box{width: 100%; height: 100%}</style>
+                  <div class="box">
+                    <div>　　　</div><!-- 中间为占位符 -->
+                    <div>　　　</div><!-- 中间为占位符 -->
+                    <div>　　　</div><!-- 中间为占位符 -->
+                  </div>
+                </script>
+              </wx-open-launch-weapp>
+            </view>
           </view>
         </view>
       </view>
     </view>
 
     <view class="function-wrap" v-if="user.roleCode">
-      <view class="function-item">
+      <view class="function-item" @click="handleClick(1)">
         <view class="item-left">
           <image class="video" src="@/static/user/video.png" />
           邀请学员观看
@@ -90,13 +103,21 @@ export default {
       user: {},
       visible: false,
       imgUrl: '',
-      isOneLevelProxy: userInfo && userInfo.roleCode === ROLE_CODE.ONE_LEVEL_PROXY
+      isOneLevelProxy: userInfo && userInfo.roleCode === ROLE_CODE.ONE_LEVEL_PROXY,
+      isMiniProgram: false,
     }
   },
 
   onLoad() {
     if (localM.get(LOCAL_KEY.USER) && localM.get(LOCAL_KEY.USER).id) {
       this.user = localM.get(LOCAL_KEY.USER)
+      // 判断是否在微信
+      let ua = navigator.userAgent.toLowerCase()
+      if (ua.match(/MicroMessenger/i) == "micromessenger") {
+        jWeixin.miniProgram.getEnv(res => {
+          this.isMiniProgram = res.miniprogram
+        })
+      }
     } else {
       common.toManage("/pages/login/login")
     }
@@ -111,6 +132,11 @@ export default {
 
     handleClick(id) {
       switch(id) {
+        case 1:
+          uni.navigateTo({
+            url: `/pages/poster/index?type=STUDENT`
+          })
+          break
         case 2:
           uni.navigateTo({
             url: `/pages/poster/index?type=INVITE_COACH`
@@ -118,8 +144,19 @@ export default {
           break
       }
     },
-    handleDevelop() {
-      this.$toast('该功能正在火速开发中...')
+    handleToCoach() {
+      uni.navigateTo({
+        url: `/pages/driverTool/index`
+      })
+    },
+
+    handleToDrive() {
+      // 判断是否在微信
+      if (this.isMiniProgram) {
+        jWeixin.miniProgram.redirectTo({
+          url: `/pages/packageB/pages/queryZone/queryIndex/queryIndex`
+        })
+      }
     },
 
     followOfficalAccount() {
@@ -200,10 +237,27 @@ export default {
           align-items: center;
           font-size: 28rpx;
           color: #6B7076;
+          position: relative;
           image {
             width: 60rpx;
             height: 60rpx;
             margin-right: 30rpx;
+          }
+          .launch-app {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            z-index: 999;
+            opacity: 0;
+            wx-open-launch-weapp {
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100%;
+            }
           }
         }
       }
