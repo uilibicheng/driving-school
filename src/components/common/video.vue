@@ -23,6 +23,14 @@
 			payStatus: {
 				type: Boolean,
 				default: false,
+			},
+			isFree: {
+				type: Boolean,
+				default: false,
+			},
+			freeTime: {
+				type: Number,
+				default: 0
 			}
 		},
 		data() {
@@ -75,7 +83,7 @@
 				}
 			}, function() {
 				this.on('loadstart', function(){
-					console.log("开始请求数据 ", that.payStatus);
+					console.log("开始请求数据 ");
 					if (that.payStatus) {
 						uni.showLoading({
 							title: '视频加载中...',
@@ -93,11 +101,6 @@
 				});
 				this.on('stalled', function() { // 网速异常
 					console.log("网速异常")
-					// uni.showToast({
-					// 	title: "网速异常，请下拉刷新",
-					// 	icon: 'none',
-					// 	duration: 3000
-					// })
 				});
 				this.on('progress', function() {
 					console.log('正在请求数据')
@@ -119,24 +122,36 @@
 				})
 				this.on('play', function() { //开始播放
 					console.log("开始播放")
-					if (!(that.canPlay && that.canPlay())) {
-						this.pause()
+					if (!this.isFree) {
+						if (!(that.canPlay && that.canPlay())) {
+							this.pause()
+						} else {
+							if (that.isFirstPlay) return
+							that.isFirstPlay = true
+							that.$http.course.incrementPlayVideo({
+								data: {
+									id: that.id,
+								}
+							});
+						}
 					} else {
-						if (that.isFirstPlay) return
-						that.isFirstPlay = true
-						that.$http.course.incrementPlayVideo({
-							data: {
-								id: that.id,
-							}
-						});
+						if (this.currentTime() >= that.freeTime) {
+							this.currentTime(that.freeTime)
+							this.pause()
+						}
 					}
 				});
 				this.on('pause', function() { //暂停
 					console.log("暂停")
 				});
 				this.on('timeupdate', function() {
-					
-					// console.log(this.currentTime())
+					if (that.isFree) {
+						if (this.currentTime() > that.freeTime) {
+							that.$toast('试看时间已结束，请购买视频查看完整教学')
+							this.currentTime(that.freeTime)
+							this.pause()
+						}
+					}
 				})
 			});
 		},

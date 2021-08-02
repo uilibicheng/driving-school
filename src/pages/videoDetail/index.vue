@@ -17,7 +17,9 @@
         :poster-src="posterSrc"
         :id="detailInfo.videoInfoVO.id"
         :can-play="hadBuy"
-        :pay-status="!!detailInfo.videoInfoVO.payStatus" />
+        :pay-status="!!detailInfo.videoInfoVO.payStatus"
+        :isFree="isFree"
+        :freeTime="detailInfo.videoInfoVO.freeTime" />
     </view>
     <view class="tab">
       <view :class="['tab-item', {active: tabIndex === 1}]" @click="switchTab(1)">简介</view>
@@ -97,6 +99,7 @@ export default {
       isFullscreen: false,
       videoSrc: '',
       posterSrc: '',
+      isFree: false,
 		}
 	},
 
@@ -106,10 +109,13 @@ export default {
       this.id = option.id
       // this.getVideoById()
 		} else {
-			uni.redirectTo({
-				url: '/pages/index/index'
+      uni.redirectTo({
+        url: '/pages/index/index'
 			})
 		}
+    if (option.isFree) {
+      this.isFree = option.isFree === '1'
+    }
     if (this.userInfo.roleCode) {
       this.$nextTick(() => {
         var clipboard = new Clipboard('.copy-btn', {
@@ -178,6 +184,7 @@ export default {
 
     hadBuy() {
       if (this.userInfo.roleCode) return true
+      if (this.isFree) return true
       if (!(this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.payStatus)) {
         this.$toast('需要购买该课程才能查看')
         return false

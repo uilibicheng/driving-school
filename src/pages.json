@@ -83,6 +83,14 @@
 			}
 		},
 		{
+			"path": "pages/freeWatch/index",
+			"style": {
+				"navigationBarTitleText": "免费试看",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance": 60
+			}
+		},
+		{
 			"path": "pages/poster/index",
 			"style": {
 				"navigationBarTitleText": "分享海报"

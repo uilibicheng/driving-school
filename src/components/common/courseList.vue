@@ -69,6 +69,10 @@ export default {
     buttonClick: {
       type: Function,
       default: () => {}
+    },
+    isFree: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -98,8 +102,12 @@ export default {
       this.buttonClick && this.buttonClick(data)
     },
     goToDetail(id) {
+      let url = `/pages/videoDetail/index?id=${id}`
+      if (this.isFree) {
+        url = `${url}&isFree=1`
+      }
 			uni.navigateTo({
-        url: `/pages/videoDetail/index?id=${id}`,
+        url,
       })
 		},
   },

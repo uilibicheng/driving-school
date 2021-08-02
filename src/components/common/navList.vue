@@ -124,6 +124,11 @@ export default {
             })
           }
           break
+        case 4:
+          uni.navigateTo({
+            url: `/pages/freeWatch/index`
+          })
+          break
         case 5:
           uni.navigateTo({
             url: `/pages/mapList/index`
