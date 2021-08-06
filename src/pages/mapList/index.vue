@@ -27,20 +27,20 @@
       <view class="footer-tip">{{Object.keys(mapData) && Object.keys(mapData).length ? '已经到底喽～' : '暂无数据'}}</view>
     </view>
 
-    <BigImg v-if="visible" :path="imgUrl" :visible.sync="visible" />
+    <MapPoster v-if="visible" :path="imgUrl" :visible.sync="visible" />
   </view>
 </template>
 
 <script>
 import HeaderSearch from '@/components/common/headerSearch'
-import BigImg from '@/components/common/bigImg'
+import MapPoster from '@/components/common/mapPoster'
 import localM from "@/utils/common/local";
 import { LOCAL_KEY } from "@/config/constants";
 
 export default {
   components: {
     HeaderSearch,
-    BigImg
+    MapPoster
 	},
 
   data() {

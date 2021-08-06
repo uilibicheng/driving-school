@@ -70,12 +70,12 @@
 		<view class="buy-btn copy-btn" v-if="userInfo.roleCode">发给学员</view>
 		<view class="buy-btn" v-else-if="!(detailInfo.videoInfoVO && detailInfo.videoInfoVO.payStatus)" @click="buyVideo">点击购买课程</view>
 
-    <BigImg v-if="visible" :path="imgUrl" :visible.sync="visible" />
+    <MapPoster v-if="visible" :path="imgUrl" :visible.sync="visible" />
   </view>
 </template>
 
 <script>
-import BigImg from '@/components/common/bigImg'
+import MapPoster from '@/components/common/mapPoster'
 import Video from '@/components/common/video'
 import localM from '@/utils/common/local'
 import constants, {LOCAL_KEY} from '@/config/constants'
@@ -84,7 +84,7 @@ import Clipboard from 'clipboard'
 
 export default {
   components: {
-    BigImg,
+    MapPoster,
     Video
   },
 
