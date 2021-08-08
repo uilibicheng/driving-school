@@ -27,7 +27,7 @@
       <view class="footer-tip">{{Object.keys(mapData) && Object.keys(mapData).length ? '已经到底喽～' : '暂无数据'}}</view>
     </view>
 
-    <MapPoster v-if="visible" :path="imgUrl" :visible.sync="visible" />
+    <MapPoster v-if="visible" :path="imgUrl" :courseId="courseId" :visible.sync="visible" :userInfo="mapInfo" />
   </view>
 </template>
 
@@ -51,7 +51,9 @@ export default {
       limit: 200,
       totalPage: 0,
       imgUrl: '',
-      visible: false
+      courseId: '',
+      visible: false,
+      mapInfo: {}
     };
 	},
 
@@ -67,13 +69,15 @@ export default {
         sidx: 'mapPlace',
         order: 'desc',
         userId: this.userInfo.userId || '',
-        parentId: this.userInfo.pid || ''
 			}
+      if (this.userInfo.pid) {
+        data.parentId = this.userInfo.pid
+      }
       this.$http.data.getMapList({
 				data,
         success: (res) => {
-          this.totalPage = res.pages;
-          let data = res
+          let data = res.mapInfo
+          this.mapInfo = res.userInfo
           this.mapData = Object.assign({}, this.mapData, data)
         },
       });
@@ -81,6 +85,7 @@ export default {
 
     handleClick(item) {
       this.imgUrl = item.mapUrl
+      this.courseId = item.courseId
       this.visible = true
     }
   },

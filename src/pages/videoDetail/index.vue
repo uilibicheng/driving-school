@@ -63,14 +63,20 @@
     <!-- 线路图 -->
     <view class="intro" v-if="tabIndex === 3">
       <view class="map" v-if="detailInfo.mapInfoVO">
-        <image :src="detailInfo.mapInfoVO.mapThumbUrl" mode="aspectFit" @click="downloadMap" />
+        <image :src="srcPath" mode="widthFit" @click="downloadMap" />
       </view>
       <view class="buy-btn" @click="downloadMap">点击查看大图</view>
     </view>
 		<view class="buy-btn copy-btn" v-if="userInfo.roleCode">发给学员</view>
 		<view class="buy-btn" v-else-if="!(detailInfo.videoInfoVO && detailInfo.videoInfoVO.payStatus)" @click="buyVideo">点击购买课程</view>
 
-    <MapPoster v-if="visible" :path="imgUrl" :visible.sync="visible" />
+    <MapPoster v-if="visible" :path="srcPath" :visible.sync="visible" :isDraw="false" :userInfo="mapUser" />
+    <Painter
+      v-if="isDrawLoading"
+      isRenderImage
+      :board="posterData"
+      @success="successDraw"
+       @fail="failDraw" />
   </view>
 </template>
 
@@ -81,11 +87,13 @@ import localM from '@/utils/common/local'
 import constants, {LOCAL_KEY} from '@/config/constants'
 import utils from '@/utils/common'
 import Clipboard from 'clipboard'
+import Painter from '@/components/lime-painter'
 
 export default {
   components: {
     MapPoster,
-    Video
+    Video,
+    Painter
   },
 
 	data() {
@@ -95,11 +103,14 @@ export default {
       userInfo: {},
       tabIndex: 1, 
       visible: false,
-      imgUrl: '',
+      srcPath: '',
       isFullscreen: false,
       videoSrc: '',
       posterSrc: '',
       isFree: false,
+      mapUser: {},
+      isDrawLoading: false,
+      posterData: {}
 		}
 	},
 
@@ -141,10 +152,14 @@ export default {
 			let data = {
 				courseId: this.id,
 			}
+      if (this.userInfo.pid) {
+        data.parentId = this.userInfo.pid
+      }
       this.$http.course.getCourseInfo({
 				data,
         success: (data) => {
           const list = data.list
+          this.mapUser = data.userInfo
           if (list && list[0]) {
             const infoList = list[0].courseInfoVOList
             this.detailInfo = infoList && infoList[0] ? infoList[0] : {}
@@ -163,7 +178,113 @@ export default {
       if (index !== 1) {
         if (!this.hadBuy()) return
       }
+      if (index === 3) {
+        this.drawMapImage()
+      }
       this.tabIndex = index
+    },
+
+    // 绘画
+    drawMapImage() {
+      if (this.srcPath) return
+      this.posterData = {
+        position: 'absolute',
+        height: '750rpx',
+        width: '910rpx',
+        top: '0rpx',
+        left: '0rpx',
+        views: [
+          {
+            type: 'image',
+            src: '../../static/map3.jpg',
+            // src: this.detailInfo.mapInfoVO ? this.detailInfo.mapInfoVO.mapUrl : '',
+            css: {
+              position: 'absolute',
+              left: '0',
+              top: '0',
+              height: '750rpx',
+              width: '910rpx',
+              objectFit: 'contain'
+            }
+          },
+          {
+            type: 'view',
+            css: {
+              position: 'absolute',
+              left: '0rpx',
+              top: '0rpx',
+              width: '310rpx',
+              height: '140rpx',
+              background: '#fff',
+            },
+            views: [
+              {
+                type: 'text',
+                text: `${this.mapUser.nickName}\n联系电话：${this.mapUser.phone}`,
+                css: {
+                  left: '10rpx',
+                  top: '10rpx',
+                  width: '220rpx',
+                  height: '40rpx',
+                  color: 'blue',
+                  fontSize: '12rpx',
+                  position: 'absolute',
+                }
+              },
+              {
+                type: 'text',
+                text: this.mapUser.synopsis,
+                css: {
+                  left: '10rpx',
+                  top: '46rpx',
+                  width: '210rpx',
+                  height: '80rpx',
+                  color: 'black',
+                  fontSize: '12rpx',
+                }
+              },
+              {
+                type: 'text',
+                text: '扫二维码，观看高清实景视频',
+                css: {
+                  left: '10rpx',
+                  top: '110rpx',
+                  width: '160rpx',
+                  height: '100rpx',
+                  color: 'red',
+                  fontSize: '12rpx',
+                }
+              },
+              {
+                type: 'qrcode',
+                text: `https://photo.h5.fxpjiakao.com/#/pages/videoDetail/index?id=${this.id}`,
+                css: {
+                  position: 'absolute',
+                  left: '230rpx',
+                  top: '60rpx',
+                  width: '70rpx',
+                  height: '70rpx',
+                }
+              }
+            ]
+          },
+        ]
+      }
+      this.isDrawLoading = true
+      uni.showLoading({
+        title: '加载中...'
+      })
+    },
+
+    successDraw(path) {
+      this.srcPath = path
+      this.isDrawLoading = false
+      uni.hideLoading()
+    },
+
+    failDraw() {
+      this.isDrawLoading = false
+      uni.hideLoading()
     },
 
     // 学员端功能
@@ -202,7 +323,6 @@ export default {
 
     // 下载线路图
     downloadMap() {
-      this.imgUrl = this.detailInfo.mapInfoVO ? this.detailInfo.mapInfoVO.mapUrl : ''
       this.visible = true
       // 视频点击播放增加播放量
       this.$http.course.incrementDownloadMap({
@@ -438,7 +558,7 @@ export default {
   .map {
     image {
       width: 100%;
-      height: 450rpx;
+      /* height: 700rpx; */
     }
   }
 

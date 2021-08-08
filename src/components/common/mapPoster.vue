@@ -1,18 +1,29 @@
 <template>
   <view class="big-img-content" v-if="visible">
     <view class="mask" @click="close"></view>
-    <Painter
-      v-if="!isLoading"
-      isRenderImage
-      :board="posterData"
-      @success="success"
-      @fail="fail" />
-    <view class="img-wrap" v-else>
-      <image
-        :src="src"
-        mode="aspectFit"
-      />
-      <view class="img-tip">长按图片保存到相册</view>
+    <view v-if="!isDraw">
+      <view class="img-wrap">
+        <image
+          :src="path"
+          mode="aspectFit"
+        />
+        <view class="img-tip">长按图片保存到相册</view>
+      </view>
+    </view>
+    <view v-else>
+      <Painter
+        v-if="!isLoading"
+        isRenderImage
+        :board="posterData"
+        @success="success"
+        @fail="fail" />
+      <view class="img-wrap" v-else>
+        <image
+          :src="src"
+          mode="aspectFit"
+        />
+        <view class="img-tip">长按图片保存到相册</view>
+      </view>
     </view>
   </view>
 </template>
@@ -29,10 +40,22 @@ export default {
       type: String,
       default: ''
     },
+    courseId: {
+      type: String,
+      default: ''
+    },
     visible: {
       type: Boolean,
       default: false
-    }
+    },
+    isDraw: {
+      type: Boolean,
+      default: true
+    },
+    userInfo: {
+      type: Object,
+      default: {}
+    },
   },
 
   data() {
@@ -47,6 +70,7 @@ export default {
           {
             type: 'image',
             src: '../../static/map3.jpg',
+            // src: this.path,
             css: {
               position: 'absolute',
               left: '0',
@@ -69,7 +93,7 @@ export default {
             views: [
               {
                 type: 'text',
-                text: '叶建林 JSON\n联系电话：13554820201',
+                text: `${this.userInfo.nickName}\n联系电话：${this.userInfo.phone}`,
                 css: {
                   left: '10rpx',
                   top: '10rpx',
@@ -82,7 +106,7 @@ export default {
               },
               {
                 type: 'text',
-                text: '本人有多年的驾驶经验,是业界的资深教练，教学态度端正，驾驶技术精湛，对学员认真负责，欢迎各位学员找我学',
+                text: this.userInfo.synopsis,
                 css: {
                   left: '10rpx',
                   top: '46rpx',
@@ -106,7 +130,7 @@ export default {
               },
               {
                 type: 'qrcode',
-                text: '欢迎',
+                text: `https://photo.h5.fxpjiakao.com/#/pages/videoDetail/index?id=${this.courseId}`,
                 css: {
                   position: 'absolute',
                   left: '230rpx',
@@ -125,9 +149,11 @@ export default {
   },
 
   mounted() {
-    uni.showLoading({
-      title: '加载中...'
-    })
+    if (this.isDraw) {
+      uni.showLoading({
+        title: '加载中...'
+      })
+    }
   },
 
   methods: {
