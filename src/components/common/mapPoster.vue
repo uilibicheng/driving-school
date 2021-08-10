@@ -12,7 +12,7 @@
     </view>
     <view v-else>
       <Painter
-        v-if="!isLoading"
+        v-if="isLoading"
         isRenderImage
         :board="posterData"
         @success="success"
@@ -69,8 +69,7 @@ export default {
         views: [
           {
             type: 'image',
-            src: '../../static/map3.jpg',
-            // src: this.path,
+            src: this.path,
             css: {
               position: 'absolute',
               left: '0',
@@ -150,6 +149,7 @@ export default {
 
   mounted() {
     if (this.isDraw) {
+      this.isLoading = true
       uni.showLoading({
         title: '加载中...'
       })
@@ -159,11 +159,12 @@ export default {
   methods: {
     success(path) {
       this.src = path
-      this.isLoading = true
+      this.isLoading = false
       uni.hideLoading()
       this.$toast('长按图片保存到相册')
     },
     fail() {
+      this.isLoading = false
       uni.hideLoading()
     },
     close() {

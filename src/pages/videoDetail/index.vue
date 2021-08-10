@@ -196,8 +196,7 @@ export default {
         views: [
           {
             type: 'image',
-            src: '../../static/map3.jpg',
-            // src: this.detailInfo.mapInfoVO ? this.detailInfo.mapInfoVO.mapUrl : '',
+            src: this.detailInfo.mapInfoVO ? this.detailInfo.mapInfoVO.mapUrl : '',
             css: {
               position: 'absolute',
               left: '0',
