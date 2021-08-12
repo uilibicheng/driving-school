@@ -137,7 +137,39 @@ export default {
                   width: '70rpx',
                   height: '70rpx',
                 }
-              }
+              },
+              {
+                type: 'text',
+                text: `掌上考场：${this.userInfo.nickName}\n联系电话：${this.userInfo.phone}`,
+                css: {
+                  left: '460rpx',
+                  top: '100rpx',
+                  width: '400rpx',
+                  height: '100rpx',
+                  fontSize: '32rpx',
+                  position: 'absolute',
+                  color: '#bd1f0b',
+                  fontWeight: 'bold',
+                  opacity: '0.1',
+                  zIndex: '-1000'
+                }
+              },
+              {
+                type: 'text',
+                text: `掌上考场：${this.userInfo.nickName}\n联系电话：${this.userInfo.phone}`,
+                css: {
+                  left: '160rpx',
+                  top: '620rpx',
+                  width: '400rpx',
+                  height: '100rpx',
+                  fontSize: '32rpx',
+                  position: 'absolute',
+                  color: '#bd1f0b',
+                  fontWeight: 'bold',
+                  opacity: '0.1',
+                  zIndex: '-1000'
+                }
+              },
             ]
           },
         ]
