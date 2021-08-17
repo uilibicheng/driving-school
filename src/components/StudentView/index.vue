@@ -44,8 +44,12 @@ export default {
 
   methods: {
 		goToDetail(data) {
+      let url = `/pages/videoDetail/index?id=${data.id}`
+      if (+data.courseType === 2) {
+        url = `/pages/compilations/index?id=${data.id}`
+      }
 			uni.navigateTo({
-        url: `/pages/videoDetail/index?id=${data.id}`,
+        url,
       })
 		},
   },

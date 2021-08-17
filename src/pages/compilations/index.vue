@@ -1,113 +1,49 @@
 <template>
   <view class="detail">
-    <!-- <video
-      v-show="tabIndex !== 3"
-      id="courseVideo"
-      :class="[!isFullscreen ? 'video-content' : 'fullscreen-video-content']"
-      :src="detailInfo.videoInfoVO && detailInfo.videoInfoVO.videoUrl"
-      object-fit="contain"
-      @play="playVideo"
-      @loadedmetadata="completeLoad"
-      @progress="progress"
-      @fullscreenchange="fullscreenchange" /> -->
-    <view v-if="videoSrc" class="video-content">
-      <Video
-        ref="videoRef"
-        :video-src="videoSrc"
-        :poster-src="posterSrc"
-        :id="currentVideoInfo.id"
-        :can-play="hadBuy"
-        :pay-status="!!currentVideoInfo.payStatus"
-        :isFree="isFree"
-        :freeTime="currentVideoInfo.freeTime" />
+    <view class="video-content">
+      <!-- 缩略图 -->
     </view>
     <view class="tab">
       <view :class="['tab-item', {active: tabIndex === 1}]" @click="switchTab(1)">简介</view>
-      <view :class="['tab-item', {active: tabIndex === 3}]" @click="switchTab(4)" v-if="detailInfo.videoInfoVO && detailInfo.videoInfoVO.length > 1">目录</view>
-      <view :class="['tab-item', {active: tabIndex === 2}]" @click="switchTab(2)">进度</view>
-      <view :class="['tab-item', {active: tabIndex === 3}]" @click="switchTab(3)">线路图</view>
+      <view :class="['tab-item', {active: tabIndex === 3}]" @click="switchTab(2)">目录</view>
     </view>
     <!-- 简介 -->
     <view class="intro" v-if="tabIndex === 1">
       <view class="intro-title">{{detailInfo.courseName}}</view>
       <view class="intro-desc">{{detailInfo.courseIntro}}</view>
-      <!-- <view class="video-list">
-        <view class="list-item" v-for="item in 3">河源铺前科三2号线（自动挡）最新</view>
-      </view> -->
       <view class="view-desc">
-        <!-- <view class="desc-title">{{detailInfo.courseIntro}}</view> -->
         <view class="desc-num">{{currentVideoInfo ? currentVideoInfo.videoPlayCount : 0}}次播放</view>
         <view class="desc-price">
           <text class="desc-symbol">￥</text>{{detailInfo.coursePrice}}
           <text class="desc-tip">付款后永久有效</text>
         </view>
       </view>
-      <!-- <view class="other-class">
-        <view class="other-class-title">铺前科三考场其他相关路线，点击下面链接</view>
-        <view class="other-class-item" v-for="item in 8">河源铺前科三2号线最新</view>
-      </view> -->
-      <!-- <view class="intro-desc">河源铺前科三考场，阿萨德咖啡机五色机房问了句法六维空间二分了我解放路卡玩具鳄六维空间额返利网科技返利网科技了外壳及来我家二弗兰克我</view> -->
     </view>
     <!-- 目录 -->
-    <view class="intro" v-if="tabIndex === 4">
+    <view class="intro" v-if="tabIndex === 2">
       <view class="schedule" v-if="detailInfo.videoInfoVO && detailInfo.videoInfoVO.length">
         <view
           class="schedule-item"
           v-for="(item, index) in detailInfo.videoInfoVO"
-          @click="switchVideo(item)"
+          @click="jumpToDtail(item)"
           :key="index">
           <view :class="['item-name', 'catalog-name', {'catalog-name-active' : item.id === currentVideoInfo.id}]">{{item.videoName}}</view>
         </view>
       </view>
     </view>
-    <!-- 进度 -->
-    <view class="intro" v-if="tabIndex === 2">
-      <view class="schedule" v-if="currentVideoInfo && currentVideoInfo.scheduleInfoVOList.length">
-        <view
-          class="schedule-item"
-          v-for="(item, index) in currentVideoInfo.scheduleInfoVOList"
-          @click="skep(item.scheduleTime)"
-          :key="index">
-          <image :src="item.scheduleUrl" mode="aspectFit" />
-          <view class="item-name">{{item.scheduleName}}</view>
-        </view>
-      </view>
-    </view>
-    <!-- 线路图 -->
-    <view class="intro" v-if="tabIndex === 3">
-      <view class="map" v-if="detailInfo.mapInfoVO">
-        <image :src="srcPath" mode="widthFit" @click="downloadMap" />
-      </view>
-      <view class="buy-btn" @click="downloadMap">点击查看大图</view>
-    </view>
 		<view class="buy-btn copy-btn" v-if="userInfo.roleCode">发给学员</view>
 		<view class="buy-btn" v-else-if="!(currentVideoInfo && currentVideoInfo.payStatus)" @click="buyVideo">点击购买课程</view>
-
-    <MapPoster v-if="visible" :path="srcPath" :visible.sync="visible" :isDraw="false" :userInfo="mapUser" />
-    <Painter
-      v-if="isDrawLoading"
-      isRenderImage
-      :board="posterData"
-      @success="successDraw"
-       @fail="failDraw" />
   </view>
 </template>
 
 <script>
-import MapPoster from '@/components/common/mapPoster'
-import Video from '@/components/common/video'
 import localM from '@/utils/common/local'
 import constants, {LOCAL_KEY} from '@/config/constants'
 import utils from '@/utils/common'
 import Clipboard from 'clipboard'
-import Painter from '@/components/lime-painter'
 
 export default {
-  components: {
-    MapPoster,
-    Video,
-    Painter
-  },
+  components: {},
 
 	data() {
 		return {
@@ -115,17 +51,9 @@ export default {
       id: '',
       userInfo: {},
       tabIndex: 1, 
-      visible: false,
-      srcPath: '',
-      isFullscreen: false,
       currentVideoInfo: {},
       currentVideoId: '',
-      videoSrc: '',
-      posterSrc: '',
       isFree: false,
-      mapUser: {},
-      isDrawLoading: false,
-      posterData: {}
 		}
 	},
 
@@ -179,15 +107,10 @@ export default {
           if (list && list[0]) {
             const infoList = list[0].courseInfoVOList
             this.detailInfo = infoList && infoList[0] ? infoList[0] : {}
-            this.currentVideoInfo = this.currentVideoId ? this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.find(item => {
-              if (item.id === this.currentVideoId) {
-                return item
-              }
-              return {}
+            this.currentVideoInfo = this.currentVideoId ? this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.filter(item => {
+              return item.id === this.currentVideoId
             }) : this.detailInfo.videoInfoVO[0]
             console.log(111, this.currentVideoInfo)
-            this.videoSrc = this.currentVideoInfo.videoUrl
-            this.posterSrc = this.currentVideoInfo.videoThumbUrl
           } else {
             uni.redirectTo({
               url: '/pages/index/index'
@@ -201,174 +124,14 @@ export default {
       if (index !== 1) {
         if (!this.hadBuy()) return
       }
-      if (index === 3) {
-        this.drawMapImage()
-      }
       this.tabIndex = index
     },
 
-    // 绘画
-    drawMapImage() {
-      if (this.srcPath) return
-      const currentMapInfo = this.detailInfo.mapInfoVO && this.detailInfo.mapInfoVO.find(item => {
-        if (item.courseId === this.id) {
-          return item
-        }
-        return {}
+    // 跳转视频详情
+    jumpToDtail(data) {
+      uni.navigateTo({
+        url: `/pages/videoDetail/index?id=${this.id}&videoId=${data.id}`,
       })
-      this.posterData = {
-        position: 'absolute',
-        height: '750rpx',
-        width: '910rpx',
-        top: '0rpx',
-        left: '0rpx',
-        views: [
-          {
-            type: 'image',
-            src: currentMapInfo ? currentMapInfo.mapUrl : '',
-            css: {
-              position: 'absolute',
-              left: '0',
-              top: '0',
-              height: '750rpx',
-              width: '910rpx',
-              objectFit: 'contain'
-            }
-          },
-          {
-            type: 'view',
-            css: {
-              position: 'absolute',
-              left: '0rpx',
-              top: '0rpx',
-              width: '310rpx',
-              height: '140rpx',
-              background: '#fff',
-            },
-            views: [
-              {
-                type: 'text',
-                text: `${this.mapUser.nickName}\n联系电话：${this.mapUser.phone}`,
-                css: {
-                  left: '10rpx',
-                  top: '10rpx',
-                  width: '220rpx',
-                  height: '40rpx',
-                  color: 'blue',
-                  fontSize: '12rpx',
-                  position: 'absolute',
-                }
-              },
-              {
-                type: 'text',
-                text: this.mapUser.synopsis,
-                css: {
-                  left: '10rpx',
-                  top: '46rpx',
-                  width: '210rpx',
-                  height: '80rpx',
-                  color: 'black',
-                  fontSize: '12rpx',
-                }
-              },
-              {
-                type: 'text',
-                text: '扫二维码，观看高清实景视频',
-                css: {
-                  left: '10rpx',
-                  top: '110rpx',
-                  width: '160rpx',
-                  height: '100rpx',
-                  color: 'red',
-                  fontSize: '12rpx',
-                }
-              },
-              {
-                type: 'qrcode',
-                text: `https://photo.h5.fxpjiakao.com/#/pages/videoDetail/index?id=${this.id}`,
-                css: {
-                  position: 'absolute',
-                  left: '230rpx',
-                  top: '60rpx',
-                  width: '70rpx',
-                  height: '70rpx',
-                }
-              },
-              {
-                type: 'text',
-                text: `掌上考场：${this.mapUser.nickName}\n联系电话：${this.mapUser.phone}`,
-                css: {
-                  left: '460rpx',
-                  top: '100rpx',
-                  width: '400rpx',
-                  height: '100rpx',
-                  fontSize: '32rpx',
-                  position: 'absolute',
-                  color: '#bd1f0b',
-                  fontWeight: 'bold',
-                  opacity: '0.1',
-                  zIndex: '-1000'
-                }
-              },
-              {
-                type: 'text',
-                text: `掌上考场：${this.mapUser.nickName}\n联系电话：${this.mapUser.phone}`,
-                css: {
-                  left: '160rpx',
-                  top: '620rpx',
-                  width: '400rpx',
-                  height: '100rpx',
-                  fontSize: '32rpx',
-                  position: 'absolute',
-                  color: '#bd1f0b',
-                  fontWeight: 'bold',
-                  opacity: '0.1',
-                  zIndex: '-1000'
-                }
-              },
-            ]
-          },
-        ]
-      }
-      this.isDrawLoading = true
-      uni.showLoading({
-        title: '加载中...'
-      })
-    },
-
-    successDraw(path) {
-      this.srcPath = path
-      this.isDrawLoading = false
-      uni.hideLoading()
-    },
-
-    failDraw() {
-      this.isDrawLoading = false
-      uni.hideLoading()
-    },
-
-    // 目录切换
-    switchVideo(data) {
-      if (this.currentVideoInfo.id === data.id) return
-      this.currentVideoInfo = data
-      this.videoSrc = data.videoUrl
-      this.posterSrc = data.videoThumbUrl
-    },
-
-    // 学员端功能
-    playVideo() {
-      if (!this.hadBuy()) return
-      // 视频点击播放增加播放量
-      this.$http.course.incrementPlayVideo({
-				data: {
-          id: this.currentVideoInfo.id,
-        }
-      });
-    },
-
-    // 视频加载
-    completeLoad() {
-      uni.hideLoading();
     },
 
     hadBuy() {
@@ -379,25 +142,6 @@ export default {
         return false
       }
       return true
-    },
-
-    // 控制进度
-    skep(position) {
-      if (position) {
-        let player = this.$refs['videoRef'].player
-        player.currentTime(position)
-      }
-    },
-
-    // 下载线路图
-    downloadMap() {
-      this.visible = true
-      // 视频点击播放增加播放量
-      this.$http.course.incrementDownloadMap({
-				data: {
-          id: this.detailInfo.mapInfoVO.id,
-        }
-      });
     },
 
     buyVideo() {
@@ -483,11 +227,6 @@ export default {
   onPullDownRefresh() {
     window.location.reload();
   },
-
-  beforeDestroy() {
-    this.videoSrc = ''
-    this.$refs['videoRef'].player.dispose()
-  }
 };
 </script>
 
@@ -496,12 +235,6 @@ export default {
   padding-bottom: 120rpx;
   .video-content {
     width: 100%;
-  }
-
-  .fullscreen-video-content {
-    width: 100vh;
-    height: 100vw;
-    transform: rotate(-90deg);
   }
 
   .tab {

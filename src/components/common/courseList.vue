@@ -4,7 +4,7 @@
       <view class="title">{{place.courseSite}}</view>
       <view class="exam-item" v-for="(item, index) in place.courseInfoVOList" :key="index">
         <!-- 左边 -->
-        <view class="image-wrap" @click="goToDetail(item.id)">
+        <view class="image-wrap" @click="goToDetail(item)">
           <view class="image-info" v-if="!(item.videoInfoVO && item.videoInfoVO.videoThumbUrl)">
             <view class="image-info-title">{{item.courseName}}</view>
             <view class="image-info-desc">{{item.courseIntro}}</view>
@@ -14,9 +14,9 @@
         </view>
         <!-- 右边 -->
         <view class="exam-item-right">
-          <view class="exam-item-right-title" @click="goToDetail(item.id)">{{item.courseName}}</view>
+          <view class="exam-item-right-title" @click="goToDetail(item)">{{item.courseName}}</view>
           <view class="right-bottom-wrap">
-            <view @click="goToDetail(item.id)">
+            <view @click="goToDetail(item)">
               <view class="price">
                 <text class="symbol">￥</text>{{item.coursePrice}}
               </view>
@@ -101,8 +101,12 @@ export default {
     handleClick(data) {
       this.buttonClick && this.buttonClick(data)
     },
-    goToDetail(id) {
-      let url = `/pages/videoDetail/index?id=${id}`
+    goToDetail(item) {
+      console.log('item', item)
+      let url = `/pages/videoDetail/index?id=${item.id}`
+      if (+item.courseType === 2) {
+        url = `/pages/compilations/index?id=${item.id}`
+      }
       if (this.isFree) {
         url = `${url}&isFree=1`
       }

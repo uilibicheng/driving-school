@@ -60,6 +60,13 @@
 			}
 		},
 		{
+			"path": "pages/compilations/index",
+			"style": {
+				"navigationBarTitleText": "主页",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
 			"path": "pages/videoDetail/index",
 			"style": {
 				"navigationBarTitleText": "视频详情",

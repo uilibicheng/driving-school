@@ -89,6 +89,11 @@
 							title: '视频加载中...',
 							mask: true
 						})
+
+						let timer = setTimeout(() => {
+							uni.hideLoading()
+							clearTimeout(timer)
+						}, 10000)
 					}
 				})
 				this.on('error', function() { //请求数据时遇到错误
