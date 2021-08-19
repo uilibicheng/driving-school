@@ -20,7 +20,7 @@
     <!-- 简介 -->
     <view class="intro" v-if="tabIndex === 1">
       <view class="intro-title">{{detailInfo.courseName}}</view>
-      <view class="intro-desc">{{detailInfo.courseIntro}}阿斯顿发文为范文芳违反为发</view>
+      <view class="intro-desc">{{detailInfo.courseIntro}}</view>
       <!-- <view class="video-list">
         <view class="list-item" v-for="item in 3">河源铺前科三2号线（自动挡）最新</view>
       </view> -->
