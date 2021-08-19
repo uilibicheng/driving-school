@@ -2,10 +2,11 @@
   <view class="detail">
     <view class="video-content">
       <!-- 缩略图 -->
+      <image class="content-thumb" :src="detailInfo.courseThumbUrl" mode="widthFix" />
     </view>
     <view class="tab">
       <view :class="['tab-item', {active: tabIndex === 1}]" @click="switchTab(1)">简介</view>
-      <view :class="['tab-item', {active: tabIndex === 3}]" @click="switchTab(2)">目录</view>
+      <view :class="['tab-item', {active: tabIndex === 2}]" @click="switchTab(2)">目录</view>
     </view>
     <!-- 简介 -->
     <view class="intro" v-if="tabIndex === 1">
@@ -32,7 +33,7 @@
       </view>
     </view>
 		<view class="buy-btn copy-btn" v-if="userInfo.roleCode">发给学员</view>
-		<view class="buy-btn" v-else-if="!(currentVideoInfo && currentVideoInfo.payStatus)" @click="buyVideo">点击购买课程</view>
+		<view class="buy-btn" v-else-if="!(detailInfo && +detailInfo.payStatus)" @click="buyVideo">点击购买课程</view>
   </view>
 </template>
 
@@ -121,14 +122,12 @@ export default {
 		},
 
     switchTab(index) {
-      if (index !== 1) {
-        if (!this.hadBuy()) return
-      }
       this.tabIndex = index
     },
 
     // 跳转视频详情
     jumpToDtail(data) {
+      if (!this.hadBuy()) return
       uni.navigateTo({
         url: `/pages/videoDetail/index?id=${this.id}&videoId=${data.id}`,
       })
@@ -137,7 +136,7 @@ export default {
     hadBuy() {
       if (this.userInfo.roleCode) return true
       if (this.isFree) return true
-      if (!(this.currentVideoInfo && this.currentVideoInfo.payStatus)) {
+      if (!(this.detailInfo && +this.detailInfo.payStatus)) {
         this.$toast('需要购买该课程才能查看')
         return false
       }
@@ -235,6 +234,10 @@ export default {
   padding-bottom: 120rpx;
   .video-content {
     width: 100%;
+
+    .content-thumb {
+      width: 100%;
+    }
   }
 
   .tab {

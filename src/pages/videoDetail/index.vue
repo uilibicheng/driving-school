@@ -1,15 +1,5 @@
 <template>
   <view class="detail">
-    <!-- <video
-      v-show="tabIndex !== 3"
-      id="courseVideo"
-      :class="[!isFullscreen ? 'video-content' : 'fullscreen-video-content']"
-      :src="detailInfo.videoInfoVO && detailInfo.videoInfoVO.videoUrl"
-      object-fit="contain"
-      @play="playVideo"
-      @loadedmetadata="completeLoad"
-      @progress="progress"
-      @fullscreenchange="fullscreenchange" /> -->
     <view v-if="videoSrc" class="video-content">
       <Video
         ref="videoRef"
@@ -17,20 +7,20 @@
         :poster-src="posterSrc"
         :id="currentVideoInfo.id"
         :can-play="hadBuy"
-        :pay-status="!!currentVideoInfo.payStatus"
+        :pay-status="!!(+detailInfo.payStatus)"
         :isFree="isFree"
         :freeTime="currentVideoInfo.freeTime" />
     </view>
     <view class="tab">
       <view :class="['tab-item', {active: tabIndex === 1}]" @click="switchTab(1)">简介</view>
-      <view :class="['tab-item', {active: tabIndex === 3}]" @click="switchTab(4)" v-if="detailInfo.videoInfoVO && detailInfo.videoInfoVO.length > 1">目录</view>
+      <view :class="['tab-item', {active: tabIndex === 4}]" @click="switchTab(4)" v-if="detailInfo.videoInfoVO && detailInfo.videoInfoVO.length > 1">目录</view>
       <view :class="['tab-item', {active: tabIndex === 2}]" @click="switchTab(2)">进度</view>
       <view :class="['tab-item', {active: tabIndex === 3}]" @click="switchTab(3)">线路图</view>
     </view>
     <!-- 简介 -->
     <view class="intro" v-if="tabIndex === 1">
       <view class="intro-title">{{detailInfo.courseName}}</view>
-      <view class="intro-desc">{{detailInfo.courseIntro}}</view>
+      <view class="intro-desc">{{detailInfo.courseIntro}}阿斯顿发文为范文芳违反为发</view>
       <!-- <view class="video-list">
         <view class="list-item" v-for="item in 3">河源铺前科三2号线（自动挡）最新</view>
       </view> -->
@@ -81,7 +71,7 @@
       <view class="buy-btn" @click="downloadMap">点击查看大图</view>
     </view>
 		<view class="buy-btn copy-btn" v-if="userInfo.roleCode">发给学员</view>
-		<view class="buy-btn" v-else-if="!(currentVideoInfo && currentVideoInfo.payStatus)" @click="buyVideo">点击购买课程</view>
+		<view class="buy-btn" v-else-if="!(detailInfo && +detailInfo.payStatus)" @click="buyVideo">点击购买课程</view>
 
     <MapPoster v-if="visible" :path="srcPath" :visible.sync="visible" :isDraw="false" :userInfo="mapUser" />
     <Painter
@@ -180,12 +170,8 @@ export default {
             const infoList = list[0].courseInfoVOList
             this.detailInfo = infoList && infoList[0] ? infoList[0] : {}
             this.currentVideoInfo = this.currentVideoId ? this.detailInfo.videoInfoVO && this.detailInfo.videoInfoVO.find(item => {
-              if (item.id === this.currentVideoId) {
-                return item
-              }
-              return {}
+              return item.id === this.currentVideoId
             }) : this.detailInfo.videoInfoVO[0]
-            console.log(111, this.currentVideoInfo)
             this.videoSrc = this.currentVideoInfo.videoUrl
             this.posterSrc = this.currentVideoInfo.videoThumbUrl
           } else {
@@ -211,10 +197,7 @@ export default {
     drawMapImage() {
       if (this.srcPath) return
       const currentMapInfo = this.detailInfo.mapInfoVO && this.detailInfo.mapInfoVO.find(item => {
-        if (item.courseId === this.id) {
-          return item
-        }
-        return {}
+        return item.courseId === this.id
       })
       this.posterData = {
         position: 'absolute',
@@ -353,6 +336,15 @@ export default {
       this.currentVideoInfo = data
       this.videoSrc = data.videoUrl
       this.posterSrc = data.videoThumbUrl
+
+      let player = this.$refs['videoRef'].player
+      player.reset() // 重置为它们的默认值
+      player.src({
+        src: data.videoUrl,
+        type: 'video/mp4',
+      })
+      player.posterImage.setSrc(data.videoThumbUrl)
+      player.load(data.videoUrl)
     },
 
     // 学员端功能
@@ -374,7 +366,7 @@ export default {
     hadBuy() {
       if (this.userInfo.roleCode) return true
       if (this.isFree) return true
-      if (!(this.currentVideoInfo && this.currentVideoInfo.payStatus)) {
+      if (!(this.detailInfo && +this.detailInfo.payStatus)) {
         this.$toast('需要购买该课程才能查看')
         return false
       }
